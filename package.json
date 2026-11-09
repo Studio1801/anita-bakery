@@ -1,0 +1,7 @@
+{
+  "name": "anitas-little-loaf",
+  "private": true,
+  "description": "Anita's Little Loaf & Co. website, order pages and owner dashboard",
+  "engines": { "node": ">=18" },
+  "dependencies": { "pg": "^8.13.1" }
+}

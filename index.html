@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Anita's Little Loaf & Co. | Sourdough bread drop, St. George and St. Andrews NB</title>
+<meta name="description" content="Naturally fermented sourdough, focaccia, cinnamon rolls and pretzels, baked from scratch in New Brunswick. Order by Monday, pick up Thursday in St. George or St. Andrews. Catering for events big and small.">
+<meta property="og:title" content="Anita's Little Loaf & Co.">
+<meta property="og:image" content="img/cinnamon-four.webp">
+<meta property="og:description" content="Sourdough bread drop every Thursday in St. George and St. Andrews, NB. Order by Monday.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232a1c13'/%3E%3Cpath d='M12 42c0-14 9-24 20-24s20 10 20 24z' fill='none' stroke='%23d7bd95' stroke-width='3'/%3E%3Cpath d='M22 30c6-3 14-3 20 2' fill='none' stroke='%23d7bd95' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/caslon-400.woff2" as="font" type="font/woff2" crossorigin>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Bakery","name":"Anita's Little Loaf & Co.","description":"Sourdough, baked goods and event catering in New Brunswick, Canada.","areaServed":["St. George, NB","St. Andrews, NB"],"sameAs":["https://www.instagram.com/anitaslittleloafandco/"],"servesCuisine":"Bakery","priceRange":"$"}</script>
+<style>
+/* Concept: a kraft bread bag with a stamped tag. Flour-dusted paper, rye-brown ink, one blue rubber stamp.
+   Colours, one job each:
+   flour  #eee8dc  page canvas
+   rye    #2a1c13  text, buttons, the dark band
+   kraft  #d7bd95  alternating bands and the drop tag
+   crumb  #f8f4ec  raised surfaces: the bag drawer, inputs, chat
+   stamp  #2c4a8e  stamped dates and the order countdown only
+   crust  #7a5a40  secondary text */
+@font-face{font-family:"Caslon";src:url(fonts/caslon-400.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Hand";src:url(fonts/caveat-500.woff2) format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Caslon";src:url(fonts/caslon-400-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
+:root{--flour:#eee8dc;--rye:#2a1c13;--kraft:#d7bd95;--crumb:#f8f4ec;--stamp:#2c4a8e;--crust:#7a5a40;
+ --line:rgba(42,28,19,.22);--line-dk:rgba(238,232,220,.24);
+ --f:"Caslon","Libre Caslon Text","Big Caslon",Georgia,serif;--ease:cubic-bezier(.16,1,.3,1);color-scheme:light}
+*{box-sizing:border-box}
+html{overflow-x:clip;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--flour);color:var(--rye);font:400 17px/1.45 var(--f);-webkit-font-smoothing:antialiased;overflow-x:clip}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+h1,h2,h3{font-weight:400;text-wrap:balance}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+a{color:inherit}
+:focus-visible{outline:1px solid var(--rye);outline-offset:4px}
+.wrap{max-width:1400px;margin:0 auto;padding-inline:max(20px,env(safe-area-inset-left,0px))}
+.lab{font-size:15px;font-style:italic;letter-spacing:0;line-height:1.3;display:block;color:var(--crust)}
+.mute{color:var(--crust)}
+.sr{position:absolute;left:-9999px}
+.band-k{background:var(--kraft)}
+.band-r{background:var(--rye);color:var(--flour)}
+.band-r .mute{color:#c9b597}
+.sec{padding-block:clamp(72px,10vw,140px)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:50px;padding:0 1.6em;border-radius:999px;background:var(--rye);color:var(--flour);font-size:16px;letter-spacing:.01em;white-space:nowrap;text-decoration:none;transition:opacity .3s var(--ease)}
+.btn:hover{opacity:.86}
+.btn:disabled{opacity:.35;cursor:default}
+.btn.lt{background:var(--flour);color:var(--rye)}
+.btn.sm{min-height:40px;font-size:15px;padding:0 1.2em}
+.tl{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
+/* the score: the slash a baker cuts in a loaf, used as the only ornament */
+.score{display:block;width:72px;height:14px;margin:0 auto}
+.score path{fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round}
+
+/* header: wordmark and three words */
+.hdr{position:absolute;top:0;left:0;right:0;z-index:20;padding-top:env(safe-area-inset-top,0px)}
+.hdr .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-block:22px}
+.wm{font-size:19px;letter-spacing:-.01em;white-space:nowrap;flex-shrink:0}
+.wm i{font-style:italic}
+.nav{display:flex;gap:clamp(14px,2.4vw,34px);font-size:15px}
+.nav button[aria-current]{text-decoration:underline;text-underline-offset:.35em;text-decoration-thickness:1px}
+@media(max-width:520px){.wm .wco{display:none}.nav{font-size:14px}}
+
+/* hero */
+.hero{overflow:hidden;padding-top:clamp(110px,11vw,150px);padding-bottom:clamp(56px,7vw,96px);position:relative}
+.hero h1{font-size:clamp(76px,15vw,228px);line-height:.8;letter-spacing:-.05em;white-space:nowrap;margin-right:-12vw}
+
+.hero h1 .i2{padding-left:.42em;font-style:italic}
+.hero-row{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:48px;align-items:start;margin-top:clamp(28px,3.4vw,48px)}
+.hero-row .lede{max-width:40ch;font-size:clamp(18px,1.6vw,21px);line-height:1.4}
+.hero-row .acts{display:flex;gap:22px;align-items:center;margin-top:28px;flex-wrap:wrap}
+@media(max-width:900px){.hero-row{grid-template-columns:1fr}.hero h1{margin-right:-30vw}}
+
+/* the drop tag: the signature */
+.tag{position:relative;background:var(--kraft);padding:34px 30px 28px 54px;transform:rotate(-2.2deg);max-width:420px;justify-self:end;width:100%}
+.tag::before{content:"";position:absolute;left:20px;top:28px;width:16px;height:16px;border-radius:50%;background:var(--flour);outline:1px solid rgba(42,28,19,.35);outline-offset:3px}
+.tag .twine{position:absolute;left:-60px;top:18px;width:96px;height:40px;overflow:visible}
+.tag .twine path{fill:none;stroke:var(--rye);stroke-width:1.2}
+.stampd{display:inline-block;will-change:transform;color:var(--stamp);border:1px solid var(--stamp);outline:1px solid var(--stamp);outline-offset:3px;padding:8px 14px 6px;transform:rotate(-4deg);margin:14px 0 18px 4px;font-size:30px;line-height:.95;letter-spacing:.04em;text-transform:uppercase;opacity:.92;white-space:nowrap}
+.stampd small{display:block;font-size:11px;letter-spacing:.24em;margin-top:6px}
+.tag dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:16px;border-top:1px solid var(--line);padding-top:14px}
+.tag dt{white-space:nowrap}
+.tag dd{color:var(--crust)}
+.tag .cd{color:var(--stamp);font-size:15px;margin-top:16px}
+.tag .btn{margin-top:18px;width:100%}
+@media(max-width:900px){.tag{justify-self:start;margin-left:34px;max-width:calc(100% - 34px)}}
+
+/* page-load moment: lines rise, then the stamp lands */
+@keyframes rise{from{opacity:0;transform:translateY(20px)}}
+
+/* how the drop works: centred stack */
+.how{text-align:center}
+.how .lab{margin-bottom:34px}
+.how ol{display:grid;gap:4px}
+.how li{font-size:clamp(40px,7.4vw,108px);line-height:.92;letter-spacing:-.035em}
+.how li:nth-child(2){font-style:italic}
+.how .score{margin-block:44px 36px}
+.stops{display:flex;justify-content:center;gap:clamp(28px,6vw,96px);flex-wrap:wrap;text-align:left}
+.stops div{min-width:220px}
+.stops b{display:block;font-weight:400;font-size:26px;letter-spacing:-.01em;line-height:1.05}
+.stops span{display:block;color:var(--crust);font-size:16px;margin-top:6px}
+
+/* menu preview: three panel */
+.trio{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.3fr) 60px;gap:clamp(24px,4vw,64px);align-items:start}
+.trio h2{font-size:clamp(44px,5.6vw,84px);line-height:.92;letter-spacing:-.03em}
+.trio .side p{margin-top:22px;max-width:34ch}
+.trio .side .btn{margin-top:30px}
+.rot{writing-mode:vertical-rl;transform:rotate(180deg);justify-self:end;font-size:12px;letter-spacing:.27em;text-transform:uppercase;white-space:nowrap}
+.card{border:1px solid var(--rye);padding:clamp(22px,3vw,40px)}
+.card h3{display:flex;justify-content:space-between;align-items:baseline;font-size:clamp(26px,2.6vw,34px);letter-spacing:-.015em;line-height:1;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.card h3+ul{margin:12px 0 28px}
+.card li{padding:3px 0;font-size:17px}
+.card .cols{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+@media(max-width:900px){.trio{grid-template-columns:1fr}.rot{display:none}.card .cols{grid-template-columns:1fr}}
+
+/* story band: anchored right */
+.story{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:48px}
+.story blockquote{margin:0;grid-column:2;font-size:clamp(40px,5.4vw,82px);line-height:.94;letter-spacing:-.03em;text-align:right}
+.story blockquote em{font-style:italic}
+.story .tx{grid-column:2;justify-self:end;max-width:48ch;margin-top:36px;display:grid;gap:14px;font-size:18px}
+.story .lab{grid-column:1;grid-row:1;align-self:start}
+@media(max-width:900px){.story{grid-template-columns:1fr}.story blockquote,.story .tx,.story .lab{grid-column:1}.story .lab{grid-row:auto}.story blockquote{text-align:left}.story .tx{justify-self:start}}
+
+/* catering: edge to edge */
+.edge{overflow:hidden}
+.edge .lab{margin-bottom:28px}
+.edge p.run{font-size:clamp(38px,6.2vw,96px);line-height:.95;letter-spacing:-.035em;padding-inline:max(20px,env(safe-area-inset-left,0px))}
+.edge p.run i{font-style:normal;color:var(--crust);padding-inline:.18em}
+.edge .foot{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap;margin-top:44px}
+.edge .foot p{max-width:46ch}
+
+/* footer */
+.ft{background:var(--rye);color:var(--flour);padding-block:72px 40px}
+.ft-g{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+.ft h2{font-size:clamp(42px,5vw,72px);line-height:.92;letter-spacing:-.03em}
+.ft h4{font-weight:400;margin-bottom:14px}
+.ft li{color:#c9b597;padding:2px 0}
+.ft li button{color:inherit;text-align:left}
+.legal{display:flex;gap:22px;flex-wrap:wrap;margin-top:64px;padding-top:20px;border-top:1px solid var(--line-dk);font-size:13px;letter-spacing:.04em;color:#c9b597}
+@media(max-width:900px){.ft-g{grid-template-columns:1fr}}
+
+/* inner page head */
+.ph{padding-top:clamp(120px,14vw,170px);padding-bottom:clamp(36px,5vw,64px)}
+.ph h1{font-size:clamp(64px,11vw,170px);line-height:.82;letter-spacing:-.045em}
+.ph h1 i{font-style:italic}
+.ph .lede{max-width:44ch;margin-top:26px;font-size:19px}
+
+/* order page */
+.og{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:clamp(28px,4vw,64px);align-items:start;padding-bottom:120px}
+.pick{border-top:1px solid var(--rye);padding-top:22px;margin-bottom:56px}
+.pick h2{font-size:clamp(30px,3.4vw,44px);letter-spacing:-.02em;line-height:1;margin-bottom:22px}
+.opts{display:flex;flex-wrap:wrap;gap:10px}
+.opt{border:1px solid var(--rye);border-radius:999px;padding:12px 20px;text-align:left;line-height:1.2;transition:background .3s var(--ease),color .3s var(--ease)}
+.opt small{display:block;font-size:13px;color:var(--crust);margin-top:3px}
+.opt[aria-pressed="true"]{background:var(--rye);color:var(--flour)}
+.opt[aria-pressed="true"] small{color:#c9b597}
+.opt:disabled{opacity:.4;cursor:default}
+.cap{color:var(--stamp);margin-top:14px;font-size:15px}
+.grp{margin-bottom:52px}
+.grp-h{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--rye);padding-bottom:12px;gap:20px}
+.grp-h h3{font-size:clamp(30px,3.4vw,46px);letter-spacing:-.02em;line-height:.95}
+.grp-h .pr{font-size:22px;white-space:nowrap}
+.grp-d{display:grid;grid-template-columns:64px 1fr;gap:18px;align-items:start;margin:16px 0 8px}
+.grp-d img{width:64px;height:64px}
+.grp-d p{max-width:56ch;color:var(--crust);font-size:16px}
+.fl{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}
+.fl .n{flex:1;min-width:0}
+.fl .ldr{flex:0 1 80px;border-bottom:1px dotted var(--line);height:1px;align-self:center}
+.fl.off .n{color:var(--crust);text-decoration:line-through;text-decoration-thickness:1px}
+.add{border:1px solid var(--rye);border-radius:999px;min-width:84px;height:38px;padding:0 16px;font-size:15px}
+.add:hover{background:var(--rye);color:var(--flour)}
+.stp{display:inline-flex;align-items:center;border:1px solid var(--rye);border-radius:999px;height:38px;min-width:84px;justify-content:space-between}
+.stp button{width:32px;height:36px;font-size:18px;line-height:1}
+.stp span{min-width:18px;text-align:center}
+.so{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--crust);min-width:84px;text-align:right}
+.sum{position:sticky;top:24px;background:var(--kraft);padding:28px 26px 26px}
+.sum .stampd{font-size:24px;margin:10px 0 16px 2px}
+.sum dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:16px;border-top:1px solid var(--line);padding-top:12px}
+.sum dd{color:var(--crust)}
+.sum ul{margin-top:16px;border-top:1px solid var(--line);padding-top:10px;display:grid;gap:6px;font-size:15px}
+.sum li{display:flex;justify-content:space-between;gap:10px}
+.sum .tot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--rye);margin-top:14px;padding-top:12px;font-size:22px}
+.sum .btn{width:100%;margin-top:18px}
+.sum .cd{color:var(--stamp);font-size:15px}
+@media(max-width:980px){.og{grid-template-columns:1fr}.sum{position:static;order:-1}}
+.yo{border:1px solid var(--rye);padding:14px 18px;margin-bottom:40px;display:flex;gap:10px 22px;flex-wrap:wrap;align-items:baseline}
+.yo a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
+.sk{display:block;background:linear-gradient(90deg,rgba(42,28,19,.07) 25%,rgba(42,28,19,.13) 50%,rgba(42,28,19,.07) 75%);background-size:300% 100%;animation:sk 1.4s ease-in-out infinite}
+@keyframes sk{from{background-position:100% 0}to{background-position:0 0}}
+
+/* bag bar, drawer, toast */
+.bagbar{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:25;transition:transform .45s var(--ease),opacity .3s}
+.bagbar.hide{transform:translateY(140%);opacity:0;pointer-events:none}
+.scrim{position:fixed;inset:0;background:rgba(42,28,19,.42);z-index:39;opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
+.scrim.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(460px,100%);background:var(--crumb);z-index:40;transform:translateX(102%);transition:transform .55s var(--ease);display:flex;flex-direction:column;border-left:1px solid var(--rye);padding:24px max(22px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) 26px;overflow-y:auto;visibility:hidden}
+.drawer.on{transform:none;visibility:visible}
+.dr-h{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--rye);padding-bottom:12px;margin-bottom:6px}
+.dr-h h2{font-size:38px;letter-spacing:-.02em;line-height:1}
+.x{font-size:28px;line-height:1;width:44px;height:44px;margin-right:-10px}
+.dr-pick{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--crust)}
+.crow{display:grid;grid-template-columns:1fr auto;gap:6px 14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:center}
+.crow small{display:block;color:var(--crust);font-size:14px}
+.dr-empty{padding:40px 0;color:var(--crust)}
+.dr-tot{display:flex;justify-content:space-between;align-items:baseline;margin:18px 0;font-size:24px}
+.drawer>.btn{margin-top:auto}
+.co{display:grid;gap:14px;margin-top:10px}
+.co label,.cf label{display:grid;gap:6px;font-size:14px;color:var(--crust)}
+input,textarea,select{width:100%;background:var(--flour);border:1px solid var(--line);border-radius:0;padding:12px 14px;font-size:16px;color:var(--rye)}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--rye)}
+.co .two,.cf .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.co .two,.cf .two{grid-template-columns:1fr}}
+.co-sum{background:var(--kraft);padding:14px 16px;display:grid;gap:2px;font-size:15px}
+.err{color:#8a2e1c;font-size:15px;min-height:1px}
+.fine{font-size:14px;color:var(--crust)}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--rye);color:var(--flour);padding:12px 20px;border-radius:999px;font-size:15px;z-index:60;opacity:0;pointer-events:none;transition:opacity .3s var(--ease),transform .45s var(--ease);display:flex;gap:16px;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{text-decoration:underline;text-underline-offset:.3em;color:var(--kraft)}
+.spin{width:14px;height:14px;border:1px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* chat */
+.ask{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:25;display:inline-flex;align-items:center;gap:10px;background:var(--crumb);border:1px solid var(--rye);border-radius:999px;height:46px;padding:0 18px;font-size:15px;transition:transform .45s var(--ease),opacity .3s}
+.ask.hide{transform:translateY(140%);opacity:0;pointer-events:none}
+.ask b{background:var(--stamp);color:var(--crumb);border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;font-size:12px;font-weight:400}
+.chat{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:50;width:min(390px,calc(100% - 32px));height:min(560px,calc(100svh - 120px));transform:translateY(24px);opacity:0;pointer-events:none;transition:transform .5s var(--ease),opacity .3s}
+.chat.on{transform:none;opacity:1;pointer-events:auto}
+.conv{display:flex;flex-direction:column;height:100%;background:var(--crumb);border:1px solid var(--rye);min-height:420px}
+.conv-h{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--rye);color:var(--flour)}
+.conv-h small{display:block;color:#c9b597;font-size:13px}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:84%;padding:10px 14px;border-radius:18px;font-size:16px;line-height:1.35;white-space:pre-line;animation:rise .35s var(--ease) both}
+.m.old{animation:none}
+.m.them{background:var(--kraft);align-self:flex-start;border-bottom-left-radius:0}
+.m.me{background:var(--rye);color:var(--flour);align-self:flex-end;border-bottom-right-radius:0}
+.m time{display:block;font-size:12px;opacity:.7;margin-top:4px}
+.m-empty{color:var(--crust);font-size:15px}
+.msay{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
+.msay textarea{resize:none;min-height:44px}
+.mname-in{padding:0 10px}
+.mname-in input{padding:8px 12px;font-size:15px}
+.m-err{color:#8a2e1c;font-size:14px;padding:0 12px}
+
+/* catering form */
+.cf{display:grid;gap:26px;max-width:860px}
+.cf fieldset{border:0;padding:0;margin:0;display:grid;gap:12px}
+.cf legend{font-size:clamp(26px,2.8vw,36px);letter-spacing:-.015em;line-height:1;margin-bottom:12px;padding:0}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:1px solid var(--rye);border-radius:999px;padding:9px 16px;font-size:15px;transition:background .3s var(--ease),color .3s var(--ease)}
+.pill[aria-pressed="true"]{background:var(--rye);color:var(--flour)}
+.done{background:var(--kraft);padding:28px;display:grid;gap:12px;max-width:640px}
+.done h3{font-size:34px;letter-spacing:-.02em;line-height:1}
+
+/* order page: tracking */
+.trk{padding-top:clamp(120px,14vw,170px);padding-bottom:110px}
+.trk-h{display:flex;justify-content:space-between;align-items:end;gap:28px;flex-wrap:wrap}
+.trk-h h1{font-size:clamp(56px,9vw,140px);line-height:.84;letter-spacing:-.045em}
+.trk-h h1 i{font-style:italic}
+.trk-st{max-width:30ch;font-size:20px}
+.trk-st small{display:block;color:var(--crust);font-size:16px;margin-top:6px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);margin:40px 0 48px;border-top:1px solid var(--line)}
+.steps li{padding-top:12px;color:var(--crust);position:relative;font-size:16px}
+.steps li.on{color:var(--rye)}
+.steps i{font-style:normal;font-size:12px;letter-spacing:.2em;display:block;text-transform:uppercase}
+.trk-g{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:40px;align-items:start}
+.trk-d{display:grid;gap:22px}
+.trk-d dl{display:grid;grid-template-columns:110px 1fr;gap:8px 18px;border-top:1px solid var(--rye);padding-top:16px}
+.trk-d dt{color:var(--crust)}
+.trk-d ul{border-top:1px solid var(--line)}
+.trk-d li{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.trk-d li small{display:block;color:var(--crust);font-size:14px}
+.trk-tot{display:flex;justify-content:space-between;font-size:24px}
+.trk-a{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
+.danger{color:#8a2e1c;text-decoration:underline;text-underline-offset:.3em}
+.trk .conv{height:520px}
+@media(max-width:900px){.trk-g{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr;gap:10px 0}}
+
+/* legal and plain prose */
+.prose{max-width:62ch;display:grid;gap:14px;padding-bottom:120px}
+.prose h2{font-size:30px;letter-spacing:-.015em;line-height:1.05;margin-top:22px}
+.prose .big{font-size:24px;line-height:1.3}
+/* ===== motion system: one curve, a few deliberate moments ===== */
+:root{--swing:cubic-bezier(.34,1.45,.5,1)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:70;opacity:.07;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .16 0 0 0 0 .11 0 0 0 0 .07 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+#app{transition:opacity .28s var(--ease),transform .28s var(--ease)}
+#app.leaving{opacity:0;transform:translateY(-10px)}
+#app.enter{animation:pg .7s var(--ease) both}
+@keyframes pg{from{opacity:0;transform:translateY(14px)}}
+/* lines of big type rise out of a mask */
+.mk{display:block;overflow:hidden;padding-bottom:.24em;margin-bottom:-.24em}
+.mk>.ln{display:block;transform:translateY(105%);transition:transform 1.05s var(--ease);transition-delay:calc(var(--i,0)*90ms)}
+.mk.in>.ln{transform:none}
+/* everything else rises once as you reach it */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform 1s var(--ease);transition-delay:calc(var(--i,0)*70ms)}
+.rv.in{opacity:1;transform:none}
+/* the tag swings in on its twine, then the stamp lands */
+.tag{transform-origin:28px 36px}
+.ld .tag{animation:swing 1.5s var(--swing) .35s both}
+@keyframes swing{0%{opacity:0;transform:rotate(-16deg) translateY(-26px)}35%{opacity:1}100%{transform:rotate(-2.2deg)}}
+.ld .stampd,.stampd.thunk{animation:thunk .5s var(--swing) both}
+.ld .stampd{animation-delay:1.05s}
+@keyframes thunk{0%{opacity:0;transform:rotate(-10deg) scale(1.5)}60%{opacity:.95}100%{opacity:.92;transform:rotate(-4deg) scale(1)}}
+.tag:hover{transform:rotate(-1deg);transition:transform .8s var(--swing)}
+/* catering words fill in as you scroll */
+.run .w{color:rgba(42,28,19,.18);transition:color .5s var(--ease)}
+.run .w.on{color:var(--rye)}
+.run i.w{color:rgba(122,90,64,.18)}.run i.w.on{color:var(--crust)}
+/* buttons and links: quiet, physical */
+.btn{transition:opacity .3s var(--ease),transform .5s var(--ease),background .4s var(--ease)}
+.btn:active{transform:scale(.97)}
+.tl{transition:text-underline-offset .4s var(--ease)}
+.tl:hover{text-underline-offset:.5em}
+.add,.opt,.pill{transition:background .35s var(--ease),color .35s var(--ease),transform .4s var(--ease)}
+.add:active,.opt:active,.pill:active{transform:scale(.96)}
+.stp.pop{animation:pop .45s var(--swing)}
+@keyframes pop{from{transform:scale(.8);opacity:.4}}
+.fl{transition:background .4s var(--ease),padding .5s var(--ease)}
+@media(hover:hover){.fl:hover{background:rgba(215,189,149,.28);padding-inline:12px}}
+.fl.off .n{transition:color .6s var(--ease)}
+.fl.gone{animation:gone 1.2s var(--ease)}
+@keyframes gone{30%{background:rgba(44,74,142,.14)}}
+.crumb{position:fixed;z-index:65;width:16px;height:16px;border-radius:50%;background:var(--kraft);border:1px solid var(--rye);pointer-events:none}
+.bagbar .btn.bump{animation:bump .55s var(--swing)}
+@keyframes bump{40%{transform:scale(1.08)}}
+.cd{font-variant-numeric:tabular-nums lining-nums}
+.drawer .crow{animation:rise .5s var(--ease) both}
+/* order page: the progress line draws itself, and each change gets a stamp */
+.steps li::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--rye);transform:scaleX(0);transform-origin:left}
+.steps li.on::before{transform:none}
+.steps li.now::before{animation:draw 1.1s var(--ease) both}
+@keyframes draw{from{transform:scaleX(0)}}
+.bigstamp{position:fixed;left:50%;top:44%;z-index:80;pointer-events:none;color:var(--stamp);border:1px solid var(--stamp);outline:1px solid var(--stamp);outline-offset:5px;padding:14px 26px 10px;font-size:clamp(44px,9vw,96px);line-height:.9;text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;background:rgba(238,232,220,.86);animation:big 2.4s var(--ease) both}
+@keyframes big{0%{opacity:0;transform:translate(-50%,-50%) rotate(-12deg) scale(1.7)}14%{opacity:1;transform:translate(-50%,-50%) rotate(-5deg) scale(1)}78%{opacity:1;transform:translate(-50%,-50%) rotate(-5deg) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) rotate(-5deg) scale(.96)}}
+.hdr .wm{transition:opacity .4s var(--ease)}
+.hdr .wm:hover{opacity:.65}
+.nav button{position:relative}
+.nav button::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.nav button:hover::after{transform:scaleX(1);transform-origin:left}
+.nav button[aria-current]{text-decoration:none}.nav button[aria-current]::after{transform:scaleX(1)}
+/* the oven gallery: pinned, slides sideways as you scroll down */
+.oven{position:relative;background:var(--rye);color:var(--flour)}
+.oven-st{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.otrack{display:flex;gap:clamp(18px,2.4vw,36px);padding-inline:max(20px,env(safe-area-inset-left,0px));will-change:transform;align-items:flex-end}
+.ointro{flex:0 0 min(520px,80vw);align-self:center;padding-right:2vw}
+.ointro h2{font-size:clamp(52px,6.6vw,104px);line-height:.88;letter-spacing:-.035em}
+.ointro h2 i{font-style:italic}
+.ointro p{margin-top:24px;max-width:34ch;color:#c9b597}
+.ofig{flex:0 0 auto;margin:0}
+.ofig .opic{width:clamp(260px,32vw,520px);aspect-ratio:4/5;overflow:hidden;background:#3a2a1f;clip-path:inset(100% 0 0 0);transition:clip-path 1.2s var(--ease)}
+.ofig.wide .opic{width:clamp(300px,42vw,700px);aspect-ratio:5/4}
+.ofig.in .opic{clip-path:inset(0 0 0 0)}
+.ofig img{width:100%;height:100%;object-fit:cover;transform:scale(1.16);transition:transform 1.8s var(--ease)}
+.ofig.in img{transform:scale(1.04)}
+.ofig figcaption{display:flex;gap:14px;margin-top:14px;font-size:16px;align-items:baseline}
+.ofig figcaption span{font-size:12px;letter-spacing:.2em;color:#c9b597}
+.oprog{position:absolute;left:max(20px,env(safe-area-inset-left,0px));right:max(20px,env(safe-area-inset-right,0px));bottom:34px;height:1px;background:rgba(238,232,220,.2)}
+.oprog i{position:absolute;inset:0 auto 0 0;background:var(--flour);width:0}
+@media(max-width:860px),(hover:none){.oven{height:auto!important}.oven-st{position:static;height:auto;padding-block:80px 56px}.otrack{overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:20px;transform:none!important;padding-bottom:12px;scrollbar-width:none}.otrack::-webkit-scrollbar{display:none}.ofig,.ointro{scroll-snap-align:start}.ofig .opic{width:76vw}.ofig.wide .opic{width:86vw}.oprog{display:none}}
+/* photo moments on inner pages */
+.pband{display:grid;grid-template-columns:1.5fr 1fr;gap:0;overflow:hidden}
+.pband figure{margin:0;overflow:hidden;height:clamp(320px,52vw,720px);position:relative}
+.pband img{width:100%;height:118%;object-fit:cover;position:absolute;top:-9%;left:0;will-change:transform}
+.pband figcaption{position:absolute;left:18px;bottom:16px;background:var(--flour);padding:6px 12px;font-size:13px;letter-spacing:.06em}
+@media(max-width:760px){.pband{grid-template-columns:1fr}.pband figure{height:70vw}}
+.grp-d.has{grid-template-columns:160px 1fr}
+.grp-d.has img{width:160px;height:160px;object-fit:cover}
+.fl[data-img] .n::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--kraft);border:1px solid var(--crust);margin-left:10px;vertical-align:middle}
+#follow{position:fixed;left:0;top:0;width:220px;height:220px;z-index:30;pointer-events:none;background:center/cover no-repeat var(--kraft);opacity:0;transform:translate(-50%,-50%) scale(.85) rotate(-3deg);transition:opacity .35s var(--ease),transform .5s var(--ease)}
+#follow.on{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-3deg)}
+@media(hover:none){#follow{display:none}}
+@media(prefers-reduced-motion:reduce){.ofig .opic{clip-path:none!important}.ofig img{transform:none!important}}
+@media(prefers-reduced-motion:reduce){.rv,.mk>.ln{opacity:1!important;transform:none!important;transition:none!important}.run .w{color:inherit}*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+/* ===== simpler home, printed-menu feel (Nov 2026 reskin) ===== */
+:root{--rule:rgba(42,28,19,.34)}
+body::after{opacity:.1}
+/* header: wordmark centred, two short navs either side */
+.hdr .hd{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding-block:26px 18px}
+.hdr .nav{display:flex;align-items:center;gap:0;font-size:15px}
+.hdr .nav.r{justify-content:flex-end}
+.hdr .nav>*{padding-inline:16px;line-height:1;text-decoration:none}
+.hdr .nav>*+*{border-left:1px solid var(--rule)}
+.hdr .nav.l>:first-child{padding-left:0}.hdr .nav.r>:last-child{padding-right:0}
+.hdr .nav a:hover{text-decoration:underline;text-underline-offset:.35em;text-decoration-thickness:1px}
+.wm{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.wm .w1{font-size:clamp(26px,2.8vw,38px);letter-spacing:-.02em;line-height:1}
+.wm .w1 i{font-style:italic}
+.wm .w2{font-size:13px;color:var(--crust);letter-spacing:.02em}
+@media(max-width:720px){.hdr .hd{grid-template-columns:1fr 1fr;grid-template-areas:"wm wm" "l r";row-gap:16px;padding-block:20px 10px}.wm{grid-area:wm}.hdr .nav.l{grid-area:l}.hdr .nav.r{grid-area:r}.wm .w2{font-size:12px}}
+
+/* hero: a short line, then one framed panel like the printed menu */
+.hero{padding-top:clamp(138px,12vw,168px);padding-bottom:clamp(56px,7vw,96px);overflow:visible}
+.hero h1{font-size:clamp(40px,6vw,88px);line-height:.95;letter-spacing:-.035em;white-space:normal;margin:0;text-align:center}
+.hero h1 i{font-style:italic}
+.hero .lede{max-width:46ch;margin:18px auto 0;text-align:center;font-size:clamp(17px,1.5vw,20px);color:var(--crust)}
+.frame{margin-top:clamp(32px,4vw,52px);display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);border:1px solid var(--rule);outline:1px solid var(--rule);outline-offset:-8px;padding:18px;gap:0;background:rgba(248,244,236,.35)}
+.hpic{margin:0;display:flex;flex-direction:column;min-width:0}
+.hpic img{width:100%;flex:1;min-height:340px;max-height:620px;object-fit:cover;display:block}
+.hpic figcaption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 4px 2px;font-size:15px}
+.hpic figcaption span+span{color:var(--crust);font-style:italic}
+.fside{display:flex;flex-direction:column;border-left:1px solid var(--rule);margin-left:18px}
+/* the drop info sits flat in the frame now: no swing, no twine */
+.tag{transform:none!important;background:none;padding:6px 6px 26px 26px;max-width:none;width:auto;justify-self:auto;margin:0;animation:none!important}
+.tag::before{display:none}
+.tag .stampd{font-size:26px;margin:12px 0 16px 2px}
+.tag dl{font-size:15px;grid-template-columns:auto 1fr;gap:6px 14px}
+.tag .btn{width:auto;margin-top:16px}
+.offer{border-top:1px solid var(--rule);padding:22px 6px 6px 26px;margin-top:auto}
+.offer ul{margin:10px 0 16px}
+.offer li{display:flex;justify-content:space-between;gap:14px;align-items:baseline;padding:5px 0;border-bottom:1px dotted var(--rule);font-size:16px}
+.offer li small{color:var(--crust);font-size:13px;font-style:italic;margin-left:4px}
+@media(max-width:900px){.frame{grid-template-columns:1fr;padding:12px;outline-offset:-6px}.hpic img{min-height:0;aspect-ratio:4/3}.fside{border-left:0;margin-left:0;border-top:1px solid var(--rule);margin-top:12px}.tag{padding:22px 8px 22px}.offer{padding:20px 8px 8px}}
+@media(max-width:900px){.tag{margin-left:0!important;max-width:none!important}}
+
+/* how it works: one sentence */
+.how{text-align:center;padding-block:clamp(48px,6vw,88px);border-top:1px solid var(--rule)}
+.how .line{font-size:clamp(28px,4vw,54px);line-height:1.08;letter-spacing:-.025em;max-width:22ch;margin:0 auto}
+.how .line i{font-style:italic;color:var(--crust)}
+.how .score{margin-block:30px 26px}
+.stops b{font-size:22px}
+@media(max-width:600px){.stops{flex-direction:column;align-items:center;text-align:center;gap:18px}.stops div{min-width:0}}
+
+/* oven: one big photo and two small, no pinned scroll */
+.oven2{padding-block:clamp(40px,5vw,72px) clamp(72px,9vw,120px)}
+.og2{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.55fr) minmax(0,.55fr);grid-template-areas:"a t t" "a b c";gap:clamp(18px,2.4vw,32px)}
+.og2 figure{margin:0;overflow:hidden}
+.og2 img{width:100%;height:100%;object-fit:cover;display:block}
+.og2 .a{grid-area:a;min-height:520px}.og2 .b{grid-area:b;aspect-ratio:4/5}.og2 .c{grid-area:c;aspect-ratio:4/5}
+.og2-t{grid-area:t;align-self:end;padding-bottom:8px}
+.og2-t h2{font-size:clamp(34px,3.8vw,56px);line-height:.98;letter-spacing:-.03em;margin-top:10px}
+.og2-t h2 i{font-style:italic}
+.og2-t p{margin-top:16px;max-width:40ch;color:var(--crust)}
+@media(max-width:760px){.og2{grid-template-columns:1fr 1fr;grid-template-areas:"t t" "a a" "b c"}.og2 .a{min-height:0;aspect-ratio:5/4}}
+
+/* catering: words left, photo right */
+.cater{background:var(--kraft);padding-block:clamp(64px,8vw,112px)}
+.cg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:center}
+.ct h2{font-size:clamp(34px,4vw,60px);line-height:.98;letter-spacing:-.03em;margin-top:10px}
+.ct h2 i{font-style:italic}
+.ct p{margin-top:18px;max-width:44ch}
+.ct .btn{margin-top:28px}
+.cater .lab,.cater .mute{color:#6a4c34}
+.cg .cp{margin:0;aspect-ratio:4/5;overflow:hidden;max-height:640px}
+.cg .cp img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:760px){.cg{grid-template-columns:1fr}.cg .cp{aspect-ratio:4/3}}
+
+/* who is baking */
+.who{text-align:center;padding-block:clamp(72px,9vw,128px)}
+.who blockquote{margin:0 auto;max-width:20ch;font-size:clamp(32px,4.4vw,64px);line-height:1;letter-spacing:-.03em}
+.who blockquote em{font-style:italic}
+.who p{margin:22px auto 18px;max-width:40ch;color:var(--crust)}
+
+/* footer: light tan, four plain columns and a round stamp */
+.ft{background:#e2d3b9;color:var(--rye);padding-block:56px 32px;border-top:1px solid var(--rule)}
+.ft-g{display:grid;grid-template-columns:120px repeat(4,minmax(0,1fr));gap:clamp(20px,3vw,44px);align-items:start}
+.ft h4{font-size:15px;font-style:italic;color:var(--crust);margin-bottom:10px}
+.ft li{color:var(--rye);font-size:15px}
+.ft li.mute{color:var(--crust)}
+.ft a,.ft li button{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.3em}
+.badge{width:112px;height:112px;color:var(--crust);transform:rotate(-8deg)}
+.legal{border-top:1px solid var(--rule);color:var(--crust);margin-top:44px}
+@media(max-width:900px){.ft-g{grid-template-columns:1fr 1fr}.badge{grid-column:1/-1;width:96px;height:96px}}
+
+/* ===== down to earth pass: snapshots, tape, a few handwritten notes ===== */
+.hand{font-family:"Hand","Caveat","Bradley Hand",cursive;font-weight:500;font-style:normal;letter-spacing:0;line-height:1.1;color:var(--crust)}
+.hero h1{font-size:clamp(38px,5.4vw,78px)}
+/* the frame becomes a taped photo and a paper menu card on the table */
+.frame{border:0;outline:0;background:none;padding:0;grid-template-columns:minmax(0,1.35fr) minmax(300px,1fr);gap:clamp(24px,3.4vw,48px);align-items:start}
+.snap{position:relative;margin:0;background:#fbf8f1;padding:12px 12px 0;box-shadow:0 1px 2px rgba(42,28,19,.12),0 10px 24px -10px rgba(42,28,19,.28)}
+.snap img{display:block;width:100%;object-fit:cover}
+.snap figcaption.hand{font-size:23px;padding:10px 4px 12px;color:var(--rye);opacity:.85}
+.tape{position:absolute;top:-12px;left:50%;width:96px;height:26px;margin-left:-48px;background:rgba(215,189,149,.72);transform:rotate(-3deg);box-shadow:0 1px 1px rgba(42,28,19,.08);z-index:2;clip-path:polygon(2% 0,98% 6%,100% 92%,0 100%)}
+.hpic{transform:rotate(-1.1deg)}
+.hpic img{min-height:0;max-height:none;aspect-ratio:4/3.3;flex:none}
+.card2{position:relative;background:#f6f0e3;padding:26px 26px 22px;transform:rotate(.7deg);box-shadow:0 1px 2px rgba(42,28,19,.1),0 12px 26px -14px rgba(42,28,19,.3);background-image:repeating-linear-gradient(0deg,transparent 0 31px,rgba(44,74,142,.07) 31px 32px)}
+.card2 .tag{padding:0 0 22px}
+.card2 .offer{padding:18px 0 4px;margin-top:0}
+.card2 .note{font-size:26px;color:var(--stamp);transform:rotate(-3deg);margin:14px 0 0 auto;width:max-content;max-width:100%}
+.fside{display:none}
+@media(max-width:900px){.frame{grid-template-columns:1fr}.hpic{transform:rotate(-.8deg)}.card2{transform:rotate(.5deg);padding:22px 18px 18px}.card2 .tag{padding:0 0 20px}.card2 .offer{padding:16px 0 4px}}
+/* how */
+.how u{text-decoration:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6c20-4 44-5 64-2s38 1 52-2' fill='none' stroke='%232c4a8e' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") bottom/100% .28em no-repeat;padding-bottom:.08em}
+/* oven snaps sit slightly crooked */
+.og2 .snap{overflow:visible;align-self:start}.og2 .snap img{height:auto}
+.og2 .a{min-height:0;transform:rotate(-.8deg)}.og2 .a img{aspect-ratio:5/4.2}
+.og2 .b{aspect-ratio:auto;transform:rotate(1.4deg)}.og2 .c{aspect-ratio:auto;transform:rotate(-1.2deg);margin-top:18px}
+.og2 .b img,.og2 .c img{aspect-ratio:4/5}
+.og2 .b .tape{left:30%;transform:rotate(4deg)}.og2 .c .tape{left:64%;transform:rotate(-5deg)}
+@media(max-width:760px){.og2 .a{aspect-ratio:auto}.og2 .a img{aspect-ratio:5/4}.og2 .c{margin-top:10px}}
+/* catering band: a torn kraft edge */
+.cater{position:relative;margin-top:24px}
+.cater::before{content:"";position:absolute;left:0;right:0;top:-14px;height:15px;background:var(--kraft);clip-path:polygon(0 60%,3% 30%,6% 55%,9% 20%,13% 50%,17% 25%,20% 60%,24% 35%,28% 55%,31% 15%,35% 50%,39% 30%,42% 62%,46% 28%,50% 52%,54% 18%,57% 48%,61% 32%,65% 58%,68% 24%,72% 50%,76% 30%,79% 60%,83% 22%,87% 52%,90% 34%,94% 56%,97% 26%,100% 48%,100% 100%,0 100%)}
+.cg .cp{aspect-ratio:auto;max-height:none;overflow:visible;transform:rotate(1.6deg);max-width:500px;justify-self:center;width:100%}
+.cg .cp img{aspect-ratio:4/4.4;height:auto}
+/* who */
+.who .sig{font-size:28px;margin-top:14px;transform:rotate(-2deg)}
+.who .sig+p{margin-top:16px}
+@media(prefers-reduced-motion:no-preference){.snap{transition:transform .6s var(--ease)}@media(hover:hover){.snap:hover{transform:rotate(0)}}}
+
+</style>
+<body>
+<header class="hdr" id="hdr"></header>
+<main id="app"></main>
+<div class="scrim" id="scrim" data-act="close-all"></div>
+<aside class="drawer" id="drawer" aria-label="Your bag"></aside>
+<div class="bagbar hide" id="bagbar"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<button class="ask" id="ask" data-act="chat-open" aria-label="Message Anita's"><span>Message us</span></button>
+<div class="chat" id="chat" role="dialog" aria-label="Message Anita's"></div>
+<div id="follow" aria-hidden="true"></div>
+<script src="lib/logic.js"></script>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+const L=window.ShopLogic;
+const money=n=>'$'+(Math.round(n*100)/100).toFixed(2).replace(/\.00$/,'');
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store={get(k,d){try{const v=JSON.parse(localStorage.getItem(k)||'null');return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const dOpt=(s,o)=>L.parse(s).toLocaleDateString('en-CA',o);
+const fmtD=s=>dOpt(s,{weekday:'short',month:'short',day:'numeric'});
+const fmtLong=s=>dOpt(s,{weekday:'long',month:'long',day:'numeric'});
+const stampDate=s=>dOpt(s,{weekday:'short'}).replace('.','')+' '+dOpt(s,{month:'short'}).replace('.','')+' '+dOpt(s,{day:'numeric'});
+const IG='https://www.instagram.com/anitaslittleloafandco/';
+const SCORE='<svg class="score" viewBox="0 0 72 14" aria-hidden="true"><path d="M2 11C20 2 46 1 70 6"/></svg>';
+
+/* ---- what we sell, in Anita's words (prices and on/off come from the shared data) ---- */
+const CATS=[{id:'bread',name:'Sourdough'},{id:'focaccia',name:'Sourdough focaccia'},{id:'sweet',name:'Rolls and pretzels'}];
+const INFO={
+ sourdough:{d:'Naturally fermented and given plenty of time to rise, because good bread can’t be rushed. Unbleached, unbromated flour and our own starter.'},
+ sandwich:{d:'A soft crumb and a thin crust. The one for school lunches and grilled cheese.'},
+ rolls:{d:'Six soft sourdough rolls for soup night, sliders or Sunday dinner.'},
+ focaccia:{d:'Olive oil, pressed by hand, baked golden. The tomato, caper and red onion is the household favourite for an Italian sandwich.'},
+ cinnamon:{d:'Soft, buttery and freshly baked. The blueberry citrus launched at the St. Andrews market this fall.'},
+ pretzel:{d:'Chewy sourdough pretzels, rolled in cinnamon sugar or finished with salt.'}};
+const PHOTO={cinnamon:'img/cinnamon-four-s.webp',focaccia:'img/focaccia-cheese-s.webp'};
+const FLAV={'cinnamon|Apple pie':'img/apple-pie-roll-s.webp','cinnamon|Blueberry citrus':'img/blueberry-citrus-s.webp'};
+const OVEN=[{img:'cinnamon-four',t:'Four rolls, four moods',d:'Apple pie, iced, plain and blueberry citrus.'},{img:'blueberry-citrus',t:'Blueberry citrus roll',d:'Blueberry cream cheese, candied orange.'},{img:'apple-pie-roll',t:'Apple pie roll',d:'Spiced apples and a cream cheese drizzle.'},{img:'focaccia-cheese',t:'Cheesy focaccia',d:'Baked golden, cut to share.',wide:1},{img:'raspberry-tarts',t:'Raspberry cream tarts',d:'Made for events and gatherings.'},{img:'peach-crumble',t:'Peach crumble skillets',d:'With vanilla ice cream, one for every guest.'}];
+const IMG=id=>PHOTO[id]||'img/'+(['sourdough','sandwich','rolls','focaccia','cinnamon','pretzel'].includes(id)?id:'sourdough')+'.svg';
+
+/* ---- the shop's live data ---- */
+const SHOP={mode:'',ready:false,view:null};
+const LK='anitas-local-v1';
+function localState(){let s=store.get(LK,null);if(!s||s.v!==L.VERSION){s=L.seed();store.set(LK,s)}return s}
+async function api(body){
+ let r;try{r=await fetch('api/shop',{method:body?'POST':'GET',headers:body?{'content-type':'application/json'}:{},body:body?JSON.stringify(body):undefined,cache:'no-store'})}catch(e){throw new Error('Could not connect. Check your connection and try again.')}
+ const j=await r.json().catch(()=>null);if(!j)throw new Error('Could not reach the bakery right now. Please try again.');if(r.status>=500&&j.error)throw new Error(j.error);return j}
+async function loadShop(){try{const j=await api();if(j.enabled&&j.view){SHOP.mode='live';applyView(j.view)}else throw 0}catch(e){SHOP.mode='local';applyView(L.publicView(localState()))}SHOP.ready=true}
+async function cop(op){
+ if(SHOP.mode==='live'){const j=await api({cop:op});if(j.view)applyView(j.view);return j}
+ const s=localState(),r=L.applyCustomer(s,op,Date.now());
+ if(r.error){applyView(L.publicView(s));return{error:r.error}}
+ store.set(LK,r.state);applyView(L.publicView(r.state));return{ok:true,id:r.id,thread:r.thread}}
+const keys=()=>store.get('anitas-mine',{orders:[],threads:[]});
+function addKey(kind,id,token){const k=keys();k[kind]=(k[kind]||[]).filter(x=>x.id!==id);k[kind].unshift({id,token});k[kind]=k[kind].slice(0,30);store.set('anitas-mine',k)}
+async function mine(){const k=keys();if(!k.orders.length&&!k.threads.length)return{orders:[],threads:[]};if(SHOP.mode==='live')return api({mine:k});return L.mineView(localState(),k)}
+let PRODUCTS=[],POINTS={};
+function applyView(v){if(!v)return;SHOP.view=v;PRODUCTS=v.products||[];POINTS=v.points||{};
+ Object.keys(S.cart).forEach(k=>{const m=sizeOf(k);if(!m)delete S.cart[k]});
+ if(!POINTS[S.method]||!POINTS[S.method].on)S.method=L.PORDER.find(k=>POINTS[k]&&POINTS[k].on)||'stgeorge';
+ if(!S.date||!open(S.date,S.method))S.date=drops(S.method,1)[0]||null}
+const sizeOf=k=>{for(const p of PRODUCTS){const z=p.sizes.find(z=>z.id===k);if(z)return{p,z}}return null};
+
+/* which Thursdays are still open: before the Monday cutoff, not closed, not full */
+function open(date,m){const P=POINTS[m],v=SHOP.view||{};if(!P||!P.on)return false;const t=L.today();
+ if(date<=t||t>L.cutoff(date)||P.days.indexOf(L.parse(date).getDay())<0)return false;
+ const k=date+'|'+m;if((v.closed||{})[k])return false;return((v.load||{})[k]||0)<(P.cap||999)}
+function drops(m,n){const out=[];let d=L.today();for(let i=0;i<70&&out.length<n;i++){d=L.addDays(d,1);if(open(d,m))out.push(d)}return out}
+function nextDrop(){let best=null;['stgeorge','standrews'].forEach(m=>{const d=drops(m,1)[0];if(d&&(!best||d<best))best=d});return best}
+/* time left until the end of the Monday before a drop, in New Brunswick time */
+function countdown(date){
+ const now=new Date(new Date().toLocaleString('en-US',{timeZone:'America/Moncton'}));const end=L.parse(L.cutoff(date));end.setHours(23,59,59,0);
+ let ms=end-now;if(ms<=0)return'Orders for this drop are closed';const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),mi=Math.floor(ms%36e5/6e4),se=Math.floor(ms%6e4/1e3),p2=n=>String(n).padStart(2,'0');
+ return 'Orders close in '+(d?d+'d ':'')+p2(h)+'h '+p2(mi)+'m '+p2(se)+'s, Monday at midnight'}
+
+/* ---- state ---- */
+const S={route:'home',method:'stgeorge',date:null,cart:store.get('anitas-bag',{}),drawer:false,co:false,coErr:'',busy:false,
+ me:store.get('anitas-me',{name:'',phone:'',email:''}),trk:null,trkData:null,trkErr:'',myOrders:[],chat:false,chatData:null,unread:0,sure:false,
+ cat:{type:'',date:'',guests:30,want:{},diet:{},sent:false,err:'',me:null}};
+applyView({products:L.baseProducts(),points:L.basePoints(),closed:{},load:{}});
+const saveCart=()=>store.set('anitas-bag',S.cart);
+const count=()=>Object.values(S.cart).reduce((a,b)=>a+b,0);
+const total=()=>Object.entries(S.cart).reduce((t,[k,q])=>{const m=sizeOf(k);return t+(m?q*m.z.price:0)},0);
+const itemName=m=>m.p.sizes.length>1?m.p.name+', '+m.z.label.toLowerCase():m.p.name;
+
+/* ---- chrome ---- */
+function header(){const r=S.route==='menu'?'order':S.route,nv=(id,l)=>`<button data-act="go" data-to="${id}"${r===id?' aria-current="page"':''}>${l}</button>`;
+ return `<div class="wrap hd"><nav class="nav l" aria-label="Main">${nv('order','Order')}${nv('catering','Catering')}</nav><button class="wm" data-act="go" data-to="home" aria-label="Anita's Little Loaf and Co., home"><span class="w1">Anita’s <i>Little Loaf</i></span><span class="w2">&amp; Co. &middot; sourdough, New Brunswick</span></button><nav class="nav r" aria-label="More">${nv('story','Story')}<a href="${IG}" target="_blank" rel="noopener">Instagram</a></nav></div>`}
+const BADGE='<svg class="badge" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="bdg" d="M60 60m-44 0a44 44 0 1 1 88 0a44 44 0 1 1-88 0"/></defs><circle cx="60" cy="60" r="57" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="60" cy="60" r="33" fill="none" stroke="currentColor" stroke-width=".8"/><text font-size="9.6" letter-spacing="1.3" fill="currentColor"><textPath href="#bdg">Anita’s Little Loaf &amp; Co. &middot; New Brunswick &middot;</textPath></text><path d="M42 66c0-11 8-19 18-19s18 8 18 19z" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M50 57c5-3 12-3 18 1" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+function footer(){const P=POINTS,pt=k=>P[k]?`<li>${esc(P[k].name)}</li><li class="mute">${esc(P[k].place.replace(', '+P[k].name,''))}, ${esc(P[k].hours)}</li>`:'';
+ return `<footer class="ft"><div class="wrap"><div class="ft-g">${BADGE}
+ <div><h4>Thursday pickup</h4><ul>${pt('stgeorge')}${pt('standrews')}</ul></div>
+ <div><h4>Ordering</h4><ul><li>Order by Monday at midnight</li><li class="mute">Pay at pickup, cash or e-transfer</li><li><button data-act="go" data-to="order">Order for Thursday</button></li></ul></div>
+ <div><h4>Follow along</h4><ul><li><a href="${IG}" target="_blank" rel="noopener">Instagram</a></li><li class="mute">@anitaslittleloafandco</li></ul></div>
+ <div><h4>Get in touch</h4><ul><li><button data-act="chat-open">Message us here</button></li><li><button data-act="go" data-to="catering">Catering enquiries</button></li></ul></div></div>
+ <div class="legal"><span>© Anita’s Little Loaf &amp; Co., New Brunswick</span><button data-act="go" data-to="terms">Terms of service</button><button data-act="go" data-to="privacy">Privacy policy</button></div></div></footer>`}
+function tagHTML(){const d=nextDrop();
+ if(!d)return `<div class="tag"><span class="lab">This week</span><p style="margin-top:10px">No drop is open for orders right now. Message us and we’ll tell you when the next one is.</p><button class="btn" data-act="chat-open">Message us</button></div>`;
+ const P=POINTS;return `<div class="tag"><span class="lab">Next bread drop</span>
+ <div class="stampd">${stampDate(d)}<small>Thursday drop</small></div>
+ <dl><dt>St. George</dt><dd>${esc(P.stgeorge.hours)}, ${esc(P.stgeorge.place.replace(', St. George',''))}</dd><dt>St. Andrews</dt><dd>${esc(P.standrews.hours)}, ${esc(P.standrews.place.replace(', St. Andrews',''))}</dd></dl>
+ <p class="cd" data-cd="${d}">${countdown(d)}</p><button class="btn" data-act="go" data-to="order">Order for this drop</button></div>`}
+
+/* ---- pages ---- */
+const pages={};
+pages.home=()=>{const P=POINTS;
+ const short={sourdough:'Sourdough loaf',sandwich:'Sandwich loaf',rolls:'Rolls, six to a bag',focaccia:'Focaccia',cinnamon:'Cinnamon roll',pretzel:'Pretzel'};
+ const offer=PRODUCTS.map(p=>{const n=p.sizes.length;return `<li><span>${esc(short[p.id]||p.name)}${n>1?` <small>${n} flavours</small>`:''}</span><span>${money(Math.min(...p.sizes.map(z=>z.price)))}</span></li>`}).join('');
+ const snap=(img,alt,note,cls)=>`<figure class="snap ${cls||''}"><span class="tape" aria-hidden="true"></span><img src="img/${img}.webp" alt="${alt}" loading="lazy" decoding="async"><figcaption class="hand">${note}</figcaption></figure>`;
+ return `<section class="hero"><div class="wrap">
+ <h1>Little loaves, <i>big Thursdays.</i></h1>
+ <p class="lede">Sourdough, focaccia and cinnamon rolls, baked from scratch by my mom, Anita. Order by Monday and your bag is ready Thursday in St. George or St. Andrews.</p>
+ <div class="frame"><figure class="snap hpic"><span class="tape" aria-hidden="true"></span><img src="img/cinnamon-four.webp" alt="Four cinnamon rolls: apple pie, iced, plain and blueberry citrus" fetchpriority="high" decoding="async"><figcaption class="hand">apple pie, iced, plain &amp; blueberry citrus</figcaption></figure>
+ <div class="card2">${tagHTML()}
+ <div class="offer"><span class="lab">On the menu</span><ul>${offer}</ul><button class="tl" data-act="go" data-to="order">See the full menu</button></div>
+ <p class="hand note">rolls go first, so order early!</p></div></div>
+ </div></section>
+ <section class="how"><div class="wrap"><p class="line">Order by <u>Monday</u>. <i>Anita bakes.</i> You pick up Thursday.</p>${SCORE}
+ <div class="stops"><div><b>St. George</b><span>${esc(P.stgeorge.place.replace(', St. George',''))}, ${esc(P.stgeorge.hours)}</span></div><div><b>St. Andrews</b><span>${esc(P.standrews.place.replace(', St. Andrews',''))}, ${esc(P.standrews.hours)}</span></div></div>
+ <p class="fine" style="margin-top:22px">Pay at pickup, cash or e-transfer. Your bag has your name on it.</p></div></section>
+ <section class="oven2"><div class="wrap"><div class="og2">
+ ${snap('focaccia-cheese','Cheesy focaccia, baked golden','cheesy focaccia, cut to share','a')}
+ <div class="og2-t"><span class="lab">Out of the oven</span><h2>Made from <i>scratch,</i> every time.</h2><p>Our own starter, unbleached and unbromated flour, real pumpkin in the fall loaf, and none of the unnecessary stuff.</p></div>
+ ${snap('blueberry-citrus','Blueberry citrus cinnamon roll','blueberry citrus','b')}${snap('apple-pie-roll','Apple pie cinnamon roll','apple pie','c')}
+ </div></div></section>
+ <section class="cater"><div class="wrap"><div class="cg">
+ <div class="ct"><span class="lab">Catering</span><h2>From a family dinner to a <i>wedding brunch.</i></h2>
+ <p>Broccoli cheddar soup, Italian sandwiches on focaccia, chicken parm with Alfredo, crème brûlée for thirty, a warm doughnut tower.</p>
+ <p class="mute">For birthdays, showers, work lunches, or the “I absolutely do not feel like cooking for 30 people” kind of day.</p>
+ <button class="btn" data-act="go" data-to="catering">Plan your event</button></div>
+ ${snap('raspberry-tarts','Raspberry cream tarts for an event','raspberry cream tarts for a party','cp')}</div></div></section>
+ <section class="who"><div class="wrap"><blockquote>“I’m running this for my <em>mom’s baking adventures.</em>”</blockquote><p class="hand sig">the kid who runs the Instagram</p><p>Anita bakes. The rest of us carry the bags, run the Instagram and brag a little.</p><button class="tl" data-act="go" data-to="story">Read the story</button></div></section>${footer()}`};
+
+pages.order=()=>{
+ const P=POINTS,live=L.PORDER.filter(k=>P[k]);
+ const ds=drops(S.method,4);
+ const opt=k=>{const p=P[k];return `<button class="opt" data-act="method" data-m="${k}" aria-pressed="${S.method===k}"${p.on?'':' disabled'}>${esc(p.name)}<small>${p.on?esc(p.place+', '+p.hours):'Back next season'}</small></button>`};
+ const loading=!SHOP.ready;
+ const menu=loading?`<div aria-busy="true">${[1,2,3].map(()=>`<span class="sk" style="height:46px;width:60%;margin-bottom:18px"></span>${'<span class="sk" style="height:20px;margin:16px 0"></span>'.repeat(4)}<div style="height:40px"></div>`).join('')}</div>`
+  :CATS.map(c=>{const ps=PRODUCTS.filter(p=>p.cat===c.id);if(!ps.length)return'';return ps.map(p=>{const on=p.sizes.some(z=>z.on);return `<div class="grp" id="p-${p.id}"><div class="grp-h"><h3>${esc(p.name)}</h3><span class="pr">${money(Math.min(...p.sizes.map(z=>z.price)))}</span></div>
+  <div class="grp-d${p.photo||PHOTO[p.id]?' has':''}"><img src="${p.photo||IMG(p.id)}" alt="${esc(p.name)}" loading="lazy" decoding="async"><p>${esc((INFO[p.id]||{}).d||'Ask us about this one.')}${on?'':' Sold out this week.'}</p></div>
+  ${p.sizes.map(z=>`<div class="fl${z.on?'':' off'}"${FLAV[p.id+'|'+z.label]?` data-img="${FLAV[p.id+'|'+z.label]}"`:''}><span class="n">${p.sizes.length>1?esc(z.label):'Add to your bag'}</span><span class="ldr"></span><span data-acts="${z.id}">${acts(z)}</span></div>`).join('')}</div>`}).join('')}).join('');
+ const mini=Object.entries(S.cart).map(([k,q])=>{const m=sizeOf(k);return m?`<li><span>${q} × ${esc(itemName(m))}</span><span>${money(m.z.price*q)}</span></li>`:''}).join('');
+ return `<section class="ph"><div class="wrap"><h1><span class="mk"><span class="ln">This week’s <i>bake.</i></span></span></h1><p class="lede">Choose your stop and your Thursday, then fill the bag. You pay at pickup, cash or e-transfer.</p></div></section>
+ <section id="og"><div class="wrap">${yourOrders()}<div class="og"><div>
+ <div class="pick"><h2>Where will you pick up?</h2><div class="opts">${live.map(opt).join('')}</div></div>
+ <div class="pick"><h2>Which Thursday?</h2><div class="opts">${ds.length?ds.map(d=>`<button class="opt" data-act="date" data-d="${d}" aria-pressed="${S.date===d}">${fmtD(d)}<small>Order by ${fmtD(L.cutoff(d))}</small></button>`).join(''):'<p class="mute">No drops are open for orders at this stop right now. Try the other stop, or message us.</p>'}</div>${S.date?capNote():''}</div>
+ ${menu}</div>
+ <aside class="sum" aria-label="Your bag" id="sum">${sumHTML(mini)}</aside></div></div></section>${footer()}`};
+function sumHTML(mini){const P=POINTS[S.method]||{};if(mini==null)mini=Object.entries(S.cart).map(([k,q])=>{const m=sizeOf(k);return m?`<li><span>${q} × ${esc(itemName(m))}</span><span>${money(m.z.price*q)}</span></li>`:''}).join('');
+ return `<span class="lab">Your bag</span>${S.date?`<div class="stampd${S.thunk?' thunk':''}">${stampDate(S.date)}<small>${esc((P.name||'').replace(' bread drop',''))}</small></div>`:'<p style="margin:14px 0">Pick a Thursday to start.</p>'}
+ <dl><dt>Stop</dt><dd>${esc(P.place||'')}</dd><dt>Time</dt><dd>${esc(P.hours||'')}</dd></dl>${mini?`<ul>${mini}</ul>`:'<p class="mute" style="margin-top:14px;font-size:15px">Nothing in the bag yet.</p>'}
+ <div class="tot"><span>Total</span><span>${money(total())}</span></div>${S.date?`<p class="cd" data-cd="${S.date}" style="margin-top:10px">${countdown(S.date)}</p>`:''}
+ <button class="btn" data-act="checkout"${count()&&S.date?'':' disabled'}>Checkout</button>`}
+function acts(z){if(!z.on)return '<span class="so">Sold out</span>';const q=S.cart[z.id]||0;return q?`<span class="stp"><button data-act="dec" data-id="${z.id}" aria-label="One fewer">−</button><span>${q}</span><button data-act="inc" data-id="${z.id}" aria-label="One more">+</button></span>`:`<button class="add" data-act="add" data-id="${z.id}">Add</button>`}
+function capNote(){const P=POINTS[S.method],n=((SHOP.view||{}).load||{})[S.date+'|'+S.method]||0,left=(P.cap||0)-n;return left>0&&left<=8?`<p class="cap">Only ${left} spot${left===1?'':'s'} left for ${fmtD(S.date)}.</p>`:''}
+function yourOrders(){const l=S.myOrders.filter(o=>L.live(o)&&o.status!=='done'&&o.date>=L.today());if(!l.length)return'';
+ return `<div class="yo"><span class="lab">Your orders</span>${l.map(o=>`<a href="#o/${o.id}-${esc(o.token)}" data-act="track" data-id="${o.id}" data-k="${esc(o.token)}">#${o.id}, ${fmtD(o.date)}, ${esc(L.customerStage(o).t)}</a>`).join('')}</div>`}
+async function loadMine(){try{const d=await mine();S.myOrders=(d.orders||[]).sort((a,b)=>a.date<b.date?-1:1);return d}catch(e){return null}}
+
+pages.catering=()=>{const c=S.cat;
+ const pills=(arr,act,on)=>arr.map(e=>`<button type="button" class="pill" data-act="${act}" data-e="${esc(e)}" aria-pressed="${on(e)}">${esc(e)}</button>`).join('');
+ const min=L.addDays(L.today(),7);if(!c.date)c.date=L.addDays(L.today(),21);
+ return `<section class="ph"><div class="wrap"><h1><span class="mk"><span class="ln">Feeding <i>a crowd?</i></span></span></h1><p class="lede">Family gatherings, birthdays, work events, showers and weddings. Every event is different, so we build the menu around your guests and their dietary needs, with the same homemade care.</p></div></section>
+ <div class="pband"><figure><img src="img/peach-crumble.webp" alt="Peach crumble in mini skillets with vanilla ice cream" data-par decoding="async"><figcaption>Peach crumble skillets</figcaption></figure><figure><img src="img/raspberry-tarts.webp" alt="Raspberry cream tarts" data-par loading="lazy" decoding="async"><figcaption>Raspberry cream tarts</figcaption></figure></div>
+ <section class="band-k sec"><div class="wrap">${c.sent?doneHTML():`<form class="cf" id="cf" novalidate>
+ <fieldset><legend>What’s the occasion?</legend><div class="pills">${pills(['Family gathering','Birthday','Shower','Work lunch','Wedding','Something else'],'evt',e=>c.type===e)}</div></fieldset>
+ <div class="two"><label>Date<input type="date" id="evDate" min="${min}" value="${esc(c.date)}"></label><label>How many guests<input type="number" id="guests" min="5" max="500" value="${c.guests}" inputmode="numeric"></label></div>
+ <fieldset><legend>What sounds good?</legend><p class="fine">Things we’ve made for past events. Pick any, or tell us your own idea below.</p><div class="pills">${pills(['Sourdough and focaccia boards','Soup and sandwiches','Chicken parm and pasta','Crème brûlée','Warm doughnut tower','Cinnamon rolls and pretzels','Granola parfaits'],'want',e=>!!c.want[e])}</div></fieldset>
+ <fieldset><legend>Dietary needs</legend><div class="pills">${pills(['Vegetarian','Gluten-free guests','Nut allergy','Dairy-free'],'diet',e=>!!c.diet[e])}</div></fieldset>
+ <fieldset><legend>Where should we send the menu and price?</legend>
+ <div class="two"><label>Your name<input id="crName" autocomplete="name" value="${esc((c.me||S.me).name||'')}"></label><label>Phone<input id="crPhone" type="tel" autocomplete="tel" value="${esc((c.me||S.me).phone||'')}"></label></div>
+ <div class="two"><label>Email<input id="crEmail" type="email" autocomplete="email" value="${esc((c.me||S.me).email||'')}"></label><label>Start time<input id="crTime" placeholder="12:00 pm" value="${esc((c.me||{}).time||'')}"></label></div>
+ <label>Delivery address, or leave empty to pick up<input id="crAddr" autocomplete="street-address" value="${esc((c.me||{}).addr||'')}"></label>
+ <label>Anything else<textarea id="crNotes" rows="3" placeholder="Your own menu idea, budget, setup">${esc((c.me||{}).notes||'')}</textarea></label></fieldset>
+ <p class="err" role="alert">${esc(c.err)}</p><button class="btn" type="submit" style="justify-self:start"${S.busy?' disabled':''}>${S.busy?'<span class="spin" aria-hidden="true"></span>Sending':'Send my event details'}</button>
+ <p class="fine">No payment now. We reply with a menu and price, usually within a day, by message here${c.me&&c.me.email?' and email':''}.</p></form>`}</div></section>${footer()}`};
+function doneHTML(){const c=S.cat;return `<div class="done"><span class="lab">Sent</span><h3>${c.guests} guests, ${fmtLong(c.date)}.</h3><p>Thank you! We’ll put a menu and price together and reply in your messages, usually within a day.</p><button class="btn sm" data-act="chat-open" style="justify-self:start">Open my messages</button></div>`}
+async function sendCater(){
+ if(S.busy)return;const g=id=>{const e=document.getElementById(id);return e?e.value.trim():''};
+ const c=S.cat,m={name:g('crName'),email:g('crEmail'),phone:g('crPhone'),time:g('crTime'),addr:g('crAddr'),notes:g('crNotes')};c.me=m;c.date=g('evDate')||c.date;c.guests=+g('guests')||c.guests;
+ if(!m.name){c.err='Add your name.';return render()}
+ if(!m.email&&m.phone.replace(/\D/g,'').length<7){c.err='Add an email or phone so we can send your menu.';return render()}
+ if(!c.date||c.date<L.addDays(L.today(),7)){c.err='Pick a date at least a week away. For sooner, message us.';return render()}
+ const tk=L.token(),pick=o=>Object.keys(o).filter(k=>o[k]).join(', ');
+ S.busy=true;c.err='';render();
+ try{const r=await cop({t:'cater',token:tk,req:{event:c.type||'Event',org:m.name,contact:m.name,email:m.email,phone:m.phone,date:c.date,time:m.time,guests:c.guests,mode:m.addr?'Delivery':'Pickup',address:m.addr,diet:pick(c.diet)||'None',menu:pick(c.want),notes:m.notes}});
+  S.busy=false;if(r.error){c.err=r.error;return render()}
+  addKey('threads',r.thread,tk);c.sent=true;store.set('anitas-me',Object.assign({},S.me,{name:m.name,phone:m.phone||S.me.phone,email:m.email||S.me.email}));render(true);refreshChat()
+ }catch(e){S.busy=false;c.err=e.message;render()}}
+
+pages.story=()=>`<section class="ph"><div class="wrap"><h1><span class="mk"><span class="ln">My mom’s</span></span><span class="mk" style="--i:1"><span class="ln"><i>cooler than yours.</i></span></span></h1><p class="lede">Anita’s Little Loaf &amp; Co. started at home in New Brunswick, with one sourdough starter and a mom who wouldn’t stop baking.</p></div></section>
+ <div class="pband" style="grid-template-columns:1fr 1.4fr"><figure><img src="img/apple-pie-roll.webp" alt="Apple pie cinnamon roll on a wooden board" data-par decoding="async"><figcaption>Apple pie roll</figcaption></figure><figure><img src="img/cinnamon-four.webp" alt="Four cinnamon rolls on a wooden plate" data-par loading="lazy" decoding="async"><figcaption>The roll lineup</figcaption></figure></div>
+ <section class="band-k sec"><div class="wrap"><div class="prose" style="padding:0">
+ <p class="big">Anita bakes everything from scratch: sourdough loaves, focaccia, cinnamon rolls, pretzels and, when the season calls for it, a pumpkin loaf made with real pumpkin.</p>
+ <p>The bread is naturally fermented and given plenty of time, because the best things in life (and bread) can’t be rushed. We use quality unbleached, unbromated flour and leave out the unnecessary stuff.</p>
+ <p>You’ll find us at the St. Andrews Farmers’ Market along Water Street in the summer, and at the Thursday bread drop in St. George and St. Andrews the rest of the year. We also cook for events, from a soup and sandwich lunch to chicken parm and crème brûlée for thirty.</p>
+ <p>Her kid runs the orders and the Instagram. If you message us here, that’s who answers first.</p>
+ <p style="margin-top:12px"><button class="btn" data-act="go" data-to="order">Order for Thursday</button></p></div></div></section>${footer()}`;
+
+/* ---- order page: live status and chat ---- */
+const STEPS=['Sent','Confirmed','Bagged','Picked up'];
+pages.track=()=>`<section class="trk" id="trk">${trackInner()}</section>${footer()}`;
+function trackInner(){const d=S.trkData;
+ if(!d)return `<div class="wrap" aria-busy="true"><span class="sk" style="width:9rem;height:14px"></span><span class="sk" style="width:min(32rem,80%);height:clamp(56px,9vw,120px);margin-top:16px"></span><div class="steps">${'<li><span class="sk" style="height:14px;width:60%"></span></li>'.repeat(4)}</div><div class="trk-g"><div class="trk-d"><span class="sk" style="height:140px"></span><span class="sk" style="height:180px"></span></div><span class="sk" style="height:380px"></span></div></div>`;
+ const o=(d.orders||[]).find(x=>x.id===S.trk.id);
+ if(!o)return `<div class="wrap" style="min-height:50svh"><span class="lab">Order page</span><div class="trk-h" style="margin-top:14px"><h1>We can’t find <i>this order.</i></h1></div><p class="mute" style="max-width:46ch;margin-top:24px">${S.trkErr?esc(S.trkErr):'The link may be incomplete. Open it on the phone or computer you ordered on, or message us and we’ll look it up.'}</p><p style="margin-top:24px;display:flex;gap:20px;align-items:center"><button class="btn" data-act="chat-open">Message us</button><button class="tl" data-act="go" data-to="order">Start a new order</button></p></div>`;
+ const th=(d.threads||[]).find(t=>t.orderId===o.id);
+ return `<div class="wrap"><div id="trkTop">${trackTop(o)}</div><div class="trk-g"><div class="trk-d" id="trkDet">${trackDet(o)}</div>${th?convHTML(th,{title:'Messages',sub:'Straight to Anita’s'}):''}</div></div>`}
+function trackTop(o){const st=L.customerStage(o),stop=st.step<0;
+ const sub=st.k==='pending'?'We usually confirm within a few hours. This page updates by itself.':st.k==='declined'?esc(o.declined):st.k==='cancelled'?'Nothing to pay. You can start a new order any time.':st.k==='confirmed'?`See you ${fmtLong(o.date)}${o.slot?', '+esc(o.slot):''}.`:st.k==='packed'?'Your bag has your name on it.':'Thank you for ordering from Anita’s.';
+ return `<span class="lab">Order #${o.id}</span><div class="trk-h" style="margin-top:14px"><h1>${stop?'Order <i>closed.</i>':st.k==='done'?'Enjoy <i>every slice.</i>':'Thank you, <i>'+esc(o.name.split(' ')[0])+'.</i>'}</h1><p class="trk-st">${esc(st.t)}<small>${sub}</small></p></div>
+ ${stop?'<div style="height:40px"></div>':`<ol class="steps">${STEPS.map((s,i)=>`<li class="${i<=st.step?'on':''}${i===st.step?' now':''}"><i>${i+1}</i>${s}</li>`).join('')}</ol>`}`}
+function trackDet(o){const P=POINTS[o.point]||{name:'Pickup',place:''};
+ const ix=L.sizeIndex((SHOP.view||{}).products||[]),tot=L.oTotal(o,ix),st=L.customerStage(o),canCancel=!o.declined&&o.status==='new';
+ return `<dl><dt>Pickup</dt><dd>${esc(P.name)}<br><span class="mute">${esc(P.place)}</span></dd><dt>When</dt><dd>${fmtLong(o.date)}${o.slot?', '+esc(o.slot):''}</dd><dt>Name</dt><dd>${esc(o.name)}, ${esc(o.phone)}</dd>${o.note?`<dt>Note</dt><dd style="white-space:pre-line">${esc(o.note)}</dd>`:''}</dl>
+ <ul>${o.items.map(i=>{const m=ix[i.s];return `<li><div>${m?esc(m.p.name):'Item'}<small>${m&&m.p.sizes.length>1?esc(m.z.label)+', ':''}${m?money(m.z.price):''} × ${i.q}</small></div><span>${m?money(m.z.price*i.q):''}</span></li>`}).join('')}</ul>
+ <div class="trk-tot"><span>${st.step<0?'Total':o.paid?'Paid':'To pay at pickup'}</span><span>${money(tot)}</span></div>
+ <div class="trk-a"><a class="tl" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(P.place+', New Brunswick')}" target="_blank" rel="noopener">Directions</a><button class="tl" data-act="go" data-to="order">Order something else</button>${canCancel?`<button class="danger" data-act="cancel-order">${S.sure?'Tap again to cancel':'Cancel order'}</button>`:''}</div>
+ <p class="fine">Bookmark this page to check on your order. <button class="tl" data-act="copy-link">Copy the link</button></p>`}
+function openTrack(id,tk){S.trk={id:+id,token:tk};S.lastStage=null;S.trkData=null;S.trkErr='';S.sure=false;go('track');refreshTrack()}
+let trkBusy=false;
+async function refreshTrack(){
+ if(S.route!=='track'||!S.trk||trkBusy)return;trkBusy=true;
+ try{const k=keys();if(!k.orders.some(x=>x.id===S.trk.id))addKey('orders',S.trk.id,S.trk.token);
+  const d=SHOP.mode==='live'?await api({mine:{orders:[S.trk],threads:[]},since:S.trkData?S.trkV:0}):L.mineView(localState(),{orders:[S.trk],threads:[]});
+  if(d.error)throw new Error(d.error);if(d.same){trkBusy=false;return}S.trkV=d.version||0;
+  const first=!S.trkData;S.trkData=d;S.trkErr='';const el=$('#trk');if(!el){trkBusy=false;return}
+  const o=(d.orders||[]).find(x=>x.id===S.trk.id),th=o&&(d.threads||[]).find(t=>t.orderId===o.id);
+  if(o){const k=L.customerStage(o).k;if(S.lastStage&&S.lastStage!==k&&!first)bigStamp({confirmed:'Confirmed',packed:'Bagged',done:'Picked up',declined:'Declined',cancelled:'Cancelled'}[k]||'Updated');S.lastStage=k}
+  if(first||!o||!$('#trkTop')){el.innerHTML=trackInner();scrollMsgs()}else{swap('#trkTop',trackTop(o));swap('#trkDet',trackDet(o));if(th)updateMsgs(th)}
+  if(th&&th.custSeen<th.msgs.length)cop({t:'read',thread:th.id,token:th.token}).catch(()=>{});
+ }catch(e){S.trkErr=e.message;if(!S.trkData){S.trkData={orders:[],threads:[]};const el=$('#trk');if(el)el.innerHTML=trackInner()}}
+ trkBusy=false}
+function swap(sel,html){const e=$(sel);if(e&&e.dataset.h!==html){e.innerHTML=html;e.dataset.h=html}}
+
+/* ---- conversations ---- */
+const hm=t=>new Date(t).toLocaleString('en-CA',{weekday:'short',hour:'numeric',minute:'2-digit'});
+function msgsHTML(th,old){return th&&th.msgs.length?th.msgs.map((m,i)=>`<div class="m ${m.from==='customer'?'me':'them'}${i<old?' old':''}">${esc(m.text)}<time>${m.from==='customer'?'You':'Anita’s'}, ${hm(m.at)}</time></div>`).join(''):`<p class="m-empty">Questions about the menu, an order or catering? Ask here and we’ll reply.</p>`}
+function convHTML(th,o){const id=th?th.id:'new';return `<div class="conv" data-th="${id}"><div class="conv-h"><div>${o.title}<small>${o.sub}</small></div>${o.close?'<button class="x" data-act="chat-close" aria-label="Close messages">×</button>':''}</div><div class="msgs" id="msgs-${id}" data-n="${th?th.msgs.length:0}">${msgsHTML(th,th?th.msgs.length:0)}</div>${o.ask?`<label class="mname-in"><span class="sr">Your name</span><input id="chatName" placeholder="Your name, optional" autocomplete="name" value="${esc(S.me.name)}"></label>`:''}<p class="m-err" role="alert"></p><form class="msay" data-th="${id}"><label for="say-${id}" class="sr">Message</label><textarea id="say-${id}" rows="1" placeholder="Write a message"></textarea><button class="btn sm" type="submit">Send</button></form></div>`}
+function updateMsgs(th){const el=document.getElementById('msgs-'+th.id);if(!el)return;const n=+el.dataset.n||0;if(n===th.msgs.length)return;const bottom=el.scrollHeight-el.scrollTop-el.clientHeight<60;el.innerHTML=msgsHTML(th,n);el.dataset.n=th.msgs.length;if(bottom||n===0)el.scrollTop=el.scrollHeight}
+function scrollMsgs(){$$('.msgs').forEach(e=>e.scrollTop=e.scrollHeight)}
+async function sendMsg(form){
+ const ta=form.querySelector('textarea'),text=ta.value.trim(),conv=form.closest('.conv'),err=conv.querySelector('.m-err');if(!text)return;
+ let id=form.dataset.th,tk;
+ if(id==='new'){id='c-'+L.uid().replace(/[^a-z0-9]/g,'').slice(0,20);tk=L.token()}
+ else{const k=keys();tk=(k.threads.find(x=>x.id===id)||{}).token;if(!tk){const th=[...((S.trkData||{}).threads||[]),...((S.chatData||{}).threads||[])].find(t=>t.id===id);tk=th&&th.token}}
+ const nm=$('#chatName'),name=nm?nm.value.trim():'';ta.value='';ta.style.height='';err.textContent='';
+ const list=conv.querySelector('.msgs'),tmp=document.createElement('div');tmp.className='m me';tmp.style.opacity='.6';tmp.innerHTML=esc(text)+'<time>Sending</time>';const empty=list.querySelector('.m-empty');if(empty)empty.remove();list.appendChild(tmp);list.scrollTop=list.scrollHeight;
+ try{const r=await cop({t:'say',thread:id,token:tk,text,name});
+  if(r.error){tmp.remove();ta.value=text;err.textContent=r.error;return}
+  if(form.dataset.th==='new'){addKey('threads',id,tk);if(name){S.me.name=name;store.set('anitas-me',Object.assign({},store.get('anitas-me',{}),{name}))}}
+  if(S.route==='track'&&conv.closest('#trk'))await refreshTrack();else await refreshChat(true);
+ }catch(e){tmp.remove();ta.value=text;err.textContent=e.message}}
+function chatThread(){const l=((S.chatData||{}).threads||[]).filter(t=>!t.orderId).sort((a,b)=>b.at-a.at);return l[0]||null}
+function chatHTML(){if(!S.chatData)return `<div class="conv"><div class="conv-h"><div>Message Anita’s<small>Loading your messages</small></div><button class="x" data-act="chat-close" aria-label="Close messages">×</button></div><div class="msgs"><span class="sk" style="height:42px;width:70%;border-radius:18px"></span><span class="sk" style="height:42px;width:55%;border-radius:18px;align-self:flex-end"></span></div></div>`;
+ const th=chatThread();return convHTML(th,{title:th&&th.cateringId?'Your catering request':'Message Anita’s',sub:'We usually reply within a few hours',close:true,ask:!th&&!S.me.name})}
+function unreadOf(d){return((d||{}).threads||[]).filter(t=>!t.orderId&&t.custSeen<t.msgs.length).length}
+function paintAsk(){const a=$('#ask');let b=a.querySelector('b');if(S.unread&&!b){b=document.createElement('b');a.appendChild(b)}if(b){if(S.unread)b.textContent=S.unread;else b.remove()}a.classList.toggle('hide',!!(S.chat||S.drawer||S.route==='track'))}
+let chatBusy=false;
+async function refreshChat(force){
+ if(chatBusy)return;const k=keys();if(!k.threads.length&&!S.chat){S.unread=0;paintAsk();return}chatBusy=true;
+ try{const d=SHOP.mode==='live'?await api({mine:{orders:[],threads:k.threads},since:force||!S.chatData?0:S.chatV}):L.mineView(localState(),{orders:[],threads:k.threads});
+  if(d.same){chatBusy=false;paintAsk();return}S.chatV=d.version||0;
+  if(!d.error){const first=!S.chatData;S.chatData=d;S.unread=S.chat?0:unreadOf(d);
+   if(S.chat){const th=chatThread(),box=$('#chat'),cur=box.querySelector('.conv');
+    if(first||force&&cur&&cur.dataset.th!==(th?th.id:'new')||!cur){box.innerHTML=chatHTML();scrollMsgs()}else if(th)updateMsgs(th);
+    if(th&&th.custSeen<th.msgs.length)cop({t:'read',thread:th.id,token:th.token}).catch(()=>{})}}
+ }catch(e){}
+ chatBusy=false;paintAsk()}
+function openChat(){S.chat=true;S.drawer=false;overlays();const c=$('#chat');c.innerHTML=chatHTML();c.classList.add('on');scrollMsgs();paintAsk();refreshChat(true)}
+function closeChat(){S.chat=false;$('#chat').classList.remove('on');paintAsk()}
+
+/* ---- bag and checkout ---- */
+function drawerHTML(){if(S.co)return checkoutHTML();const P=POINTS[S.method]||{};
+ const rows=Object.entries(S.cart).map(([k,q])=>{const m=sizeOf(k);if(!m)return'';return `<div class="crow"><div>${esc(m.p.name)}<small>${m.p.sizes.length>1?esc(m.z.label)+', ':''}${money(m.z.price)}${m.z.on?'':' (sold out)'}</small></div>${acts(m.z)}</div>`}).join('');
+ return `<div class="dr-h"><h2>Your bag</h2><button class="x" data-act="close-all" aria-label="Close bag">×</button></div><div class="dr-pick"><span>${S.date?esc(P.name)+', '+fmtD(S.date):'Pick a Thursday first'}</span><button class="tl" data-act="go" data-to="order">Change</button></div>
+ ${rows||'<p class="dr-empty">Nothing in the bag yet.</p>'}<div class="dr-tot"><span>Total</span><span>${money(total())}</span></div><button class="btn" data-act="checkout"${count()&&S.date?'':' disabled'}>Checkout</button>`}
+function checkoutHTML(){const P=POINTS[S.method]||{},me=S.me;
+ return `<div class="dr-h"><h2>Checkout</h2><button class="x" data-act="close-all" aria-label="Close">×</button></div>
+ <form class="co" id="co" novalidate><button type="button" class="tl" data-act="co-back" style="justify-self:start">Back to the bag</button>
+ <div class="co-sum"><span>${esc(P.name)}</span><span>${esc(P.place)}</span><span>${fmtLong(S.date)}, ${esc(P.hours)}</span><span>${count()} item${count()===1?'':'s'}, ${money(total())}</span></div>
+ <label>Your name<input id="coName" autocomplete="name" value="${esc(me.name)}"></label>
+ <div class="two"><label>Phone<input id="coPhone" type="tel" inputmode="tel" autocomplete="tel" value="${esc(me.phone)}"></label><label>Email, optional<input id="coEmail" type="email" autocomplete="email" value="${esc(me.email)}"></label></div>
+ <label>Note, optional<textarea id="coNote" rows="2" placeholder="Who is picking up, slicing, allergies">${esc(me.note||'')}</textarea></label>
+ <p class="err" role="alert">${esc(S.coErr)}</p>
+ <button class="btn" type="submit"${S.busy?' disabled':''}>${S.busy?'<span class="spin" aria-hidden="true"></span>Sending':'Place order, '+money(total())}</button>
+ <p class="fine">You pay at pickup, cash or e-transfer. We confirm every order, usually within a few hours, and you can follow it on your order page.</p></form>`}
+function readCo(){const g=id=>{const e=document.getElementById(id);return e?e.value.trim():''};S.me={name:g('coName'),phone:g('coPhone'),email:g('coEmail'),note:g('coNote')}}
+async function placeOrder(){
+ if(S.busy)return;readCo();const me=S.me;
+ if(!me.name){S.coErr='Add your name.';return overlays()}
+ if(me.phone.replace(/\D/g,'').length<7){S.coErr='Add a phone number so we can reach you.';return overlays()}
+ if(!S.date){S.coErr='Pick a Thursday first.';return overlays()}
+ const P=POINTS[S.method],tk=L.token();S.busy=true;S.coErr='';overlays();
+ try{const r=await cop({t:'place',token:tk,order:{date:S.date,point:S.method,loc:P.place,slot:P.slots[0],name:me.name,phone:me.phone,email:me.email,note:me.note,items:Object.entries(S.cart).map(([s,q])=>({s,q}))}});
+  S.busy=false;if(r.error){S.coErr=r.error;overlays();return}
+  addKey('orders',r.id,tk);store.set('anitas-me',{name:me.name,phone:me.phone,email:me.email});S.me.note='';
+  S.cart={};saveCart();S.co=false;S.drawer=false;openTrack(r.id,tk)
+ }catch(e){S.busy=false;S.coErr=e.message;overlays()}}
+
+pages.terms=()=>`<section class="ph"><div class="wrap"><span class="lab">The small print</span><h1 style="margin-top:14px">Terms of <i>service.</i></h1></div></section><section><div class="wrap prose">
+<p class="big">Plain terms for ordering from Anita’s Little Loaf &amp; Co.</p>
+<h2>Orders</h2><p>An order is a request until we confirm it. We confirm or decline every online order, usually within a few hours, and your order page shows where it stands. Orders for a Thursday bread drop close at the end of the Monday before.</p>
+<h2>Paying</h2><p>You pay at pickup by cash or e-transfer, unless we agree otherwise. Prices are in Canadian dollars. Catering prices are set in the quote we send you.</p>
+<h2>Changes and cancelling</h2><p>You can cancel from your order page until your bag is packed. After that, message us and we’ll do our best. If we can’t fill an order, we’ll tell you as soon as we know.</p>
+<h2>Allergens</h2><p>Our kitchen handles wheat, dairy, eggs and cheese, and some items contain nuts or seeds. We can’t promise any item is free of traces. Message us before ordering if you have a serious allergy.</p>
+<h2>Pickup</h2><p>Please collect your order at the stop and time you chose. Bread left uncollected at the end of the drop can’t be refunded, but message us and we’ll try to sort something out.</p>
+<h2>Contact</h2><p>Use the Message us button on this site, or Instagram at @anitaslittleloafandco.</p></div></section>${footer()}`;
+pages.privacy=()=>`<section class="ph"><div class="wrap"><span class="lab">The small print</span><h1 style="margin-top:14px">Privacy <i>policy.</i></h1></div></section><section><div class="wrap prose">
+<p class="big">We keep only what we need to get your bread to you.</p>
+<h2>What we collect</h2><p>When you order or send a catering request: your name, phone, email if you give it, what you ordered, and any note or message you send us.</p>
+<h2>Why</h2><p>To bake and bag your order, reach you about it, and answer your questions. We don’t send marketing messages.</p>
+<h2>Who sees it</h2><p>Only our family team. We never sell or share your details.</p>
+<h2>On your device</h2><p>This site keeps your bag, your contact details and a private key to your orders and messages in your browser, so you don’t have to type them again. Clearing your browser data removes them.</p>
+<h2>Your choices</h2><p>Message us to see, correct or delete what we hold about you.</p></div></section>${footer()}`;
+pages.nf=()=>`<section class="ph"><div class="wrap"><span class="lab">Page not found</span><h1 style="margin-top:14px">This loaf <i>wandered off.</i></h1><p class="lede">The link may be old. The menu is one tap away.</p><p style="margin-top:28px"><button class="btn" data-act="go" data-to="order">See the menu</button></p></div></section><div style="height:120px"></div>${footer()}`;
+pages.menu=pages.order;
+
+/* ---- render ---- */
+let tt;
+function toast(html,ms){const t=$('#toast');t.innerHTML=html;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),ms||2600)}
+const alertMsg=m=>toast(`<span>${esc(m)}</span>`,3600);
+function bagbar(){const b=$('#bagbar'),n=count();b.innerHTML=n?`<button class="btn" data-act="drawer-open">Bag, ${n} · ${money(total())}</button>`:'';b.classList.toggle('hide',!n||S.drawer||S.route==='track'||S.chat)}
+function overlays(){$('#drawer').innerHTML=drawerHTML();$('#drawer').classList.toggle('on',S.drawer);$('#scrim').classList.toggle('on',S.drawer);document.documentElement.style.overflow=S.drawer?'hidden':'';bagbar();paintAsk()}
+function syncCart(){saveCart();$$('[data-acts]').forEach(el=>{const m=sizeOf(el.dataset.acts);if(m)el.innerHTML=acts(m.z)});const s=$('#sum');if(s)s.innerHTML=sumHTML();overlays()}
+const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function render(top,soft){$('#hdr').innerHTML=header();const app=$('#app');app.innerHTML=pages[S.route]();if(!soft){app.classList.remove('enter','leaving');void app.offsetWidth;app.classList.add('enter')}overlays();if(top)window.scrollTo(0,0);if(S.route==='track')scrollMsgs();S.thunk=false;reveals(soft);sizeOven();ovenFigs();onScroll()}
+let leaveT;
+function go(r){const same=r===S.route;S.route=r;S.drawer=false;S.co=false;if(r!=='track')S.trk=null;try{history.replaceState(null,'',r==='track'&&S.trk?'#o/'+S.trk.id+'-'+S.trk.token:'#'+(r==='home'?'':r))}catch(e){}
+ const app=$('#app');clearTimeout(leaveT);const doit=()=>{render(true);if(r==='order')loadMine().then(()=>{if(S.route==='order'&&S.myOrders.length)patchOrder()})};
+ if(calm||same){doit();return}app.classList.add('leaving');leaveT=setTimeout(doit,280)}
+/* reveals: masks and rises for what is below the fold, words on the catering line follow the scroll */
+let rvIO;
+function reveals(soft){
+ const masks=$$('.mk');const lines=$$('.rv');
+ if(calm||!('IntersectionObserver' in window)){masks.concat(lines).forEach(e=>e.classList.add('in'));return}
+ if(rvIO)rvIO.disconnect();
+ rvIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rvIO.unobserve(e.target)}}),{rootMargin:'0px 0px -10% 0px',threshold:.06});
+ const auto='.trio>.side>*,.card>*,.story blockquote,.story .tx>*,.edge .foot>*,.pick,.grp,.prose>*,.cf>*,.ph .lede,.done,.trk-d>*,.stops,.yo';
+ $$(auto).forEach((el,k)=>{if(soft||el.classList.contains('rv'))return;const r=el.getBoundingClientRect();if(r.top<innerHeight*.98)return;const sib=[...el.parentElement.children].filter(x=>x.matches(auto));el.style.setProperty('--i',Math.min(5,sib.indexOf(el)));el.classList.add('rv')});
+ $$('.mk,.rv').forEach(el=>{if(soft&&el.classList.contains('in'))return;if(el.classList.contains('in'))return;rvIO.observe(el)})}
+let ticking=false;
+const pinOK=()=>matchMedia('(min-width:861px) and (hover:hover)').matches;
+function sizeOven(){const g=$('#oven'),t=$('#otrack');if(!g||!t)return;if(!pinOK()){g.style.height='';return}const extra=Math.max(0,t.scrollWidth-innerWidth);g.dataset.extra=extra;g.style.height=(innerHeight+extra)+'px'}
+let figIO;function ovenFigs(){if(figIO)figIO.disconnect();const fs=$$('.ofig');if(calm||!pinOK()||!('IntersectionObserver' in window)){fs.forEach(f=>f.classList.add('in'));return}
+ figIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');figIO.unobserve(e.target)}}),{root:pinOK()?null:$('#otrack'),rootMargin:'0px -4% 0px 0px',threshold:.12});fs.forEach(f=>figIO.observe(f))}
+function onScroll(){ticking=false;
+ const g=$('#oven');if(g&&pinOK()){const r=g.getBoundingClientRect(),ex=+g.dataset.extra||0,p=Math.min(1,Math.max(0,-r.top/Math.max(1,r.height-innerHeight)));$('#otrack').style.transform=`translate3d(${-p*ex}px,0,0)`;const pr=$('#oprog');if(pr)pr.style.width=(p*100)+'%'}
+ if(!calm)$$('[data-par]').forEach(im=>{const r=im.parentElement.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;im.style.transform=`translate3d(0,${(r.top+r.height/2-innerHeight/2)*-.08}px,0)`});const rn=$('#run');if(rn){const r=rn.getBoundingClientRect(),p=Math.min(1,Math.max(0,(innerHeight*.85-r.top)/(r.height+innerHeight*.25))),ws=rn.querySelectorAll('.w'),n=Math.round(p*ws.length);ws.forEach((w,k)=>w.classList.toggle('on',calm||k<n))}}
+window.addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
+window.addEventListener('resize',()=>{sizeOven();onScroll()});
+window.addEventListener('load',()=>{sizeOven();onScroll()});
+/* hovering a flavour that has a photo floats the photo beside the cursor */
+(function(){const f=$('#follow');let tx=0,ty=0,x=0,y=0,raf=0,cur='';if(!matchMedia('(hover:hover)').matches)return;
+ const loop=()=>{x+=(tx-x)*.18;y+=(ty-y)*.18;f.style.left=x+'px';f.style.top=y+'px';raf=(Math.abs(tx-x)+Math.abs(ty-y)>.4)?requestAnimationFrame(loop):0};
+ document.addEventListener('mousemove',e=>{const r=e.target.closest&&e.target.closest('.fl[data-img]');if(!r){f.classList.remove('on');return}
+  tx=e.clientX+180;ty=e.clientY-40;if(tx>innerWidth-130)tx=e.clientX-180;if(!f.classList.contains('on')){x=tx;y=ty}
+  if(cur!==r.dataset.img){cur=r.dataset.img;f.style.backgroundImage=`url(${cur})`}f.classList.add('on');if(!raf)raf=requestAnimationFrame(loop)},{passive:true});
+ document.addEventListener('scroll',()=>f.classList.remove('on'),{passive:true})})();
+/* a crumb flies from the button to the bag */
+function fly(from){if(calm||!from||!from.getBoundingClientRect)return;const a=from.getBoundingClientRect();if(!a.width)return;
+ const bb=$('#bagbar .btn'),b=bb&&bb.offsetParent?bb.getBoundingClientRect():{left:innerWidth-120,top:innerHeight-60,width:100,height:40};
+ const c=document.createElement('div');c.className='crumb';c.style.left=(a.left+a.width/2-8)+'px';c.style.top=(a.top+a.height/2-8)+'px';document.body.appendChild(c);
+ const dx=(b.left+b.width/2)-(a.left+a.width/2),dy=(b.top+b.height/2)-(a.top+a.height/2);
+ const an=c.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${dx*.5}px,${dy*.5-120}px) scale(1.15)`,offset:.45},{transform:`translate(${dx}px,${dy}px) scale(.4)`,opacity:.6}],{duration:760,easing:'cubic-bezier(.5,0,.3,1)'});
+ an.onfinish=()=>{c.remove();const t=$('#bagbar .btn');if(t){t.classList.remove('bump');void t.offsetWidth;t.classList.add('bump')}}}
+/* the owner switches a flavour off in the dashboard: the row strikes through here, live */
+function liveMenu(v){const before={};PRODUCTS.forEach(p=>p.sizes.forEach(z=>before[z.id]=z.on));applyView(v);
+ PRODUCTS.forEach(p=>p.sizes.forEach(z=>{if(before[z.id]===undefined||before[z.id]===z.on)return;const el=$(`[data-acts="${z.id}"]`);if(!el)return;const row=el.closest('.fl');el.innerHTML=acts(z);row.classList.toggle('off',!z.on);row.classList.remove('gone');void row.offsetWidth;row.classList.add('gone');
+  toast(`<span>${esc(p.sizes.length>1?z.label:p.name)} ${z.on?'is back on the menu':'just sold out'}</span>`,3200)}));const s=$('#sum');if(s)s.innerHTML=sumHTML();bagbar()}
+/* every status change on the order page lands as a stamp */
+/* swap only the working part of the order page, so the page itself never jumps */
+function patchOrder(){const cur=$('#og');if(!cur)return;const t=document.createElement('div');t.innerHTML=pages.order();const n=t.querySelector('#og');if(!n)return;cur.replaceWith(n);overlays();S.thunk=false;reveals()}
+function bigStamp(t){if(calm)return;const d=document.createElement('div');d.className='bigstamp';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2500)}
+
+/* ---- events ---- */
+document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,id=b.dataset.id;
+ switch(a){
+ case 'go':go(b.dataset.to);break;
+ case 'method':S.method=b.dataset.m;S.date=drops(S.method,1)[0]||null;S.thunk=true;patchOrder();break;
+ case 'date':S.date=b.dataset.d;S.thunk=true;patchOrder();break;
+ case 'add':{const m=sizeOf(id);if(!m||!m.z.on)break;S.cart[id]=(S.cart[id]||0)+1;fly(b);syncCart();const sp=$(`[data-acts="${id}"] .stp`);if(sp)sp.classList.add('pop');toast(`<span>Added ${esc(itemName(m))}</span><button data-act="drawer-open">View bag</button>`);break}
+ case 'inc':S.cart[id]=(S.cart[id]||0)+1;syncCart();break;
+ case 'dec':S.cart[id]--;if(S.cart[id]<1)delete S.cart[id];syncCart();break;
+ case 'drawer-open':S.drawer=true;if(S.chat)closeChat();$('#toast').classList.remove('on');overlays();break;
+ case 'close-all':S.drawer=false;S.co=false;overlays();break;
+ case 'checkout':if(!count()||!S.date)break;S.co=true;S.coErr='';S.drawer=true;if(S.chat)closeChat();overlays();break;
+ case 'co-back':readCo();S.co=false;S.coErr='';overlays();break;
+ case 'track':e.preventDefault();openTrack(id,b.dataset.k);break;
+ case 'cancel-order':{if(!S.sure){S.sure=true;swap('#trkDet',trackDet(S.trkData.orders.find(x=>x.id===S.trk.id)));clearTimeout(S.sureT);S.sureT=setTimeout(()=>{S.sure=false;const o=S.trkData&&S.trkData.orders.find(x=>x.id===(S.trk||{}).id);if(o)swap('#trkDet',trackDet(o))},3500);break}
+  S.sure=false;b.disabled=true;b.textContent='Cancelling';cop({t:'cancel',id:S.trk.id,token:S.trk.token}).then(r=>{if(r.error)alertMsg(r.error);refreshTrack()}).catch(er=>{alertMsg(er.message);refreshTrack()});break}
+ case 'copy-link':{const u=location.href;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>{b.textContent='Copied'},()=>{b.textContent=u});break}
+ case 'chat-open':openChat();break;
+ case 'chat-close':closeChat();break;
+ case 'evt':S.cat.type=b.dataset.e;$$('[data-act="evt"]').forEach(p=>p.setAttribute('aria-pressed',p.dataset.e===S.cat.type));break;
+ case 'want':case 'diet':{const o=a==='want'?S.cat.want:S.cat.diet;o[b.dataset.e]=!o[b.dataset.e];b.setAttribute('aria-pressed',!!o[b.dataset.e]);break}
+ }});
+document.addEventListener('change',e=>{if(e.target.id==='evDate')S.cat.date=e.target.value;if(e.target.id==='guests')S.cat.guests=+e.target.value||S.cat.guests});
+document.addEventListener('input',e=>{if(e.target.closest&&e.target.closest('.msay')&&e.target.tagName==='TEXTAREA'){const a=e.target;a.style.height='auto';a.style.height=Math.min(120,a.scrollHeight)+'px'}});
+document.addEventListener('submit',e=>{const f=e.target;e.preventDefault();if(f.id==='co')placeOrder();if(f.id==='cf')sendCater();if(f.classList.contains('msay'))sendMsg(f)});
+document.addEventListener('keydown',e=>{
+ if(e.key==='Enter'&&!e.shiftKey&&e.target.closest&&e.target.closest('.msay')&&matchMedia('(hover:hover)').matches){e.preventDefault();e.target.closest('form').requestSubmit()}
+ if(e.key==='Escape'){if(S.chat)closeChat();else if(S.drawer){S.drawer=false;S.co=false;overlays()}}});
+
+/* ---- start, then keep the live parts fresh ---- */
+function route(){const h=decodeURIComponent((location.hash||'').slice(1)),m=h.match(/^o\/(\d+)-([a-z0-9]{16,40})$/i);
+ if(m){S.trk={id:+m[1],token:m[2]};S.route='track';return}S.route=!h?'home':pages[h]&&!['nf','track'].includes(h)?h:'nf'}
+route();document.body.classList.add('ld');render(false);setTimeout(()=>document.body.classList.remove('ld'),2800);
+loadShop().then(()=>{if(S.route==='order')patchOrder();else if(S.route==='home'){const t=$('.tag'),n=tagHTML();if(t&&t.outerHTML.replace(/data-cd="[^"]*">[^<]*/,'')!==n.replace(/data-cd="[^"]*">[^<]*/,'')){const d=document.createElement('div');d.innerHTML=n;t.replaceWith(d.firstElementChild)}}overlays();if(S.route==='track')refreshTrack();loadMine().then(()=>{if(S.route==='order'&&S.myOrders.length)patchOrder()});refreshChat()});
+window.addEventListener('hashchange',()=>{const was=S.route;route();if(S.route==='track'){S.trkData=null;render(true);refreshTrack()}else if(S.route!==was)render(true)});
+setInterval(()=>{if(!document.hidden)$$('[data-cd]').forEach(el=>{const t=countdown(el.dataset.cd);if(el.textContent!==t)el.textContent=t})},1000);
+let tick=0;
+setInterval(()=>{if(document.hidden||!SHOP.ready)return;tick++;
+ if(S.route==='track')refreshTrack();if(S.chat)refreshChat();else if(tick%8===0)refreshChat();
+ if(tick%4===0&&SHOP.mode==='live'&&S.route==='order')api().then(j=>{if(j.view)liveMenu(j.view)}).catch(()=>{})},1500);
+window.addEventListener('storage',e=>{if(e.key!==LK||SHOP.mode!=='local')return;if(S.route==='order')liveMenu(L.publicView(localState()));else applyView(L.publicView(localState()));if(S.route==='track')refreshTrack();refreshChat()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&SHOP.ready){if(S.route==='track')refreshTrack();refreshChat()}});
+})();
+</script>
+</body>
+</html>
