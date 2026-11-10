@@ -1233,6 +1233,53 @@ li.rdy .ck{border-color:var(--blue)}
 .cfoot{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;font-size:.88rem}
 .cfoot .u{color:var(--mute)}
 @media(max-width:700px){.cqrow .btn,.cqin{width:100%}.cqin input{width:100%}}
+
+/* ===== v31: premium motion. One spring, one ease, everywhere ===== */
+:root{--spring:cubic-bezier(.34,1.45,.64,1);--eo:cubic-bezier(.22,1,.36,1)}
+/* page changes: content glides, header stays put */
+header.top{view-transition-name:hdr}
+#view{view-transition-name:page}
+::view-transition-old(hdr),::view-transition-new(hdr){animation:none}
+::view-transition-group(*){animation-duration:.42s;animation-timing-function:var(--eo)}
+::view-transition-old(page){animation:vtout .22s var(--eo) both}
+::view-transition-new(page){animation:vtin .42s var(--eo) both}
+html[data-vt="fwd"]::view-transition-old(page){animation-name:vtoutL}
+html[data-vt="fwd"]::view-transition-new(page){animation-name:vtinR}
+html[data-vt="back"]::view-transition-old(page){animation-name:vtoutR}
+html[data-vt="back"]::view-transition-new(page){animation-name:vtinL}
+html[data-vt="same"]::view-transition-old(page){animation:vtfade .2s ease both}
+html[data-vt="same"]::view-transition-new(page){animation:vtfade .3s ease reverse both}
+@keyframes vtout{to{opacity:0;transform:translateY(-6px)}}
+@keyframes vtin{from{opacity:0;transform:translateY(10px)}}
+@keyframes vtoutL{to{opacity:0;transform:translateX(-24px)}}
+@keyframes vtinR{from{opacity:0;transform:translateX(32px)}}
+@keyframes vtoutR{to{opacity:0;transform:translateX(24px)}}
+@keyframes vtinL{from{opacity:0;transform:translateX(-32px)}}
+@keyframes vtfade{to{opacity:0}}
+/* rows that move (bag ready, picked up) slide to their new place */
+::view-transition-group(*):not(::view-transition-group(page)):not(::view-transition-group(hdr)):not(::view-transition-group(root)){animation-duration:.5s}
+/* buttons: press in, spring back */
+.btn,.u,.pill,.ck,.need,.seg,.seg2 button,.wkhead .arr,.calh .arr,#tabs button,.x1,.newo,.row,.csl,.agenda button,.cday{transition:transform .35s var(--spring),background-color .25s var(--eo),color .25s var(--eo),box-shadow .3s var(--eo),border-color .25s var(--eo),opacity .25s var(--eo)!important}
+.btn:active,.pill:active,.need:active,.seg:active,.wkhead .arr:active,.calh .arr:active,.x1:active{transform:scale(.95)!important;transition-duration:.08s!important}
+.u:active,.row:active,.csl:active,#tabs button:active{transform:scale(.97)!important;transition-duration:.08s!important}
+.ck:active{transform:scale(.88)!important;transition-duration:.08s!important}
+.cday:active,.agenda button:active{transform:scale(.985)!important;transition-duration:.08s!important}
+.btn:hover{transform:translateY(-1px)}
+.btn:hover:active{transform:scale(.95)!important}
+/* the tick: the circle pops and the check draws itself */
+li.dn .ck{animation:tick .5s var(--spring)}
+li.dn .ck svg{transition:stroke-dashoffset .4s var(--eo) .08s}
+@keyframes tick{0%{transform:scale(.8)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.pill.p-rdy{animation:pillin .45s var(--spring)}
+@keyframes pillin{0%{transform:scale(.9)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+/* tab underline glides with a little spring */
+.tabbar{transition:transform .55s var(--spring),width .55s var(--spring)!important}
+/* toast floats up softly */
+#toast{border-radius:99px!important;padding:12px 20px!important;background:#2a1c13!important;font-family:"Albert",sans-serif!important;font-weight:600;box-shadow:0 12px 28px -12px rgba(42,28,19,.55)!important;transition:opacity .35s var(--eo),transform .5s var(--spring)!important}
+#toast.on{transform:translate(-50%,0)!important}
+/* focus rings that feel considered */
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:10px}
+@media(prefers-reduced-motion:reduce){*,::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -1413,10 +1460,13 @@ function render(){
  if(U.tab==="Messages")scrollMsgs();
  renderTabs();
 }
+var MORPH={pu:1,unpu:1,st:1,stop:1,wk:1,wk0:1,cm:1,csel:1,cquote:1,cst:1,past:1};
+var CAN_VT=!!document.startViewTransition&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
+function vt(fn,dir){if(!CAN_VT){fn();return false}document.documentElement.dataset.vt=dir||"same";var x=document.startViewTransition(fn);x.finished.finally(function(){delete document.documentElement.dataset.vt});return true}
 function switchTab(t){
- if(t===U.tab)return;U.tab=t;U.showPast=false;renderTabs();
- var v=$("#view");render();window.scrollTo(0,0);
- enter();
+ if(t===U.tab)return;var order=TABS.indexOf(t)>TABS.indexOf(U.tab)?"fwd":"back";U.tab=t;U.showPast=false;
+ var used=vt(function(){renderTabs();render();window.scrollTo(0,0)},order);
+ if(!used){renderTabs();render();window.scrollTo(0,0);enter()}
 }
 
 /* ---------- week ---------- */
@@ -1488,7 +1538,7 @@ function placeOnly(P){return (P.place||"").replace(", "+P.name.replace(" bread d
 function itemsShort(o,ix){return o.items.map(function(i){var l=itemLabel(i,ix);return (i.q>1?i.q+' × ':'')+esc(l.n)+(l.z?' <em>('+esc(l.z)+')</em>':'')}).join(", ")}
 function rowPU(o,ix){var dn=o.status==="done",rd=o.status==="packed",tot=oTotal(o,ix),th=threadOf(o),fresh=!dn&&(U.just[o.id]||Date.now()-(o.placed||0)<45*6e4);
  var pill=dn?'<span class="pill p-dn">Picked up</span>':rd?'<button class="pill p-rdy press" data-a="st" data-id="'+o.id+'" data-s="new" title="Tap if it isn’t ready after all"><i></i>Bag ready</button>':'<button class="pill p-bag press" data-a="st" data-id="'+o.id+'" data-s="packed" title="Tap when the bag is ready"><i></i>Not ready</button>';
- return '<li class="'+(dn?"dn":rd?"rdy":"bag")+(U.just[o.id]?" just":"")+'" data-name="'+esc(o.name.toLowerCase())+'"><button class="ck press" data-a="'+(dn?"unpu":"pu")+'" data-id="'+o.id+'" aria-label="'+(dn?"Undo picked up for ":"Mark picked up: ")+esc(o.name)+'" aria-pressed="'+dn+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9"/></svg></button>'+
+ return '<li style="view-transition-name:o'+o.id+'" class="'+(dn?"dn":rd?"rdy":"bag")+(U.just[o.id]?" just":"")+'" data-name="'+esc(o.name.toLowerCase())+'"><button class="ck press" data-a="'+(dn?"unpu":"pu")+'" data-id="'+o.id+'" aria-label="'+(dn?"Undo picked up for ":"Mark picked up: ")+esc(o.name)+'" aria-pressed="'+dn+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9"/></svg></button>'+
   '<button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+(fresh?'<span class="fresh">Just added</span>':'')+unreadDot(th)+(o.note?'<span class="nflag">note</span>':'')+'</span><span class="its1">'+itemsShort(o,ix)+'</span></button>'+pill+
   '<span class="amt">'+money(tot)+'<small class="'+(o.paid?"pd":"due")+'">'+(o.paid?"paid":dn?"":"collect")+'</small></span></li>'}
 function oneHTML(o){
@@ -1825,7 +1875,9 @@ var C={};
 document.addEventListener("click",function(e){
  var t=e.target.closest("[data-a],[data-tab]");if(!t)return;
  if(t.dataset.tab&&!t.dataset.a){closeZoom();closeDrawer();switchTab(t.dataset.tab);return}
- var a=t.dataset.a;if(C[a])C[a](t,e);
+ var a=t.dataset.a;if(!C[a])return;
+ if(MORPH[a]&&!(a==="st"&&U.zoom)){var dir=a==="wk"||a==="cm"?(+t.dataset.d<0?"back":"fwd"):"same";if(vt(function(){C[a](t,e)},dir))return}
+ C[a](t,e);
 });
 C.out=function(){try{localStorage.removeItem("anitas-staff")}catch(e){}SY.mode="";SY.queue=[];closeZoom();closeDrawer();loginView()};
 C.reset=function(t){if(U.sure!=="reset"){arm("reset");t.textContent="Tap again to reset everything";return}U.sure="";t.textContent="Reset sample data";op({t:"reset"});U.menu=null;closeZoom();closeDrawer();render();toast(SY.mode==="live"?"Sample data restored on every device":"Sample data restored")};
