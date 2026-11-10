@@ -1045,7 +1045,7 @@ function nextDropDate(){for(var i=0;i<70;i++){var d=addDays(TODAY,i);if(d<=TODAY
 function cdText(d){var now=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Moncton"})),end=parse(L.cutoff(d));end.setHours(23,59,59,0);var ms=end-now;if(ms<=0)return"Closed";var dd=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),sec=Math.floor(ms%6e4/1e3),p2=function(n){return String(n).padStart(2,"0")};return(dd?dd+"d ":"")+p2(h)+"h "+p2(m)+"m "+p2(sec)+"s"}
 function dropBar(){var d=nextDropDate();if(!d)return"";
  var hr=new Date().getHours(),hi=hr<12?"Good morning":hr<17?"Good afternoon":"Good evening";
- return '<p class="hello">'+hi+', Anita</p><div class="dropline"><p><span class="dk">Next drop</span><b>'+fd(d,{weekday:"long",month:"long",day:"numeric"})+'</b><span class="dk">Orders close Monday at midnight</span></p><p class="dacts2"><button class="u" data-a="bake" data-date="'+d+'">What to bake Thursday</button><button class="u" data-a="igpost" data-date="'+d+'">Make the Instagram post</button></p></div>'}
+ return '<p class="hello">'+hi+', Anita</p><div class="dropline"><p><span class="dk">Next drop</span><b>'+fd(d,{weekday:"long",month:"long",day:"numeric"})+'</b><span class="dk">Orders close Monday at midnight</span></p></div>'}
 setInterval(function(){var e=document.querySelector("[data-cdn]");if(e&&!document.hidden)e.textContent=cdText(e.getAttribute("data-cdn"))},1000);
 function weekView(){
  var ix=sizeIndex(),mon=monday(U.week),sun=addDays(mon,6),keys=weekKeys(U.week),h="";
