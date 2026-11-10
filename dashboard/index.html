@@ -1152,6 +1152,27 @@ li.rdy .ck{border-color:var(--blue)}
 .who{margin:0 0 16px}
 @media(max-width:1100px){.pks,.pks.n4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.pks,.pks.n2,.pks.n4{grid-template-columns:1fr}.pk{min-height:0}}
+
+/* ===== v27: back to the open-column look, keeping the ready pills ===== */
+.pks,.pks.n2,.pks.n4{gap:0 clamp(32px,4.5vw,60px);margin-top:20px}
+.pk,.pk.off{background:none;border-radius:0;padding:0;min-height:0}
+.pkh{grid-template-columns:auto 1fr auto;align-items:end;gap:14px;padding-bottom:14px;border-bottom:1px solid rgba(42,28,19,.55)}
+.pkt{font-size:2rem}
+.pkn b{font-size:1.05rem}
+.pk.off .pkh{border-bottom-color:rgba(42,28,19,.25)}
+.pk.off .pkn small{color:#8a5a00}
+.pks2{display:none}
+.pk .pl li{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"c r a" "c p a";gap:2px 14px;padding:12px 0}
+.pk .pl li .ck{width:40px;height:40px;align-self:center}
+.pk .pl li .pill{margin-top:6px;padding:4px 10px;font-size:.75rem}
+.pk .pempty{display:block;border:0;border-radius:0;padding:16px 0;margin:0;color:#a8957f;font-size:.9rem;border-bottom:1px solid var(--line)}
+.pfoot2{margin-top:0;padding-top:14px}
+.prog{margin:18px 0 6px}
+.who{width:220px;margin:0 0 0 auto}
+@media(max-width:800px){.who{width:100%;margin:0}}
+.pk{display:block!important}
+.pk .pempty{flex:none}
+.pkw .wkhead>.wkr{justify-self:end}
 </style>
 </head>
 <body>
@@ -1378,28 +1399,27 @@ function weekView(){
  var dl=[];keys.forEach(function(k){var d=k.split("|")[0];if(dl.indexOf(d)<0)dl.push(d)});
  var title=dl.length===1?wkd(dl[0])+', '+fd(dl[0],{month:"long",day:"numeric"}):short(mon)+' to '+short(addDays(mon,6));
  var sub2=U.week===0?"This week’s bread drop":U.week===1?"Next week’s bread drop":U.week===-1?"Last week’s bread drop":'<button class="u" data-a="wk0">Back to this week</button>';
- h+='<div class="wkhead"><button class="u arr" data-a="wk" data-d="-1">‹ '+short(addDays(mon,-4))+'</button><div class="wkmid"><h2>'+title+'</h2><small>'+sub2+'</small></div><button class="u arr" data-a="wk" data-d="1">'+short(addDays(mon,10))+' ›</button></div>';
+ h+='<div class="wkhead"><button class="u arr" data-a="wk" data-d="-1">‹ '+short(addDays(mon,-4))+'</button><div class="wkmid"><h2>'+title+'</h2><small>'+sub2+'</small></div><div class="wkr"><button class="btn press" data-a="add">+ Add an order</button><button class="u arr" data-a="wk" data-d="1">'+short(addDays(mon,10))+' ›</button></div></div>';
  if(pend.length)h+='<section class="pend2"><h3>Waiting for your yes <span>'+pend.length+'</span></h3><ul>'+pend.map(function(o){return '<li data-name="'+esc(o.name.toLowerCase())+'"><button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+'</span><span class="its1">'+itemsShort(o,ix)+'</span><span class="wh">'+esc(stopName(o.point))+' · '+money(oTotal(o,ix))+'</span></button><button class="btn sm press" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm</button></li>'}).join("")+'</ul></section>';
  var kset={};PORDER.forEach(function(k){var P=PT(k),d=addDays(mon,(((P.days||[4])[0])+6)%7);kset[d+"|"+k]=1});keys.forEach(function(k){kset[k]=1});
  var stops=Object.keys(kset).map(function(k){var p=k.split("|");return {k:k,d:p[0],pt:p[1],P:PT(p[1]),list:groupOrders(k).filter(function(o){return live(o)&&!(o.pending&&o.status==="new")})}})
   .filter(function(x){return x.P.on||x.list.length||PORDER.indexOf(x.pt)>-1}).sort(function(a,b){return PORDER.indexOf(a.pt)-PORDER.indexOf(b.pt)||(a.d<b.d?-1:1)});
  var A=[];stops.forEach(function(x){A=A.concat(x.list)});
  var cnt=function(L,st){return L.filter(function(o){return o.status===st}).length},owe=function(L){return L.filter(function(o){return o.status!=="done"&&!o.paid}).reduce(function(a,o){return a+oTotal(o,ix)},0)};
- h+='<div class="tiles"><div class="t-bag"><b>'+cnt(A,"new")+'</b><span>To bag</span></div><div class="t-rdy"><b>'+cnt(A,"packed")+'</b><span>Bag ready</span></div><div class="t-dn"><b>'+cnt(A,"done")+'</b><span>Picked up</span></div><div class="t-owe"><b>'+money(owe(A))+'</b><span>To collect</span></div></div>';
- if(A.length>5)h+='<input id="who" class="who" type="search" placeholder="Find a name" autocomplete="off" value="'+esc(U.who||"")+'">';
+ var dnA=cnt(A,"done"),oweA=owe(A);
+ if(A.length)h+='<div class="prog"><div class="pbar"><i style="width:'+Math.round(dnA/A.length*100)+'%"></i></div><p><b>'+dnA+' of '+A.length+'</b> picked up'+(oweA?' · <b>'+money(oweA)+'</b> still to collect':' · all paid')+'</p>'+(A.length>5?'<input id="who" class="who" type="search" placeholder="Find a name" autocomplete="off" value="'+esc(U.who||"")+'">':'')+'</div>';
  var srt=function(a,b){return a.name.localeCompare(b.name)};
  h+='<div class="pks n'+stops.length+' '+U.dir+'">';
  stops.forEach(function(x){
   var L2=x.list,toBag=L2.filter(function(o){return o.status==="new"}).sort(srt),ready=L2.filter(function(o){return o.status==="packed"}).sort(srt),done=L2.filter(function(o){return o.status==="done"}).sort(srt);
-  h+='<section class="pk'+(x.P.on?'':' off')+'"><button class="pkh" data-a="zoom" data-k="'+x.k+'"><span class="pkn"><b>'+esc(stopName(x.pt))+'</b><small>'+esc(placeOnly(x.P))+'</small></span><span class="pkt">'+esc(startTime(x.P)||wkd(x.d))+'</span></button>';
-  h+='<p class="pks2">'+(x.P.on?'':'<span class="offl">Off for the season</span>')+(L2.length?'<span>'+toBag.length+' to bag</span><span>'+ready.length+' ready</span><span>'+done.length+' picked up</span>':'')+'</p>';
+  h+='<section class="pk'+(x.P.on?'':' off')+'"><button class="pkh" data-a="zoom" data-k="'+x.k+'"><span class="pkt">'+esc((startTime(x.P)||"").replace(/ ?pm$/,"")||wkd(x.d))+'</span><span class="pkn"><b>'+esc(stopName(x.pt))+'</b><small>'+(x.P.on?esc(placeOnly(x.P)):'Off for the season')+'</small></span><span class="pkc">'+(L2.length?done.length+' of '+L2.length+' picked up':'')+'</span></button>';
   h+='<ul class="pl">'+toBag.concat(ready).map(function(o){return rowPU(o,ix)}).join("")+'</ul>';
-  if(!L2.length)h+='<p class="pempty">No orders</p>';
+  if(!L2.length)h+='<p class="pempty">No orders yet</p>';
   if(done.length)h+='<details class="pdone"'+(toBag.length+ready.length?'':' open')+'><summary>Picked up ('+done.length+')</summary><ul class="pl">'+done.map(function(o){return rowPU(o,ix)}).join("")+'</ul></details>';
-  h+='<p class="pfoot2"><button class="u" data-a="add" data-date="'+x.d+'" data-pt="'+x.pt+'">+ Add an order</button></p></section>';
+  h+='<p class="pfoot2"><button class="u" data-a="add" data-date="'+x.d+'" data-pt="'+x.pt+'">+ New order for '+esc(stopName(x.pt))+'</button></p></section>';
  });
  h+='</div>';
- h+='<p class="foot"><span>Tap the yellow pill when a bag is ready. Tick the circle when they pick it up.</span><button class="lnk" data-a="pts">Pickup days</button></p></div>';
+ h+='<p class="foot"><span>Tick the circle when someone picks up. Tap a name for details.</span><button class="lnk" data-a="pts">Pickup days</button></p></div>';
  U.dir="";return h;
 }
 function stopName(k){return PT(k).name.replace(" bread drop","")}
