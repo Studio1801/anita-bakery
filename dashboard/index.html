@@ -748,6 +748,32 @@ header.top{border-bottom:1px solid rgba(42,28,19,.18)}
 .day{background:#f8f4ec}
 .ol>li{border-bottom:1px solid rgba(42,28,19,.22)}
 .ob.pend{box-shadow:inset 4px 0 0 #2c4a8e}
+
+/* ===== v15: order popup, one button per order ===== */
+.z2{max-width:640px;padding:22px 24px 26px}
+.z2 .back{display:inline-block;margin-bottom:10px}
+.z2 .zt h2{font-family:"Caslon",Georgia,serif;font-weight:400;font-size:2rem;letter-spacing:-.03em;line-height:1.05}
+.z2 .zt p{margin-top:6px;font-family:"Albert",system-ui,sans-serif;font-size:.95rem;color:#2a1c13}
+.z2 .zt .mute{color:#5a402d;margin-left:6px}
+.z2 .zl{display:flex;gap:22px;flex-wrap:wrap;margin-top:12px}
+.z2l{list-style:none;padding:0;margin:18px 0 0;border-top:2px solid #2a1c13}
+.z2l>li{padding:16px 0 14px;border-bottom:1px solid rgba(42,28,19,.25);background:none;border-left:0;border-radius:0;box-shadow:none;margin:0}
+.z2l>li.isnew{background:rgba(215,189,149,.5);box-shadow:inset 4px 0 0 #2c4a8e;padding-left:14px;padding-right:10px}
+.z2r{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.z2r .nm{font-family:"Kalam","Hand",cursive;font-weight:700;font-size:1.4rem;line-height:1.15;color:#1c120b}
+.z2r .tt{font-family:"Albert",sans-serif;font-weight:600;font-size:.95rem}
+.z2i{font-family:"Albert",sans-serif;font-size:.98rem;line-height:1.4;margin-top:3px;color:#2a1c13}
+.z2n{font-family:"Hand",cursive;font-size:1.25rem;color:#2c4a8e;margin-top:6px;line-height:1.2}
+.z2m{display:flex;gap:16px;flex-wrap:wrap;font-family:"Albert",sans-serif;font-size:.9rem;color:#4a3524;margin-top:4px}
+.z2m a{color:#2a1c13;text-underline-offset:3px}
+.z2a{display:flex;align-items:center;gap:20px;margin-top:12px;flex-wrap:wrap}
+.z2a .btn{min-height:46px;padding:0 1.6rem;font-size:1rem}
+.z2more{margin-left:auto}
+.z2ok{font-family:"Albert",sans-serif;font-weight:600;font-size:.95rem;color:#2c4a8e}
+.z2l>li.dim .nm,.z2l>li.dim .z2i{color:#9b8a74}
+.z2e{margin-top:20px;font-family:"Albert",sans-serif;color:#5a402d}
+.z2 .u{font-family:"Albert",sans-serif}
+.z2l>li{border:0!important;border-bottom:1px solid rgba(42,28,19,.25)!important;background:transparent}.z2l>li.isnew{background:rgba(215,189,149,.5)}
 </style>
 </head>
 <body>
@@ -992,35 +1018,33 @@ function weekView(){
 
 function zoomHTML(k){
  var ix=sizeIndex(),p=k.split("|"),pt=PT(p[1]),list=groupOrders(k),lv=list.filter(live),tot=lv.reduce(function(a,o){return a+oTotal(o,ix)},0),cl=isClosed(k),fut=p[0]>=TODAY;
- var h='<div class="zoom" role="dialog" aria-modal="true" aria-labelledby="zt"><div class="scrim" data-a="unzoom"></div><div class="zbox"><button class="back lnk press" data-a="unzoom">Back to week</button>'+
-  '<div class="zt"><div><h2 id="zt">'+longd(p[0])+'</h2><p>'+pt.name+', '+esc(pt.place)+(pt.hours?", "+pt.hours:"")+'</p><p>'+(lv.length?plural(lv.length,"order")+", "+lv.reduce(function(a,o){return a+oCount(o)},0)+" items, "+money(tot):"Nothing booked yet")+(fut&&pt.cap?' · '+lv.length+' of '+pt.cap+' online spots taken':'')+'</p></div>'+
-  '<div class="acts"><button class="lnk press" data-a="pack" data-k="'+k+'">Pack list</button><button class="btn press" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">Add an order</button></div></div>'+
-  (fut?'<div class="closer"><button class="tg press'+(cl?" off":"")+'" data-a="close" data-k="'+k+'" role="switch" aria-checked="'+(!cl)+'" aria-label="Open for online orders"></button><span><b>'+(cl?"Closed to online orders":"Open to online orders")+'</b><small>'+(cl?"The website won't offer this day. Orders you add by hand still work.":"Switch off when you're fully booked. The website stops offering this day straight away.")+'</small></span></div>':'')+
-  '<ul class="ent">';
+ var h='<div class="zoom" role="dialog" aria-modal="true" aria-labelledby="zt"><div class="scrim" data-a="unzoom"></div><div class="zbox z2"><button class="back u" data-a="unzoom">‹ Back to week</button>'+
+  '<div class="zt"><h2 id="zt">'+wkd(p[0])+', '+short(p[0])+'</h2><p>'+esc(pt.name)+(pt.hours?", "+pt.hours:"")+' <span class="mute">'+(lv.length?plural(lv.length,"order")+", "+money(tot):"no orders yet")+'</span></p>'+
+  '<p class="zl"><button class="u" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ New order</button><button class="u" data-a="pack" data-k="'+k+'">Pack list</button>'+(fut?'<button class="u" data-a="close" data-k="'+k+'">'+(cl?"Open to online orders":"Close to online orders")+'</button>':'')+'</p></div>'+
+  '<ul class="ent z2l">';
  list.forEach(function(o){
-  var st=o.status,gone=!live(o),pend=o.pending&&st==="new"&&!gone,th=threadOf(o);
-  h+='<li class="'+(pend?"isnew ":"")+(gone||st==="done"?"dim ":"")+(U.just[o.id]?"just":"")+'" id="o'+o.id+'"><div class="eb"><div class="eid"><b>'+money(oTotal(o,ix)).replace(".00","")+'</b><span>#'+o.id+'</span></div><div class="ec">'+
-   '<div class="nm">'+esc(o.name)+chipFor(o)+(o.paid||gone?'':'<span class="chip warn">Not paid</span>')+'</div><div class="its">'+itemsHTML(o,ix,true)+'</div>'+
-   (o.note?'<p class="note" style="white-space:pre-line"><b>Note: </b>'+esc(o.note)+'</p>':'')+
-   (o.declined?'<p class="note">Told the customer: '+esc(o.declined)+'</p>':'')+
-   '<div class="meta">'+(o.slot?'<span>'+esc(o.slot)+'</span>':'')+(o.loc?'<span>'+esc(o.loc)+'</span>':'')+(o.source==="online"?'':'<span>Added by hand</span>')+(o.phone?'<a href="tel:'+esc(o.phone.replace(/[^\d+]/g,""))+'">'+esc(o.phone)+'</a><a class="sms" href="sms:'+esc(o.phone.replace(/[^\d+]/g,""))+'?&body='+encodeURIComponent(smsText(o))+'">Text '+esc(o.name.split(" ")[0])+'</a>':'')+(o.email?'<a href="mailto:'+esc(o.email)+'">'+esc(o.email)+'</a>':'')+'</div></div></div><div class="ea">';
+  var st=o.status,gone=!live(o),pend=o.pending&&st==="new"&&!gone;
+  h+='<li class="'+(pend?"isnew ":"")+(gone||st==="done"?"dim ":"")+(U.just[o.id]?"just":"")+'" id="o'+o.id+'">'+
+   '<div class="z2r"><span class="nm">'+esc(o.name)+'</span><span class="tt">'+money(oTotal(o,ix))+'</span></div>'+
+   '<div class="z2i">'+o.items.map(function(i){var l=itemLabel(i,ix);return esc(l.n)+(l.z?" ("+esc(l.z)+")":"")+(i.q>1?" ×"+i.q:"")}).join(", ")+'</div>'+
+   (o.note?'<p class="z2n">'+esc(o.note)+'</p>':'')+
+   (o.declined?'<p class="z2n">Told the customer: '+esc(o.declined)+'</p>':'')+
+   '<div class="z2m">'+(o.phone?'<a href="tel:'+esc(o.phone.replace(/[^\d+]/g,""))+'">'+esc(o.phone)+'</a>':'')+(o.paid||gone?'':'<span>not paid</span>')+(gone?'<span>'+(o.declined?"declined":"cancelled")+'</span>':'')+'</div><div class="z2a">';
   if(U.decl===o.id){
    h+='<div class="decl"><span class="lab" style="margin:0 0 8px">Tell '+esc(o.name.split(" ")[0])+' why</span><div class="segs">'+["We're fully booked that day.","One of the items is sold out.","That's too short notice for us."].map(function(r){return '<button class="seg press" data-a="dreason" data-r="'+esc(r)+'">'+esc(r)+'</button>'}).join("")+'</div>'+
-    '<input class="uin" id="dwhy" placeholder="Or write your own reason" maxlength="300"><div class="dacts"><button class="btn sm press" data-a="decline" data-id="'+o.id+'" style="background:var(--bad)">Send and decline</button><button class="lnk press" data-a="undecl">Keep the order</button></div></div>';
+    '<input class="uin" id="dwhy" placeholder="Or write your own reason" maxlength="300"><div class="dacts"><button class="btn sm press" data-a="decline" data-id="'+o.id+'">Send and decline</button><button class="u" data-a="undecl">Keep the order</button></div></div>';
   }else{
-   if(pend)h+='<button class="btn sm press gold" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm order</button><button class="lnk press" data-a="decl" data-id="'+o.id+'">Can’t take it</button>';
-   else if(st==="new"&&!gone)h+='<button class="btn sm press" data-a="st" data-id="'+o.id+'" data-s="packed">Mark packed</button>';
-   if(st==="packed")h+='<button class="btn sm press" data-a="st" data-id="'+o.id+'" data-s="done">'+pt.done+'</button><button class="lnk press" data-a="st" data-id="'+o.id+'" data-s="new">Not packed yet</button>';
-   if(st==="done")h+='<button class="lnk press" data-a="st" data-id="'+o.id+'" data-s="packed">Undo '+pt.done.toLowerCase()+'</button>';
-   if(st==="cancelled"&&o.by!=="customer")h+='<button class="lnk press" data-a="st" data-id="'+o.id+'" data-s="new">Restore order</button>';
-   if(!o.paid&&!gone)h+='<button class="lnk press" data-a="paid" data-id="'+o.id+'">Mark paid</button>';
-   if(th)h+='<button class="lnk press" data-a="chat" data-t="'+esc(th.id)+'">Chat'+unreadDot(th)+'</button>';
-   h+='<button class="lnk press" data-a="edit" data-id="'+o.id+'">Details</button>';
+   if(pend)h+='<button class="btn press" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm</button><button class="u" data-a="decl" data-id="'+o.id+'">Can’t take it</button>';
+   else if(st==="new"&&!gone)h+='<button class="btn press" data-a="st" data-id="'+o.id+'" data-s="packed">Packed</button>';
+   else if(st==="packed")h+='<button class="btn press" data-a="st" data-id="'+o.id+'" data-s="done">Picked up</button><button class="u" data-a="st" data-id="'+o.id+'" data-s="new">Undo</button>';
+   else if(st==="done")h+='<span class="z2ok">Picked up</span><button class="u" data-a="st" data-id="'+o.id+'" data-s="packed">Undo</button>';
+   else if(st==="cancelled"&&o.by!=="customer")h+='<button class="u" data-a="st" data-id="'+o.id+'" data-s="new">Restore</button>';
+   if(!o.paid&&!gone)h+='<button class="u" data-a="paid" data-id="'+o.id+'">Mark paid</button>';
+   h+='<button class="u z2more" data-a="edit" data-id="'+o.id+'">Edit</button>';
   }
   h+='</div></li>';
  });
- h+='</ul>'+(list.length?'':'<div class="empty" style="border:1px dashed var(--line);border-radius:0;margin-top:18px"><p class="serif" style="font-size:1.4rem;font-style:italic">Nothing booked for this pickup.</p></div>')+
-  '<div class="zx"><button class="lnk mute press" data-a="totals">Week totals</button></div></div></div>';
+ h+='</ul>'+(list.length?'':'<p class="z2e">Nothing booked for this pickup yet.</p>')+'</div></div>';
  return h;
 }
 
