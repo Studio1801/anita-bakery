@@ -834,6 +834,58 @@ body::before{display:block!important;content:"";position:fixed;inset:0;pointer-e
 .empty .hand2{font-size:1.3rem}
 @media(max-width:800px){.hello{margin:18px 0 -8px}.wkr{grid-area:b;gap:14px}.wkr .btn{position:fixed;right:16px;bottom:16px;z-index:40;box-shadow:0 8px 20px -8px rgba(29,24,19,.5);min-height:48px;border-radius:99px}}
 .wkhead .arr,.dacts2 .u,.wkr .btn{white-space:nowrap}
+/* ===== v18: Anita's paper and ink, still built for reading ===== */
+:root{--bg:#eee8dc;--card:#fbf8f2;--ink:#2a1c13;--mute:#6d513a;--line:rgba(42,28,19,.13);--line2:rgba(42,28,19,.24);--kraft:#d7bd95;--blue:#2c4a8e;--forest:#2a1c13;--primary:#2a1c13;--accent:#2a1c13}
+html,body{background:var(--bg);color:var(--ink)}
+body::before{opacity:.07!important}
+header.top{background:var(--bg);border-bottom:1px solid var(--line2)}
+.hin .wm{font-size:1.6rem}
+.loafm{color:var(--ink)}
+/* tabs: bigger targets, active one underlined in Anita's blue pen */
+#tabs{gap:6px}
+#tabs button{font-size:1rem;font-weight:500;color:var(--mute);padding:18px 14px 20px;border-radius:0}
+#tabs button:hover{color:var(--ink)}
+#tabs button.on{color:var(--ink);font-weight:600}
+.tabbar{height:7px!important;bottom:6px!important;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6c20-4 44-5 64-2s38 1 52-2' fill='none' stroke='%232c4a8e' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat!important}
+.cnt{background:var(--blue)}
+.hr .wl,.hr button{color:var(--mute)}
+/* buttons are Anita's rye pills, like the website */
+.btn,.btn.gold,.btn.sm{background:var(--ink);color:#fbf8f2;border-radius:99px;padding:0 22px;min-height:42px}
+.u{border-bottom-color:rgba(42,28,19,.3)}
+/* next drop */
+.hello{color:var(--blue)}
+.dropline b{font-style:italic;font-size:1.7rem;color:var(--ink);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6c20-4 44-5 64-2s38 1 52-2' fill='none' stroke='%232c4a8e' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") bottom/100% .22em no-repeat;padding-bottom:.12em}
+.dk{color:var(--mute);font-size:.9rem}
+.need:not(.hot){background:rgba(42,28,19,.07)!important;color:var(--ink)!important}
+/* week nav: real buttons, easy to hit */
+.wkhead>.arr,.wkr .arr{font-size:.92rem;font-weight:600;color:var(--ink);border:1px solid var(--line2)!important;border-radius:99px;padding:9px 16px!important;background:rgba(251,248,242,.6)!important}
+.wkhead>.arr:hover,.wkr .arr:hover{background:var(--card)!important;border-color:var(--ink)!important}
+.wkmid h2{font-size:1.8rem}
+.wkmid small{color:var(--mute);font-size:.85rem}
+/* cards: crumb paper with a kraft label on top, like a bread bag */
+.board{gap:22px}
+.day{background:var(--card);border:1px solid var(--line2)!important;border-radius:14px;box-shadow:0 1px 0 rgba(42,28,19,.04),0 10px 26px -18px rgba(42,28,19,.35)}
+.dh{background:rgba(215,189,149,.38)!important;border-bottom:1px solid var(--line2);padding:18px 22px 15px}
+.dpl{font-size:1.75rem}
+.dmeta{color:#5a402d;font-size:.88rem}
+.ob{padding:15px 22px}
+.ob:hover{background:rgba(215,189,149,.14)}
+.ob .nm{font-size:1.02rem;color:var(--ink)}
+.ob .tt{color:var(--ink)}
+.its1{color:#5a402d;font-size:.9rem}
+.ol>li{border-bottom:1px solid var(--line)}
+.nflag{background:rgba(44,74,142,.1);color:var(--blue)}
+.newo{color:var(--blue);font-weight:600}
+.newo:hover{color:var(--ink)}
+.ob.dim .nm,.ob.dim .its1,.ob.dim .tt{color:#a8957f}
+.chip.packed{color:var(--blue)!important}
+/* popups and pages pick up the same paper */
+.zbox,.sheet,.z2{background:var(--card)!important}
+.clist,.panel{background:var(--card);border-color:var(--line2)!important}
+.cd2 b{color:var(--ink)}
+.cmeta{color:#5a402d}
+@media(max-width:800px){#tabs{gap:0;margin:0 -10px}#tabs button{padding:12px 10px 14px}.wkhead>.arr,.wkr .arr{padding:8px 13px!important}}
+.wkhead .arr{width:auto!important;height:auto!important;min-width:0!important;display:inline-flex!important;align-items:center;line-height:1.2}
 </style>
 </head>
 <body>
@@ -1005,7 +1057,7 @@ function renderTabs(){
  placeBar();
  var n=c.pend+c.msg+c.cat;document.title=n?"("+n+") Anita’s Orders":"Anita’s Orders";
 }
-function placeBar(){var b=$('#tabs [data-tab="'+U.tab+'"]'),bar=$("#tabbar");if(!b||!bar)return;bar.style.width=b.offsetWidth+"px";bar.style.transform="translateX("+b.offsetLeft+"px)"}
+function placeBar(){var b=$('#tabs [data-tab="'+U.tab+'"]'),bar=$("#tabbar");if(!b||!bar)return;bar.style.width=(b.offsetWidth-28)+"px";bar.style.transform="translateX("+(b.offsetLeft+14)+"px)"}
 window.addEventListener("resize",placeBar);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(placeBar);
 function render(){
