@@ -1227,7 +1227,7 @@ function chipFor(o){var pt=PT(o.point);
  if(o.declined)return '<span class="chip warn">Declined</span>';
  if(o.status==="cancelled")return '<span class="chip warn">'+(o.by==="customer"?"Cancelled by customer":"Cancelled")+'</span>';
  if(o.pending&&o.status==="new")return '<span class="chip ask">New, needs a yes</span>';
- return o.status==="new"?'<span class="chip new">To pack</span>':o.status==="packed"?'<span class="chip packed">Packed</span>':'<span class="chip done">'+pt.done+'</span>'}
+ return o.status==="new"?'<span class="chip new">Not ready yet</span>':o.status==="packed"?'<span class="chip packed">Ready</span>':'<span class="chip done">'+pt.done+'</span>'}
 function itemsHTML(o,ix,big){return o.items.map(function(i){var l=itemLabel(i,ix);return '<div><b style="font-weight:'+(big?500:600)+'">'+esc(l.n)+'</b><span>'+(l.z?" · "+esc(l.z):"")+" × "+i.q+'</span></div>'}).join("")}
 function smsText(o){var p=PT(o.point),f=o.name.split(" ")[0];if(o.status==="packed")return"Hi "+f+", your Anita\u2019s order is bagged and ready! "+p.place+", "+p.hours+". See you soon.";return"Hi "+f+", it\u2019s Anita\u2019s Little Loaf about your order #"+o.id+" for "+longd(o.date)+"."}
 function threadOf(o){return L.threadForOrder(S,o.id)}
@@ -1258,19 +1258,19 @@ function weekView(){
    (cl||full?'<div class="place"><span class="chip warn">'+(cl?"Closed online":"Full online")+'</span></div>':'')+'<ul class="ol">';
   list.forEach(function(o){var dim=o.status==="done"||!live(o),th=threadOf(o),pend=o.pending&&o.status==="new"&&live(o);
    var its=o.items.map(function(i){var l=itemLabel(i,ix);return esc(l.n)+(i.q>1?' ×'+i.q:'')}).join(", ");
-   var st=pend?'<span class="chip ask">Needs a yes</span>':o.declined?'<span class="chip warn">Declined</span>':o.status==="cancelled"?'<span class="chip warn">Cancelled</span>':o.status==="new"?'':o.status==="packed"?'<span class="chip packed">Packed</span>':'<span class="chip done">'+PT(o.point).done+'</span>';
+   var st=pend?'<span class="chip ask">Needs a yes</span>':o.declined?'<span class="chip warn">Declined</span>':o.status==="cancelled"?'<span class="chip warn">Cancelled</span>':o.status==="new"?'':o.status==="packed"?'<span class="chip packed">Ready</span>':'<span class="chip done">'+PT(o.point).done+'</span>';
    h+='<li><button class="ob'+(dim?" dim":"")+(pend?" pend":"")+'" data-a="zoom" data-k="'+k+'" data-o="'+o.id+'"><span class="r1"><span class="nm">'+esc(o.name)+unreadDot(th)+(o.note?'<span class="nflag" title="Has a note">note</span>':'')+'</span><span class="tt">'+money(oTotal(o,ix))+'</span></span><span class="its1">'+its+'</span>'+(st||(!o.paid&&live(o)?'':''))+(st?'':'')+'</button></li>'});
   if(!list.length)h+='<li class="empty"><span class="hand2">quiet so far, nothing booked yet</span></li>';
   h+='</ul><button class="newo" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ New order</button></section>';
  });
- h+='</div><p class="foot"><span>Tap a customer to confirm, pack or mark picked up.</span><button class="lnk" data-a="totals">Week totals</button><button class="lnk" data-a="pts">Pickup days</button></p>';
+ h+='</div><p class="foot"><span>Tap a customer to confirm, mark ready or picked up.</span><button class="lnk" data-a="totals">Week totals</button><button class="lnk" data-a="pts">Pickup days</button></p>';
  U.dir="";
  return h;
 }
 
 function oneHTML(o){
  var ix=sizeIndex(),pt=PT(o.point),st=o.status,gone=!live(o),pend=o.pending&&st==="new"&&!gone,tot=oTotal(o,ix);
- var lab=gone?(o.declined?"Declined":"Cancelled"):pend?"Needs a yes":st==="new"?"To pack":st==="packed"?"Packed, waiting for pickup":pt.done;
+ var lab=gone?(o.declined?"Declined":"Cancelled"):pend?"Needs a yes":st==="new"?"Not ready yet":st==="packed"?"Ready for pickup":pt.done;
  var tel=o.phone?esc(o.phone.replace(/[^\d+]/g,"")):"";
  var h='<div class="zoom one" role="dialog" aria-modal="true" aria-labelledby="zt"><div class="scrim" data-a="unzoom"></div><div class="zbox z1"><button class="x1" data-a="unzoom" aria-label="Close">✕</button>'+
   '<span class="s1 st1-'+(gone?"gone":pend?"pend":st)+'">'+esc(lab)+'</span><h2 id="zt">'+esc(o.name)+'</h2>'+
@@ -1281,8 +1281,8 @@ function oneHTML(o){
  if(U.decl===o.id){
   h+='<div class="decl"><span class="lab" style="margin:0 0 8px">Tell '+esc(o.name.split(" ")[0])+' why</span><div class="segs">'+["We're fully booked that day.","One of the items is sold out.","That's too short notice for us."].map(function(r){return '<button class="seg press" data-a="dreason" data-r="'+esc(r)+'">'+esc(r)+'</button>'}).join("")+'</div><input class="uin" id="dwhy" placeholder="Or write your own reason" maxlength="300"><div class="dacts"><button class="btn press" data-a="decline" data-id="'+o.id+'">Send and decline</button><button class="u" data-a="undecl">Keep the order</button></div></div>';
  }else if(pend)h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm order</button><button class="u" data-a="decl" data-id="'+o.id+'">Can’t take it</button>';
- else if(st==="new"&&!gone)h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="packed">Mark packed</button>';
- else if(st==="packed")h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="done">'+esc(pt.done)+'</button><button class="u" data-a="st" data-id="'+o.id+'" data-s="new">Not packed yet</button>';
+ else if(st==="new"&&!gone)h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="packed">Ready for pickup</button>';
+ else if(st==="packed")h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="done">'+esc(pt.done)+'</button><button class="u" data-a="st" data-id="'+o.id+'" data-s="new">Not ready yet</button>';
  else if(st==="done")h+='<p class="ok1">✓ '+esc(pt.done)+'</p><button class="u" data-a="st" data-id="'+o.id+'" data-s="packed">Undo</button>';
  else if(st==="cancelled"&&o.by!=="customer")h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="new">Restore order</button>';
  return h+'</div><p class="e1"><button class="u" data-a="edit" data-id="'+o.id+'">Edit order</button></p></div></div>';
@@ -1292,7 +1292,7 @@ function zoomHTML(k){
  var ix=sizeIndex(),p=k.split("|"),pt=PT(p[1]),list=groupOrders(k),lv=list.filter(live),tot=lv.reduce(function(a,o){return a+oTotal(o,ix)},0),cl=isClosed(k),fut=p[0]>=TODAY;
  var h='<div class="zoom" role="dialog" aria-modal="true" aria-labelledby="zt"><div class="scrim" data-a="unzoom"></div><div class="zbox z2"><button class="back u" data-a="unzoom">‹ Back to week</button>'+
   '<div class="zt"><h2 id="zt">'+wkd(p[0])+', '+short(p[0])+'</h2><p>'+esc(pt.name)+(pt.hours?", "+pt.hours:"")+' <span class="mute">'+(lv.length?plural(lv.length,"order")+", "+money(tot):"no orders yet")+'</span></p>'+
-  '<p class="zl"><button class="u" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ New order</button><button class="u" data-a="pack" data-k="'+k+'">Pack list</button>'+(fut?'<button class="u" data-a="close" data-k="'+k+'">'+(cl?"Open to online orders":"Close to online orders")+'</button>':'')+'</p></div>'+
+  '<p class="zl"><button class="u" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ New order</button><button class="u" data-a="pack" data-k="'+k+'">Pickup list</button>'+(fut?'<button class="u" data-a="close" data-k="'+k+'">'+(cl?"Open to online orders":"Close to online orders")+'</button>':'')+'</p></div>'+
   '<ul class="ent z2l">';
  list.forEach(function(o){
   var st=o.status,gone=!live(o),pend=o.pending&&st==="new"&&!gone;
@@ -1307,7 +1307,7 @@ function zoomHTML(k){
     '<input class="uin" id="dwhy" placeholder="Or write your own reason" maxlength="300"><div class="dacts"><button class="btn sm press" data-a="decline" data-id="'+o.id+'">Send and decline</button><button class="u" data-a="undecl">Keep the order</button></div></div>';
   }else{
    if(pend)h+='<button class="btn press" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm</button><button class="u" data-a="decl" data-id="'+o.id+'">Can’t take it</button>';
-   else if(st==="new"&&!gone)h+='<button class="btn press" data-a="st" data-id="'+o.id+'" data-s="packed">Packed</button>';
+   else if(st==="new"&&!gone)h+='<button class="btn press" data-a="st" data-id="'+o.id+'" data-s="packed">Ready for pickup</button>';
    else if(st==="packed")h+='<button class="btn press" data-a="st" data-id="'+o.id+'" data-s="done">Picked up</button><button class="u" data-a="st" data-id="'+o.id+'" data-s="new">Undo</button>';
    else if(st==="done")h+='<span class="z2ok">Picked up</span><button class="u" data-a="st" data-id="'+o.id+'" data-s="packed">Undo</button>';
    else if(st==="cancelled"&&o.by!=="customer")h+='<button class="u" data-a="st" data-id="'+o.id+'" data-s="new">Restore</button>';
@@ -1372,8 +1372,8 @@ function packHTML(k){
  var ix=sizeIndex(),p=k.split("|"),pt=PT(p[1]),list=groupOrders(k).filter(live),rows={},n=0;
  list.forEach(function(o){o.items.forEach(function(i){var l=itemLabel(i,ix);var r=rows[l.n]||(rows[l.n]={n:0,parts:{}});r.n+=i.q;n+=i.q;if(l.z)r.parts[l.z]=(r.parts[l.z]||0)+i.q})});
  var cnt=function(s){return list.filter(function(o){return o.status===s}).length};
- return '<p class="kick">Pack list</p><h2>'+wkd(p[0])+', '+pt.name.toLowerCase()+'</h2><div class="big">'+n+'</div><p class="mute">items across '+plural(list.length,"order")+'</p>'+
-  (list.length?'<p class="mute" style="margin-top:6px;font-size:.9rem">'+cnt("new")+' to pack, '+cnt("packed")+' packed, '+cnt("done")+' '+pt.doneVerb+'</p>':'')+
+ return '<p class="kick">Pickup list</p><h2>'+wkd(p[0])+', '+pt.name.toLowerCase()+'</h2><div class="big">'+n+'</div><p class="mute">items across '+plural(list.length,"order")+'</p>'+
+  (list.length?'<p class="mute" style="margin-top:6px;font-size:.9rem">'+cnt("new")+' not ready, '+cnt("packed")+' ready, '+cnt("done")+' '+pt.doneVerb+'</p>':'')+
   '<ul class="bl">'+Object.keys(rows).sort(function(a,b){return rows[b].n-rows[a].n}).map(function(nm){var r=rows[nm];return '<li><div class="r"><span>'+esc(nm)+'</span><span>'+r.n+'</span></div><small>'+Object.keys(r.parts).map(function(z){return r.parts[z]+" "+z.toLowerCase()}).join(", ")+'</small></li>'}).join("")+'</ul>'+
   (list.length?'':'<p class="mute" style="margin-top:16px">Nothing booked yet.</p>')+
   '<div class="dock"><button class="btn press" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">Write an order</button><button class="lnk press" data-a="dclose">Done</button></div>';
@@ -1612,7 +1612,7 @@ C.alerts=function(t){ALERT.on=!ALERT.on;try{localStorage.setItem("anitas-alerts"
 C.add=function(t){startForm(null,t.dataset.date,t.dataset.pt)};
 C.edit=function(t){startForm(find(t.dataset.id))};
 C.st=function(t){var o=find(t.dataset.id),s=t.dataset.s,pt=PT(o.point);if(!op({t:"status",id:o.id,s:s}))return;flash(o.id);refreshZoom();render();if(U.one&&s!=="new")setTimeout(closeZoom,650);
- toast(s==="confirm"?"Confirmed. "+o.name.split(" ")[0]+" sees it now":s==="packed"?o.name+" is packed"+(o.source==="online"?". They've been told":""):s==="done"?pt.done+": "+o.name:s==="new"?o.name+" is back to pack":"")};
+ toast(s==="confirm"?"Confirmed. "+o.name.split(" ")[0]+" sees it now":s==="packed"?o.name+" is ready for pickup"+(o.source==="online"?". They've been told":""):s==="done"?pt.done+": "+o.name:s==="new"?o.name+" is back to not ready":"")};
 C.decl=function(t){U.decl=+t.dataset.id;refreshZoom();var i=$("#dwhy");if(i)i.focus({preventScroll:true})};
 C.undecl=function(){U.decl=null;refreshZoom()};
 C.dreason=function(t){var i=$("#dwhy");if(i){i.value=t.dataset.r;i.focus()}};
