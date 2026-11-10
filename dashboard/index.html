@@ -811,6 +811,29 @@ main{max-width:1320px;padding:8px 40px 64px}
 .z2 .zt{display:block}
 .z2 .back{float:right;margin:4px 0 0 16px}
 .z2 .zt p{margin-top:4px}
+#view{transition:none!important;transform:none!important;opacity:1!important}
+#view.swap{animation:vswap .22s ease-out}
+@keyframes vswap{from{opacity:.35}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){#view.swap{animation:none}}
+.tabbar{transition:transform .3s cubic-bezier(.2,.8,.2,1),width .3s cubic-bezier(.2,.8,.2,1)!important}
+/* ===== v17: a little personality, yellow for what needs a yes ===== */
+@font-face{font-family:"Pen";src:url(../fonts/caveat-500.woff2) format("woff2");font-weight:400 700;font-display:swap}
+.hand2,.hello{font-family:"Pen",cursive!important;color:var(--blue);font-weight:500;letter-spacing:0}
+.hello{font-size:1.5rem;line-height:1;margin:26px 0 -14px;transform:rotate(-1.5deg);transform-origin:left;width:max-content}
+.loafm{width:26px;height:17px;margin-right:9px;vertical-align:-1px;fill:none;stroke:currentColor;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+body::before{display:block!important;content:"";position:fixed;inset:0;pointer-events:none;z-index:70;opacity:.045;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .2 0 0 0 0 .1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E")}
+.ob.pend,.ob.pend:hover{background:#fff4c4!important;box-shadow:inset 3px 0 0 #e7b416!important}
+.ob.pend:hover{background:#ffeea6!important}
+.chip.ask{color:#4d3900!important;background:linear-gradient(104deg,rgba(255,214,51,0) 1%,#ffd633 3%,#ffdd55 96%,rgba(255,214,51,0) 99%)!important;padding:1px 8px!important;border-radius:3px!important;transform:rotate(-1deg);display:inline-block}
+.z2l>li.isnew{background:#fff4c4!important;box-shadow:inset 3px 0 0 #e7b416!important}
+.clist>li.isnew{background:#fff4c4;box-shadow:inset 3px 0 0 #e7b416}
+.need.hot{background:#ffe27a!important;color:#3d2e00!important}
+.need.hot .pulse{background:#c78f00}
+.wkr{justify-self:end;display:flex;align-items:center;gap:22px}
+.empty{padding:18px 22px}
+.empty .hand2{font-size:1.3rem}
+@media(max-width:800px){.hello{margin:18px 0 -8px}.wkr{grid-area:b;gap:14px}.wkr .btn{position:fixed;right:16px;bottom:16px;z-index:40;box-shadow:0 8px 20px -8px rgba(29,24,19,.5);min-height:48px;border-radius:99px}}
+.wkhead .arr,.dacts2 .u,.wkr .btn{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -969,7 +992,7 @@ function counts(){
  return{week:S.orders.filter(function(o){return o.status==="new"&&live(o)&&(o.pending||o.date>=TODAY&&o.date<end)}).length,pend:pendingOrders().length,msg:unreadThreads().length,cat:S.catering.filter(function(c){return c.status==="new"}).length};
 }
 function appView(){
- root.innerHTML='<header class="top"><div class="hin"><span class="logo"><span class="wm">Anita\u2019s Little Loaf</span></span>'+
+ root.innerHTML='<header class="top"><div class="hin"><span class="logo"><span class="wm"><svg class="loafm" viewBox="0 0 64 40" aria-hidden="true"><path d="M6 34c0-15 11-26 26-26s26 11 26 26z"/><path d="M20 22c6-5 16-6 24 0"/></svg>Anita\u2019s Little Loaf</span></span>'+
   '<nav id="tabs" aria-label="Sections"></nav>'+
   '<div class="hr"><button class="alert-t press'+(ALERT.on?" on":"")+'" data-a="alerts" id="alertT">'+(ALERT.on?"Alerts on":"Alerts off")+'</button><span class="sync"><i></i></span>'+
   '<a class="wl" href="'+SITE+'" target="_blank" rel="noopener">View site ↗</a><button data-a="out">Sign out</button></div></div></header>'+
@@ -993,8 +1016,8 @@ function render(){
 }
 function switchTab(t){
  if(t===U.tab)return;U.tab=t;U.showPast=false;renderTabs();
- var v=$("#view");v.classList.add("out");
- setTimeout(function(){render();window.scrollTo(0,0);requestAnimationFrame(function(){v.classList.remove("out")})},240);
+ var v=$("#view");render();window.scrollTo(0,0);
+ v.classList.remove("swap");void v.offsetWidth;v.classList.add("swap");
 }
 
 /* ---------- week ---------- */
@@ -1021,7 +1044,8 @@ function isClosed(k){return !!S.closed[k]}
 function nextDropDate(){for(var i=0;i<70;i++){var d=addDays(TODAY,i);if(d<=TODAY)continue;if(TODAY>L.cutoff(d))continue;var ok=PORDER.some(function(k){var p=PT(k);return p.on&&(p.days||[]).indexOf(parse(d).getDay())>-1});if(ok)return d}return null}
 function cdText(d){var now=new Date(new Date().toLocaleString("en-US",{timeZone:"America/Moncton"})),end=parse(L.cutoff(d));end.setHours(23,59,59,0);var ms=end-now;if(ms<=0)return"Closed";var dd=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4),sec=Math.floor(ms%6e4/1e3),p2=function(n){return String(n).padStart(2,"0")};return(dd?dd+"d ":"")+p2(h)+"h "+p2(m)+"m "+p2(sec)+"s"}
 function dropBar(){var d=nextDropDate();if(!d)return"";
- return '<div class="dropline"><p><span class="dk">Next drop</span><b>'+fd(d,{weekday:"long",month:"long",day:"numeric"})+'</b><span class="dk">Orders close Monday at midnight</span></p><p class="dacts2"><button class="u" data-a="bake" data-date="'+d+'">Bake list</button><button class="u" data-a="igpost" data-date="'+d+'">Instagram post</button></p></div>'}
+ var hr=new Date().getHours(),hi=hr<12?"Good morning":hr<17?"Good afternoon":"Good evening";
+ return '<p class="hello">'+hi+', Anita</p><div class="dropline"><p><span class="dk">Next drop</span><b>'+fd(d,{weekday:"long",month:"long",day:"numeric"})+'</b><span class="dk">Orders close Monday at midnight</span></p><p class="dacts2"><button class="u" data-a="bake" data-date="'+d+'">What to bake Thursday</button><button class="u" data-a="igpost" data-date="'+d+'">Make the Instagram post</button></p></div>'}
 setInterval(function(){var e=document.querySelector("[data-cdn]");if(e&&!document.hidden)e.textContent=cdText(e.getAttribute("data-cdn"))},1000);
 function weekView(){
  var ix=sizeIndex(),mon=monday(U.week),sun=addDays(mon,6),keys=weekKeys(U.week),h="";
@@ -1033,7 +1057,7 @@ function weekView(){
   if(nc)todo.push('<button class="need u" data-tab="Catering">'+plural(nc,"catering request")+'</button>');
   if(todo.length)h+='<p class="needline">'+todo.join("")+'</p>';
  }
- h+='<div class="wkhead"><button class="u arr" data-a="wk" data-d="-1">‹ Last week</button><div class="wkmid"><h2>'+short(mon)+' to '+short(sun)+'</h2><small>'+(U.week===0?'This week':U.week===1?'Next week':U.week===-1?'Last week':'<button class="u" data-a="wk0">Back to this week</button>')+'</small></div><button class="u arr" data-a="wk" data-d="1">Next week ›</button></div>';
+ h+='<div class="wkhead"><button class="u arr" data-a="wk" data-d="-1">‹ Last week</button><div class="wkmid"><h2>'+short(mon)+' to '+short(sun)+'</h2><small>'+(U.week===0?'This week':U.week===1?'Next week':U.week===-1?'Last week':'<button class="u" data-a="wk0">Back to this week</button>')+'</small></div><div class="wkr"><button class="btn press" data-a="add">+ Add an order</button><button class="u arr" data-a="wk" data-d="1">Next week ›</button></div></div>';
  h+='<div class="board '+U.dir+'">';
  keys.forEach(function(k,ki){
   var p=k.split("|"),pt=PT(p[1]),list=groupOrders(k),lv=list.filter(live),isT=p[0]===TODAY,tot=lv.reduce(function(a,o){return a+oTotal(o,ix)},0),cl=isClosed(k),full=pt.cap&&lv.length>=pt.cap&&p[0]>=TODAY;
@@ -1043,7 +1067,7 @@ function weekView(){
    var its=o.items.map(function(i){var l=itemLabel(i,ix);return esc(l.n)+(i.q>1?' ×'+i.q:'')}).join(", ");
    var st=pend?'<span class="chip ask">Needs a yes</span>':o.declined?'<span class="chip warn">Declined</span>':o.status==="cancelled"?'<span class="chip warn">Cancelled</span>':o.status==="new"?'':o.status==="packed"?'<span class="chip packed">Packed</span>':'<span class="chip done">'+PT(o.point).done+'</span>';
    h+='<li><button class="ob'+(dim?" dim":"")+(pend?" pend":"")+'" data-a="zoom" data-k="'+k+'" data-o="'+o.id+'"><span class="r1"><span class="nm">'+esc(o.name)+unreadDot(th)+(o.note?'<span class="nflag" title="Has a note">note</span>':'')+'</span><span class="tt">'+money(oTotal(o,ix))+'</span></span><span class="its1">'+its+'</span>'+(st||(!o.paid&&live(o)?'':''))+(st?'':'')+'</button></li>'});
-  if(!list.length)h+='<li class="empty">No orders yet</li>';
+  if(!list.length)h+='<li class="empty"><span class="hand2">quiet so far, nothing booked yet</span></li>';
   h+='</ul><button class="newo" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ New order</button></section>';
  });
  h+='</div><p class="foot"><span>Tap any order to open it.</span><button class="lnk" data-a="totals">Week totals</button><button class="lnk" data-a="pts">Pickup days</button></p>';
