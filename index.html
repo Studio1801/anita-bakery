@@ -611,6 +611,43 @@ body::after{opacity:.1}
 
 .stp{background:var(--rye)!important;color:#f8f4ec!important;border:0!important;border-radius:99px!important}
 .stp button{color:#f8f4ec!important}
+
+/* ===== ordering, in Anita's hand ===== */
+@font-face{font-family:"Hand";src:url(fonts/caveat-500.woff2) format("woff2");font-weight:500;font-display:swap}
+.when,.tb{display:none}
+.when2{padding:4px 0 clamp(26px,3vw,40px);margin-bottom:clamp(26px,3vw,40px);border-bottom:1px solid var(--rule)}
+.sl{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 22px;font-size:clamp(26px,2.8vw,40px);line-height:1.25;letter-spacing:-.02em;margin:10px 0}
+.sw{color:var(--crust);font-style:italic}
+.or{font-size:.6em;font-style:italic;color:#a8957f}
+.pw{position:relative;font-size:inherit;letter-spacing:inherit;line-height:inherit;color:#b19c84;padding:2px 4px;display:inline-flex;align-items:baseline;gap:8px;transition:color .3s ease}
+.pw small{font-size:.48em;font-style:italic;color:inherit;letter-spacing:0}
+.pw:hover{color:var(--rye)}
+.pw[aria-pressed="true"]{color:var(--rye)}
+.pw .pc{position:absolute;left:-14%;top:-18%;width:128%;height:136%;overflow:visible;pointer-events:none}
+.pw .pc path{fill:none;stroke:var(--stamp);stroke-width:2.2;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:420;animation:pcdraw .6s cubic-bezier(.6,0,.3,1) both}
+@keyframes pcdraw{from{stroke-dashoffset:420}to{stroke-dashoffset:0}}
+.cap,.woff{font-family:"Hand",cursive;font-size:21px;font-style:normal;color:var(--stamp);margin-top:6px}
+/* the bag: kraft paper, folded top, written by hand */
+.sum{position:relative;background:linear-gradient(180deg,#d3b58a,#c9a879)!important;border:0!important;border-radius:4px 4px 14px 14px!important;padding:46px 28px 24px!important;color:#2a1c13;box-shadow:0 1px 0 rgba(42,28,19,.08),0 26px 40px -28px rgba(42,28,19,.6)!important;overflow:visible}
+.sum::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:.35;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .24 0 0 0 0 .12 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.sum .fold{position:absolute;left:0;right:0;top:-10px;height:30px;background:#bf9d6c;clip-path:polygon(0 30%,2.5% 0,5% 30%,7.5% 0,10% 30%,12.5% 0,15% 30%,17.5% 0,20% 30%,22.5% 0,25% 30%,27.5% 0,30% 30%,32.5% 0,35% 30%,37.5% 0,40% 30%,42.5% 0,45% 30%,47.5% 0,50% 30%,52.5% 0,55% 30%,57.5% 0,60% 30%,62.5% 0,65% 30%,67.5% 0,70% 30%,72.5% 0,75% 30%,77.5% 0,80% 30%,82.5% 0,85% 30%,87.5% 0,90% 30%,92.5% 0,95% 30%,97.5% 0,100% 30%,100% 100%,0 100%);box-shadow:inset 0 -2px 0 rgba(42,28,19,.12)}
+.sum .btag{font-family:"Hand",cursive;font-size:34px;line-height:1;color:var(--stamp);transform:rotate(-2deg);transform-origin:left;margin-bottom:6px}
+.sum .bw{color:#4a3524!important;border-bottom:1px dashed rgba(42,28,19,.3)!important}
+.sum .hw li{font-family:"Hand",cursive;font-size:23px;line-height:1.15;color:#1f2f5c;padding:5px 0;border-bottom:1px dashed rgba(42,28,19,.18)}
+.sum .hw li b{color:#1f2f5c;font-weight:500;margin-right:6px}
+.sum .be{font-family:"Hand",cursive;font-style:normal;font-size:22px;color:#6a4c34}
+.sum .tot{border-top:0!important;font-size:22px}
+.sum .btn{background:#2a1c13!important}
+.sum .btn[disabled]{background:rgba(42,28,19,.18)!important;color:rgba(42,28,19,.5)!important}
+.sum .bf{color:#4a3524}
+.sum.jig{animation:jig .5s cubic-bezier(.34,1.45,.64,1)}
+@keyframes jig{30%{transform:rotate(-1.2deg) translateY(-3px)}60%{transform:rotate(.8deg)}}
+@media(max-width:720px){.sl{font-size:26px;gap:2px 16px}.sw{width:100%}}
+@media(prefers-reduced-motion:reduce){.pw .pc path,.sum.jig{animation:none}}
+
+@media(max-width:999px){.sum{display:none!important}}
+.pw[aria-pressed="true"] small{color:var(--crust)}
+@media(max-width:720px){.sl .or{display:none}.sl{gap:2px 18px}}
 </style>
 <body>
 <header class="hdr" id="hdr"></header>
@@ -757,7 +794,7 @@ pages.home=()=>{const P=POINTS;
 pages.order=()=>{
  const P=POINTS,live=L.PORDER.filter(k=>P[k]);
  const ds=drops(S.method,4);
- const opt=k=>{const p=P[k];return `<button class="tb" data-act="method" data-m="${k}" aria-pressed="${S.method===k}">${esc(p.name.replace(' bread drop',''))}<small>${esc((p.hours||'').split(' to ')[0])}</small></button>`};
+ const opt=k=>{const p=P[k],on=S.method===k;return `<button class="pw" data-act="method" data-m="${k}" aria-pressed="${on}">${on?'<svg class="pc" viewBox="0 0 120 60" preserveAspectRatio="none" aria-hidden="true"><path d="M98 10C76 2 30 2 13 14 0 25 6 47 35 53c26 5 66 3 77-12 9-12-1-27-24-31"/></svg>':''}${esc(p.name.replace(' bread drop',''))}<small>${esc((p.hours||'').split(' to ')[0])}</small></button>`};
  const offs=live.filter(k=>!P[k].on).map(k=>esc(P[k].name)).join(', ');
  const loading=!SHOP.ready;
  const menu=loading?`<div aria-busy="true">${[1,2,3].map(()=>`<span class="sk" style="height:46px;width:60%;margin-bottom:18px"></span>${'<span class="sk" style="height:20px;margin:16px 0"></span>'.repeat(4)}<div style="height:40px"></div>`).join('')}</div>`
@@ -765,16 +802,17 @@ pages.order=()=>{
   <div class="grp-d${p.photo||PHOTO[p.id]?' has':''}">${p.photo||PHOTO[p.id]?`<img src="${p.photo||PHOTO[p.id]}" alt="${esc(p.name)}" loading="lazy" decoding="async">`:''}<p>${esc((INFO[p.id]||{}).d||'Ask us about this one.')}${on?'':' Sold out this week.'}</p></div>
   ${p.sizes.map(z=>`<div class="fl${z.on?'':' off'}"${FLAV[p.id+'|'+z.label]?` data-img="${FLAV[p.id+'|'+z.label]}"`:''}><span class="n">${p.sizes.length>1?esc(z.label):'Add to your bag'}</span><span class="fp">${money(z.price)}</span><span data-acts="${z.id}">${acts(z)}</span></div>`).join('')}</div>`}).join('')}).join('');
  const mini=Object.entries(S.cart).map(([k,q])=>{const m=sizeOf(k);return m?`<li><span>${q} × ${esc(itemName(m))}</span><span>${money(m.z.price*q)}</span></li>`:''}).join('');
- return `<section class="ph"><div class="wrap"><h1><span class="mk"><span class="ln">This week’s <i>bake.</i></span></span></h1><p class="lede">Pick your stop and your Thursday, then choose what you’d like. You pay when you pick up.</p></div></section>
+ return `<section class="ph"><div class="wrap"><h1><span class="mk"><span class="ln">Fill your <i>bag.</i></span></span></h1><p class="lede">Anita bakes Tuesday and Wednesday. Your bag is ready Thursday, with your name on it. You pay when you pick it up.</p></div></section>
  <section id="og"><div class="wrap">${yourOrders()}<div class="og"><div>
- <div class="when"><div class="wrow"><span class="wl">Pick up at</span><div class="tabs">${live.filter(k=>P[k].on||S.method===k).map(opt).join('')}</div></div>
- <div class="wrow"><span class="wl">On</span><div class="tabs">${ds.length?ds.map(d=>`<button class="tb" data-act="date" data-d="${d}" aria-pressed="${S.date===d}">${fmtD(d).replace('Thu, ','')}<small>Thursday</small></button>`).join(''):'<p class="mute">No drops are open at this stop right now. Try the other stop, or message us.</p>'}</div></div>
+ <div class="when2"><p class="sl"><span class="sw">I’ll pick it up in</span>${live.filter(k=>P[k].on||S.method===k).map(opt).join('<span class="or">or</span>')}</p>
+ <p class="sl"><span class="sw">on Thursday,</span>${ds.length?ds.map(d=>`<button class="pw" data-act="date" data-d="${d}" aria-pressed="${S.date===d}">${S.date===d?'<svg class="pc" viewBox="0 0 120 60" preserveAspectRatio="none" aria-hidden="true"><path d="M98 10C76 2 30 2 13 14 0 25 6 47 35 53c26 5 66 3 77-12 9-12-1-27-24-31"/></svg>':''}${fmtD(d).replace('Thu, ','')}</button>`).join(''):'<span class="mute">no drops are open here right now. Try the other stop, or message us.</span>'}</p>
  ${S.date?capNote():''}${offs?`<p class="woff">${offs} is back next season.</p>`:''}</div>
  <div class="om">${menu}</div></div>
  <aside class="sum" aria-label="Your bag" id="sum">${sumHTML(mini)}</aside></div></div></section>${footer()}`};
 function sumHTML(mini){const P=POINTS[S.method]||{};if(mini==null)mini=Object.entries(S.cart).map(([k,q])=>{const m=sizeOf(k);return m?`<li><span><b>${q}</b> ${esc(itemName(m))}</span><span>${money(m.z.price*q)}</span></li>`:''}).join('');
- return `<h3 class="bt">Your order</h3><p class="bw">${S.date?`${fmtLong(S.date)}<br>`:''}${esc((P.name||'').replace(' bread drop',''))}${P.place?`, ${esc(P.place.split(',')[0])}`:''}${P.hours?`<br>${esc(P.hours)}`:''}</p>
- ${mini?`<ul>${mini}</ul>`:'<p class="be">Nothing added yet. Tap + next to anything on the menu.</p>'}
+ const nm=(S.me&&S.me.name||'').split(' ')[0];
+ return `<div class="fold" aria-hidden="true"></div><p class="btag">${nm?esc(nm)+'’s bag':'Your bag'}</p><p class="bw">${S.date?`${fmtLong(S.date)}<br>`:''}${esc((P.name||'').replace(' bread drop',''))}${P.place?`, ${esc(P.place.split(',')[0])}`:''}${P.hours?`<br>${esc(P.hours)}`:''}</p>
+ ${mini?`<ul class="hw">${mini}</ul>`:'<p class="be">Still empty. Tap + next to anything on the menu.</p>'}
  <div class="tot"><span>Total</span><span>${money(total())}</span></div>
  <button class="btn" data-act="checkout"${count()&&S.date?'':' disabled'}>Checkout</button><p class="bf">Order by Monday at midnight. Pay at pickup, cash or e-transfer.</p>`}
 function acts(z){if(!z.on)return '<span class="so">Sold out</span>';const q=S.cart[z.id]||0;return q?`<span class="stp"><button data-act="dec" data-id="${z.id}" aria-label="One fewer">−</button><span>${q}</span><button data-act="inc" data-id="${z.id}" aria-label="One more">+</button></span>`:`<button class="add" data-act="add" data-id="${z.id}" aria-label="Add ${esc(itemName(sizeOf(z.id)))}">+</button>`}
@@ -948,7 +986,7 @@ function toast(html,ms){const t=$('#toast');t.innerHTML=html;t.classList.add('on
 const alertMsg=m=>toast(`<span>${esc(m)}</span>`,3600);
 function bagbar(){const b=$('#bagbar'),n=count();b.innerHTML=n?`<button class="btn" data-act="drawer-open">Bag, ${n} · ${money(total())}</button>`:'';b.classList.toggle('hide',!n||S.drawer||S.route==='track'||S.chat)}
 function overlays(){$('#drawer').innerHTML=drawerHTML();$('#drawer').classList.toggle('on',S.drawer);$('#scrim').classList.toggle('on',S.drawer);document.documentElement.style.overflow=S.drawer?'hidden':'';bagbar();paintAsk()}
-function syncCart(){saveCart();$$('[data-acts]').forEach(el=>{const m=sizeOf(el.dataset.acts);if(m)el.innerHTML=acts(m.z)});const s=$('#sum');if(s)s.innerHTML=sumHTML();overlays()}
+function syncCart(){saveCart();var sm=document.getElementById('sum');if(sm){sm.classList.remove('jig');void sm.offsetWidth;sm.classList.add('jig')}$$('[data-acts]').forEach(el=>{const m=sizeOf(el.dataset.acts);if(m)el.innerHTML=acts(m.z)});const s=$('#sum');if(s)s.innerHTML=sumHTML();overlays()}
 const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function render(top,soft){$('#hdr').innerHTML=header();const app=$('#app');app.innerHTML=pages[S.route]();if(!soft){app.classList.remove('enter','leaving');void app.offsetWidth;app.classList.add('enter')}overlays();if(top)window.scrollTo(0,0);if(S.route==='track')scrollMsgs();S.thunk=false;reveals(soft);sizeOven();ovenFigs();onScroll()}
 let leaveT;
