@@ -1280,6 +1280,34 @@ li.dn .ck svg{transition:stroke-dashoffset .4s var(--eo) .08s}
 /* focus rings that feel considered */
 :focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:10px}
 @media(prefers-reduced-motion:reduce){*,::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important;transition:none!important}}
+
+/* delivery + drop-day picker */
+.daysel.drops{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+.daysel.drops small{font-size:.75rem}
+.dlv{font-size:.7rem;font-weight:700;color:var(--blue);background:rgba(44,74,142,.1);border-radius:99px;padding:2px 8px}
+.its1.addr{color:var(--blue)!important;font-weight:500}
+@media(max-width:600px){.daysel.drops{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+
+/* ===== v32: catering week by week ===== */
+.cwk{max-width:900px;margin:26px auto 0}
+.cwh{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.cwh h2{font-size:1.9rem;margin:0}
+.cvt{display:flex;gap:16px;margin-top:6px;justify-content:inherit}
+.cvt .u{font-size:.88rem;color:var(--mute);border-bottom-color:transparent}
+.cvt .u.on{color:var(--ink);font-weight:700;border-bottom:2px solid var(--blue)}
+.calt .cvt{justify-content:center;margin:4px 0 2px}
+.csum{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 6px}
+.csum span{font-size:.85rem;font-weight:600;border-radius:99px;padding:6px 12px;background:rgba(42,28,19,.07)}
+.csum .s-q{background:#fde89a;color:#3d2e00}.csum .s-w{background:rgba(44,74,142,.1);color:var(--blue)}
+.cwsec{margin-top:30px}
+.cwsec header{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid rgba(42,28,19,.55)}
+.cwsec h3{font-family:var(--sans);font-weight:700;font-size:1.15rem;letter-spacing:-.02em}
+.cwsec header span{font-size:.85rem;color:var(--mute)}
+.cwsec .cbd{margin-left:auto;font-weight:600;color:#8a6a3f!important}
+.cwsec .clist{border-top:0!important}
+.cwsec .cnone{border-top:0;padding:14px 0;color:#a8957f}
+#view.enter .cwsec{animation:rise .5s var(--eo) both}
+#view.enter .cwsec:nth-child(4){animation-delay:.05s}#view.enter .cwsec:nth-child(n+5){animation-delay:.1s}
 </style>
 </head>
 <body>
@@ -1460,7 +1488,7 @@ function render(){
  if(U.tab==="Messages")scrollMsgs();
  renderTabs();
 }
-var MORPH={pu:1,unpu:1,st:1,stop:1,wk:1,wk0:1,cm:1,csel:1,cquote:1,cst:1,past:1};
+var MORPH={cview:1,pu:1,unpu:1,st:1,stop:1,wk:1,wk0:1,cm:1,csel:1,cquote:1,cst:1,past:1};
 var CAN_VT=!!document.startViewTransition&&!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
 function vt(fn,dir){if(!CAN_VT){fn();return false}document.documentElement.dataset.vt=dir||"same";var x=document.startViewTransition(fn);x.finished.finally(function(){delete document.documentElement.dataset.vt});return true}
 function switchTab(t){
@@ -1537,9 +1565,9 @@ function startTime(P){var t=(P.hours||"").split(" to ")[0];if(!t)return"";if(!/a
 function placeOnly(P){return (P.place||"").replace(", "+P.name.replace(" bread drop","").replace(" Farmers' Market",""),"")}
 function itemsShort(o,ix){return o.items.map(function(i){var l=itemLabel(i,ix);return (i.q>1?i.q+' × ':'')+esc(l.n)+(l.z?' <em>('+esc(l.z)+')</em>':'')}).join(", ")}
 function rowPU(o,ix){var dn=o.status==="done",rd=o.status==="packed",tot=oTotal(o,ix),th=threadOf(o),fresh=!dn&&(U.just[o.id]||Date.now()-(o.placed||0)<45*6e4);
- var pill=dn?'<span class="pill p-dn">Picked up</span>':rd?'<button class="pill p-rdy press" data-a="st" data-id="'+o.id+'" data-s="new" title="Tap if it isn’t ready after all"><i></i>Bag ready</button>':'<button class="pill p-bag press" data-a="st" data-id="'+o.id+'" data-s="packed" title="Tap when the bag is ready"><i></i>Not ready</button>';
+ var pill=dn?'<span class="pill p-dn">'+(o.how==="delivery"?"Delivered":"Picked up")+'</span>':rd?'<button class="pill p-rdy press" data-a="st" data-id="'+o.id+'" data-s="new" title="Tap if it isn’t ready after all"><i></i>Bag ready</button>':'<button class="pill p-bag press" data-a="st" data-id="'+o.id+'" data-s="packed" title="Tap when the bag is ready"><i></i>Not ready</button>';
  return '<li style="view-transition-name:o'+o.id+'" class="'+(dn?"dn":rd?"rdy":"bag")+(U.just[o.id]?" just":"")+'" data-name="'+esc(o.name.toLowerCase())+'"><button class="ck press" data-a="'+(dn?"unpu":"pu")+'" data-id="'+o.id+'" aria-label="'+(dn?"Undo picked up for ":"Mark picked up: ")+esc(o.name)+'" aria-pressed="'+dn+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9"/></svg></button>'+
-  '<button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+(fresh?'<span class="fresh">Just added</span>':'')+unreadDot(th)+(o.note?'<span class="nflag">note</span>':'')+'</span><span class="its1">'+itemsShort(o,ix)+'</span></button>'+pill+
+  '<button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+(o.how==="delivery"?'<span class="dlv">Delivery</span>':'')+(fresh?'<span class="fresh">Just added</span>':'')+unreadDot(th)+(o.note?'<span class="nflag">note</span>':'')+'</span><span class="its1">'+itemsShort(o,ix)+'</span>'+(o.how==="delivery"&&o.loc?'<span class="its1 addr">To '+esc(o.loc)+'</span>':'')+'</button>'+pill+
   '<span class="amt">'+money(tot)+'<small class="'+(o.paid?"pd":"due")+'">'+(o.paid?"paid":dn?"":"collect")+'</small></span></li>'}
 function oneHTML(o){
  var ix=sizeIndex(),pt=PT(o.point),st=o.status,gone=!live(o),pend=o.pending&&st==="new"&&!gone,tot=oTotal(o,ix);
@@ -1547,7 +1575,7 @@ function oneHTML(o){
  var tel=o.phone?esc(o.phone.replace(/[^\d+]/g,"")):"";
  var h='<div class="zoom one" role="dialog" aria-modal="true" aria-labelledby="zt"><div class="scrim" data-a="unzoom"></div><div class="zbox z1"><button class="x1" data-a="unzoom" aria-label="Close">✕</button>'+
   '<span class="s1 st1-'+(gone?"gone":pend?"pend":st)+'">'+esc(lab)+'</span><h2 id="zt">'+esc(o.name)+'</h2>'+
-  '<p class="m1">'+esc(pt.name.replace(" bread drop",""))+' · '+wkd(o.date)+', '+short(o.date)+(o.slot?' · '+esc(o.slot):pt.hours?' · '+esc(pt.hours):'')+'</p>'+
+  '<p class="m1">'+(o.how==="delivery"?'Delivery to '+esc(o.loc||"address not set")+' · ':'')+esc(pt.name.replace(" bread drop",""))+' · '+wkd(o.date)+', '+short(o.date)+(o.slot?' · '+esc(o.slot):pt.hours?' · '+esc(pt.hours):'')+'</p>'+
   '<ul class="i1">'+o.items.map(function(i){var l=itemLabel(i,ix),m=ix[i.s];return '<li><span><b>'+i.q+' ×</b> '+esc(l.n)+(l.z?' <em>'+esc(l.z)+'</em>':'')+'</span><span>'+money((m?m.z.price:0)*i.q)+'</span></li>'}).join("")+'<li class="t1"><span>Total</span><span>'+money(tot)+'</span></li></ul>'+
   (o.note?'<p class="n1">“'+esc(o.note)+'”</p>':'')+(o.declined?'<p class="n1">Told the customer: '+esc(o.declined)+'</p>':'')+
   '<p class="p1">'+(o.phone?'<a href="tel:'+tel+'">Call '+esc(o.phone)+'</a>':'')+(gone?'':o.paid?'<span class="paid1">Paid</span>':'<button class="u" data-a="paid" data-id="'+o.id+'">Not paid yet, mark paid</button>')+'</p><div class="a1">';
@@ -1555,7 +1583,7 @@ function oneHTML(o){
   h+='<div class="decl"><span class="lab" style="margin:0 0 8px">Tell '+esc(o.name.split(" ")[0])+' why</span><div class="segs">'+["We're fully booked that day.","One of the items is sold out.","That's too short notice for us."].map(function(r){return '<button class="seg press" data-a="dreason" data-r="'+esc(r)+'">'+esc(r)+'</button>'}).join("")+'</div><input class="uin" id="dwhy" placeholder="Or write your own reason" maxlength="300"><div class="dacts"><button class="btn press" data-a="decline" data-id="'+o.id+'">Send and decline</button><button class="u" data-a="undecl">Keep the order</button></div></div>';
  }else if(pend)h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm order</button><button class="u" data-a="decl" data-id="'+o.id+'">Can’t take it</button>';
  else if(st==="new"&&!gone)h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="packed">Ready for pickup</button>';
- else if(st==="packed")h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="done">'+esc(pt.done)+'</button><button class="u" data-a="st" data-id="'+o.id+'" data-s="new">Not ready yet</button>';
+ else if(st==="packed")h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="done">'+(o.how==="delivery"?"Delivered":esc(pt.done))+'</button><button class="u" data-a="st" data-id="'+o.id+'" data-s="new">Not ready yet</button>';
  else if(st==="done")h+='<p class="ok1">✓ '+esc(pt.done)+'</p><button class="u" data-a="st" data-id="'+o.id+'" data-s="packed">Undo</button>';
  else if(st==="cancelled"&&o.by!=="customer")h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="new">Restore order</button>';
  return h+'</div><p class="e1"><button class="u" data-a="edit" data-id="'+o.id+'">Edit order</button></p></div></div>';
@@ -1695,14 +1723,15 @@ function totalsHTML(){
 }
 
 /* order form */
+function dropDates(pt,keep){var P=PT(pt),dw=(P.days&&P.days.length?P.days:[4]),out=[];for(var i=0;i<63&&out.length<5;i++){var x=addDays(TODAY,i);if(dw.indexOf(parse(x).getDay())>-1)out.push(x)}if(keep&&out.indexOf(keep)<0){out.unshift(keep);out.sort()}return out}
 function formHTML(){
- var d=U.draft,ix=sizeIndex(),mon=mondayOf(d.date),days=[0,1,2,3,4,5,6].map(function(i){return addDays(mon,i)});
+ var d=U.draft,ix=sizeIndex(),dlv=d.how==="delivery",days=dropDates(d.point,d.date);
  var n=0,tot=0;Object.keys(d.items).forEach(function(s){var q=d.items[s];n+=q;tot+=(ix[s]?ix[s].z.price:0)*q});
  var h='<p class="kick">'+(d.id?"Edit order #"+d.id:"Write an order")+'</p><h2>'+longd(d.date)+'</h2>'+
- '<span class="lab">Pickup stop</span><div class="segs">'+PORDER.filter(function(k){return PT(k).on||d.point===k}).map(function(k){return '<button class="seg press'+(d.point===k?" on":"")+'" data-a="fpt" data-k="'+k+'">'+PT(k).name+'</button>'}).join("")+'</div>'+
- '<p class="mute" style="font-size:.88rem;margin-top:8px">'+esc(PT(d.point).place)+(PT(d.point).hours?", "+PT(d.point).hours:"")+'</p>'+
- '<span class="lab">Day</span><div class="daysel">'+days.map(function(k){return '<button class="press'+(k===d.date?" on":"")+(k===TODAY?" td":"")+'" data-a="fday" data-k="'+k+'"><small>'+fd(k,{weekday:"short"})+'</small><b>'+parse(k).getDate()+'</b></button>'}).join("")+'</div>'+
- '<label class="inl">Another date <input type="date" id="fdate" value="'+d.date+'"></label>'+
+ '<span class="lab">How they get it</span><div class="segs"><button class="seg press'+(dlv?"":" on")+'" data-a="fhow" data-h="pickup">Pickup</button><button class="seg press'+(dlv?" on":"")+'" data-a="fhow" data-h="delivery">Delivery</button></div>'+
+ '<span class="lab">'+(dlv?"Delivery area":"Pickup stop")+'</span><div class="segs">'+PORDER.filter(function(k){return PT(k).on||d.point===k}).map(function(k){return '<button class="seg press'+(d.point===k?" on":"")+'" data-a="fpt" data-k="'+k+'">'+esc(dlv?stopName(k):PT(k).name)+'</button>'}).join("")+'</div>'+
+ (dlv?'<label><span class="lab">Delivery address</span><input class="uin" id="faddr" placeholder="Street, town" value="'+esc(d.loc||"")+'"></label>':'<p class="mute" style="font-size:.88rem;margin-top:8px">'+esc(PT(d.point).place)+(PT(d.point).hours?", "+PT(d.point).hours:"")+'</p>')+
+ '<span class="lab">Which bread drop</span><div class="daysel drops">'+days.map(function(k){return '<button class="press'+(k===d.date?" on":"")+'" data-a="fday" data-k="'+k+'"><small>'+fd(k,{weekday:"short",month:"short"})+'</small><b>'+parse(k).getDate()+'</b></button>'}).join("")+'</div>'+
  (PT(d.point).slots.length>1||d.slot&&PT(d.point).slots.indexOf(d.slot)<0?'<span class="lab">Time</span><div class="segs">'+PT(d.point).slots.concat(d.slot&&PT(d.point).slots.indexOf(d.slot)<0?[d.slot]:[]).map(function(s){return '<button class="seg press'+(d.slot===s?" on":"")+'" data-a="fslot" data-s="'+esc(s)+'">'+esc(s)+'</button>'}).join("")+'</div>':'')+
  '<div class="two"><label><span class="lab">Name</span><input class="uin" id="fname" value="'+esc(d.name)+'"></label><label><span class="lab">Phone</span><input class="uin" id="fphone" inputmode="tel" value="'+esc(d.phone)+'"></label></div>'+
  '<span class="lab">Items</span><div class="pick">';
@@ -1716,7 +1745,7 @@ function formHTML(){
  return h;
 }
 function keepForm(){var d=U.draft;if(!d)return;var g=function(i){var e=document.getElementById(i);return e?e.value:null};
- var v;if((v=g("fname"))!==null)d.name=v;if((v=g("fphone"))!==null)d.phone=v;if((v=g("fnote"))!==null)d.note=v;var p=document.getElementById("fpaid");if(p)d.paid=p.checked}
+ var v;if((v=g("fname"))!==null)d.name=v;if((v=g("fphone"))!==null)d.phone=v;if((v=g("fnote"))!==null)d.note=v;if((v=g("faddr"))!==null)d.loc=v;var p=document.getElementById("fpaid");if(p)d.paid=p.checked}
 function rerenderForm(){var sh=$(".sheet",layer);if(!sh)return;var st=sh.scrollTop;sh.innerHTML='<button class="close lnk mute press" data-a="dclose">Close</button>'+formHTML();sh.scrollTop=st}
 function startForm(o,date,pt){
  U.ferr="";U.sure="";
@@ -1729,13 +1758,14 @@ function startForm(o,date,pt){
 var CST={new:"Needs a price",quoted:"Price sent",confirmed:"Booked",done:"Done"};
 var CCHIP={new:"new",quoted:"done",confirmed:"ok",done:"done"};
 function cateringView(){
+ if(U.cview!=="month")return cateringWeeks();
  if(U.cm==null)U.cm=0;
  var t0=parse(TODAY),first=new Date(t0.getFullYear(),t0.getMonth()+U.cm,1,12),mKey=iso(first).slice(0,7);
  var start=mondayOf(iso(first)),last=new Date(first.getFullYear(),first.getMonth()+1,0,12),end=addDays(mondayOf(iso(last)),6);
  var byDay={};S.catering.forEach(function(c){(byDay[c.date]=byDay[c.date]||[]).push(c)});
  if(!U.csel||U.csel.slice(0,7)!==mKey){var nx=S.catering.filter(function(c){return c.date.slice(0,7)===mKey&&c.date>=TODAY}).sort(function(a,b){return a.date<b.date?-1:1})[0];U.csel=nx?nx.date:(TODAY.slice(0,7)===mKey?TODAY:iso(first))}
  var nw=S.catering.filter(function(c){return c.status==="new"}).length;
- var h='<div class="cal"><div class="calh"><button class="u arr" data-a="cm" data-d="-1">‹ '+fd(addDays(iso(first),-1),{month:"long"})+'</button><div class="calt"><h2>'+fd(iso(first),{month:"long",year:"numeric"})+'</h2><small>'+(nw?plural(nw,"request")+" waiting on a price":"Catering")+'</small></div><div class="calr"><button class="btn press" data-a="cadd">+ Add a request</button><button class="u arr" data-a="cm" data-d="1">'+fd(iso(new Date(first.getFullYear(),first.getMonth()+1,1,12)),{month:"long"})+' ›</button></div></div>';
+ var h='<div class="cal"><div class="calh"><button class="u arr" data-a="cm" data-d="-1">‹ '+fd(addDays(iso(first),-1),{month:"long"})+'</button><div class="calt"><h2>'+fd(iso(first),{month:"long",year:"numeric"})+'</h2><p class="cvt"><button class="u" data-a="cview" data-v="list">Week by week</button><button class="u on">Month</button></p><small>'+(nw?plural(nw,"request")+" waiting on a price":"Catering")+'</small></div><div class="calr"><button class="btn press" data-a="cadd">+ Add a request</button><button class="u arr" data-a="cm" data-d="1">'+fd(iso(new Date(first.getFullYear(),first.getMonth()+1,1,12)),{month:"long"})+' ›</button></div></div>';
  var up=S.catering.filter(function(c){return c.status!=="done"&&c.date>=TODAY}).sort(function(a,b){return a.date<b.date?-1:1});
  var needQ=up.filter(function(c){return c.status==="new"}),waitC=up.filter(function(c){return c.status==="quoted"});
  if(needQ.length||waitC.length){h+='<div class="cstage">';
@@ -1757,6 +1787,22 @@ function cateringView(){
  return h;
 }
 function dropDay(d){var w=parse(d).getDay();return PORDER.some(function(k){var P=PT(k);return P.on&&(P.days||[]).indexOf(w)>-1})}
+function cateringWeeks(){
+ var mon0=mondayOf(TODAY),all=S.catering.slice().sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:(a.time<b.time?-1:1)});
+ var up=all.filter(function(c){return c.date>=mon0&&c.status!=="done"}),past=all.filter(function(c){return c.date<mon0||c.status==="done"}).reverse();
+ var nq=up.filter(function(c){return c.status==="new"}).length,wt=up.filter(function(c){return c.status==="quoted"}).length,bk=up.filter(function(c){return c.status==="confirmed"});
+ var h='<div class="cwk"><div class="cwh"><div><h2>Catering</h2><p class="cvt"><button class="u on">Week by week</button><button class="u" data-a="cview" data-v="month">Month</button></p></div><button class="btn press" data-a="cadd">+ Add a request</button></div>';
+ h+='<p class="csum">'+(nq?'<span class="s-q">'+plural(nq,"request")+(nq===1?' needs':' need')+' a price</span>':'')+(wt?'<span class="s-w">'+wt+' waiting on a yes</span>':'')+'<span class="s-b">'+plural(bk.length,"event")+' booked, '+bk.reduce(function(a,c){return a+(+c.guests||0)},0)+' guests, '+money(bk.reduce(function(a,c){return a+(+c.quote||0)},0))+'</span></p>';
+ var weeks={};up.forEach(function(c){var m=mondayOf(c.date);(weeks[m]=weeks[m]||[]).push(c)});weeks[mon0]=weeks[mon0]||[];weeks[addDays(mon0,7)]=weeks[addDays(mon0,7)]||[];
+ Object.keys(weeks).sort().forEach(function(m){
+  var L=weeks[m],lbl=m===mon0?"This week":m===addDays(mon0,7)?"Next week":"Week of "+short(m);
+  var thu=[0,1,2,3,4,5,6].map(function(i){return addDays(m,i)}).filter(dropDay)[0];
+  h+='<section class="cwsec'+(m===mon0?" now":"")+'"><header><h3>'+lbl+'</h3><span>'+short(m)+' to '+short(addDays(m,6))+'</span>'+(thu?'<span class="cbd">Bread drop '+fd(thu,{weekday:"long"})+'</span>':'')+'</header>'+
+   (L.length?'<ul class="clist">'+L.map(cevHTML).join("")+'</ul>':'<p class="cnone">Nothing booked.</p>')+'</section>';
+ });
+ if(past.length)h+='<p class="cpast"><button class="u" data-a="past">'+(U.showPast?"Hide":"Show")+' '+plural(past.length,"past event")+'</button></p>'+(U.showPast?'<ul class="clist">'+past.map(cevHTML).join("")+'</ul>':'');
+ return h+'</div>';
+}
 function cevHTML(c){
  var days=Math.round((parse(c.date)-parse(TODAY))/864e5);
  var when=days===0?"today":days===1?"tomorrow":days>0?"in "+days+" days":Math.abs(days)+" days ago";
@@ -1911,7 +1957,8 @@ C.decline=function(t){var o=find(t.dataset.id),r=($("#dwhy")||{}).value||"";if(!
  U.decl=null;if(!op({t:"status",id:o.id,s:"decline",reason:r.trim()}))return;flash(o.id);refreshZoom();render();if(U.one)setTimeout(closeZoom,650);toast("Declined. "+o.name.split(" ")[0]+" has been told why")};
 C.close=function(t){var k=t.dataset.k,p=k.split("|"),v=!isClosed(k);op({t:"closed",date:p[0],point:p[1],v:v});refreshZoom();render();toast(v?"Closed to online orders":"Open to online orders again")};
 C.paid=function(t){var o=find(t.dataset.id);if(!op({t:"paid",id:o.id}))return;refreshZoom();render();toast(o.name+" marked paid")};
-C.fpt=function(t){keepForm();var d=U.draft,k=t.dataset.k;d.point=k;d.slot=(PT(k).slots||[""])[0];if(true){var m=mondayOf(d.date),n=addDays(m,(PT(k).dow+6)%7);d.date=n<TODAY?addDays(n,7):n}rerenderForm()};
+C.fpt=function(t){keepForm();var d=U.draft,k=t.dataset.k;d.point=k;d.slot=(PT(k).slots||[""])[0];var ds=dropDates(k);if(ds.indexOf(d.date)<0){var w=ds.filter(function(x){return x>=d.date})[0];d.date=w||ds[0]}rerenderForm()};
+C.fhow=function(t){keepForm();U.draft.how=t.dataset.h;U.ferr="";rerenderForm()};
 C.fday=function(t){keepForm();U.draft.date=t.dataset.k;rerenderForm()};
 C.fslot=function(t){keepForm();U.draft.slot=t.dataset.s;rerenderForm()};
 C.fq=function(t){keepForm();var it=U.draft.items,s=t.dataset.s,q=(it[s]||0)+(+t.dataset.d);if(q<=0)delete it[s];else it[s]=q;U.ferr="";rerenderForm()};
@@ -1919,7 +1966,8 @@ C.fsave=function(){keepForm();var d=U.draft;
  if(!d.name.trim()){U.ferr="Add the customer's name.";rerenderForm();return}
  if(!Object.keys(d.items).length){U.ferr="Add at least one item.";rerenderForm();return}
  var items=Object.keys(d.items).map(function(s){return{s:s,q:d.items[s]}});
- var data={date:d.date,point:d.point,slot:d.slot||"",name:d.name.trim(),phone:d.phone.trim(),items:items,note:d.note.trim(),paid:d.paid};
+ if(d.how==="delivery"&&!(d.loc||"").trim()){U.ferr="Add the delivery address.";rerenderForm();return}
+ var data={how:d.how==="delivery"?"delivery":"pickup",loc:d.how==="delivery"?(d.loc||"").trim():"",date:d.date,point:d.point,slot:d.slot||"",name:d.name.trim(),phone:d.phone.trim(),items:items,note:d.note.trim(),paid:d.paid};
  var r;if(d.id){data.id=d.id;r=op({t:"update",order:data})}else r=op({t:"add",order:data});
  if(!r)return;var id=d.id||r.id,o=find(id);
  flash(id);var wasEdit=!!d.id;closeDrawer();
@@ -1930,6 +1978,7 @@ C.fcancel=function(){var o=find(U.draft.id);if(!op({t:"status",id:o.id,s:"cancel
 C.fdel=function(){if(U.sure!=="del"){keepForm();arm("del");rerenderForm();return}var o=find(U.draft.id);U.sure="";if(!op({t:"delete",id:o.id}))return;closeDrawer();refreshZoom();render();toast("Deleted "+o.name+"'s order")};
 /* catering */
 C.past=function(){U.showPast=!U.showPast;render()};
+C.cview=function(t){U.cview=t.dataset.v;render();enter()};
 C.cm=function(t){U.cm=(U.cm||0)+(+t.dataset.d);U.csel=null;render();enter()};
 C.csel=function(t){var d=t.dataset.d,f=t.closest(".cstage,.cside");if(d.slice(0,7)!==iso(new Date(parse(TODAY).getFullYear(),parse(TODAY).getMonth()+(U.cm||0),1,12)).slice(0,7)){var a=parse(d),b=parse(TODAY);U.cm=(a.getFullYear()-b.getFullYear())*12+a.getMonth()-b.getMonth()}U.csel=d;render();var e=$("#cdet");if(e&&(f||innerWidth<800))e.scrollIntoView({behavior:"smooth",block:"start"})};
 C.cquote=function(t){var id=t.dataset.id,i=$('#cq'+id),v=parseFloat(i&&i.value);if(!(v>0)){toast("Type the price first");if(i)i.focus();return}var c=JSON.parse(JSON.stringify(cfind(id)));c.quote=Math.round(v*100)/100;c.status="quoted";if(!op({t:"csave",c:c}))return;flash("c"+c.id);render();toast("Price saved: "+money(c.quote))};
