@@ -886,6 +886,71 @@ header.top{background:var(--bg);border-bottom:1px solid var(--line2)}
 .cmeta{color:#5a402d}
 @media(max-width:800px){#tabs{gap:0;margin:0 -10px}#tabs button{padding:12px 10px 14px}.wkhead>.arr,.wkr .arr{padding:8px 13px!important}}
 .wkhead .arr{width:auto!important;height:auto!important;min-width:0!important;display:inline-flex!important;align-items:center;line-height:1.2}
+
+/* ===== v19: premium motion, one easing everywhere ===== */
+:root{--eo:cubic-bezier(.22,1,.36,1)}
+header.top{position:sticky!important;top:0;z-index:30;background:rgba(238,232,220,.84)!important;-webkit-backdrop-filter:saturate(1.2) blur(14px);backdrop-filter:saturate(1.2) blur(14px)}
+.tabbar{transition:transform .5s var(--eo),width .5s var(--eo)!important}
+#tabs button,.hr .wl,.hr button{transition:color .25s var(--eo)}
+.btn{transition:background .25s var(--eo),transform .2s var(--eo),box-shadow .25s var(--eo)!important}
+.btn:hover{opacity:1;background:#3b2a1e;box-shadow:0 8px 18px -10px rgba(42,28,19,.55)}
+.btn:active,.u:active,.ob:active,.wkhead .arr:active{transform:scale(.97)}
+.ob,.newo,.dh,.wkhead .arr,.need{transition:background .25s var(--eo),border-color .25s var(--eo),color .25s var(--eo),transform .2s var(--eo)}
+.day{transition:box-shadow .35s var(--eo)}
+.day:hover{box-shadow:0 1px 0 rgba(42,28,19,.04),0 16px 34px -20px rgba(42,28,19,.45)}
+/* entering a tab or a week: cards rise, rows follow in a soft cascade */
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes fromR{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+@keyframes fromL{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
+#view.enter .hello,#view.enter .dropline,#view.enter .needline,#view.enter .wkmid,#view.enter .pgh{animation:rise .55s var(--eo) both}
+#view.enter .dropline{animation-delay:.04s}#view.enter .needline{animation-delay:.08s}
+#view.enter .day{animation:rise .6s var(--eo) both}
+#view.enter .day:nth-child(2){animation-delay:.07s}#view.enter .day:nth-child(3){animation-delay:.14s}
+#view.enter .board.from-right .day{animation-name:fromR}#view.enter .board.from-left .day{animation-name:fromL}
+#view.enter .ol>li,#view.enter .clist>li{animation:rise .5s var(--eo) both}
+#view.enter .ol>li:nth-child(1),#view.enter .clist>li:nth-child(1){animation-delay:.12s}
+#view.enter .ol>li:nth-child(2),#view.enter .clist>li:nth-child(2){animation-delay:.155s}
+#view.enter .ol>li:nth-child(3),#view.enter .clist>li:nth-child(3){animation-delay:.19s}
+#view.enter .ol>li:nth-child(4),#view.enter .clist>li:nth-child(4){animation-delay:.225s}
+#view.enter .ol>li:nth-child(5),#view.enter .clist>li:nth-child(5){animation-delay:.26s}
+#view.enter .ol>li:nth-child(6),#view.enter .clist>li:nth-child(6){animation-delay:.295s}
+#view.enter .ol>li:nth-child(n+7),#view.enter .clist>li:nth-child(n+7){animation-delay:.33s}
+#view.enter .panel,#view.enter .inbox,#view.enter .mgrid,#view.enter .stats{animation:rise .55s var(--eo) both}
+#view.swap{animation:none}
+/* popup: scrim fades, sheet settles in, and leaves the same way */
+.zoom .scrim{animation:fadein .3s var(--eo) both}
+.zoom .zbox{animation:rise .45s var(--eo) both}
+.zoom.out .scrim{animation:fadein .22s ease-in reverse both}
+.zoom.out .zbox{animation:rise .22s ease-in reverse both}
+.z2l>li{transition:background .35s var(--eo)}
+.sheet{animation-timing-function:var(--eo)!important}
+@media(prefers-reduced-motion:reduce){#view.enter *,.zoom .scrim,.zoom .zbox{animation:none!important}.tabbar{transition:none!important}}
+
+/* ===== v20: open layout, nothing boxed in ===== */
+.board{gap:clamp(36px,5vw,72px);margin-top:10px}
+.day,.day:hover{background:none!important;border:0!important;border-radius:0;box-shadow:none!important;overflow:visible}
+.dh{background:none!important;padding:0 0 16px;border-bottom:1px solid rgba(42,28,19,.55)}
+.dh:hover .dpl{text-decoration:none}
+.dpl{font-size:2.2rem;letter-spacing:-.03em;line-height:1.05}
+.dmeta{font-size:.9rem}
+.ol>li{border-bottom:1px solid var(--line)}
+.ol>li:last-child{border-bottom:1px solid var(--line)}
+.ob{padding:16px 14px;margin:4px -14px;width:calc(100% + 28px);border-radius:12px}
+.ob:hover{background:rgba(251,248,242,.75)}
+.ob.pend,.ob.pend:hover{background:#fdf0bd!important;box-shadow:none!important}
+.ob.pend:hover{background:#fbe9a2!important}
+.newo{padding:16px 0;border-top:0}
+.empty{padding:18px 0}
+.clist,.clist>li{background:none!important;border:0;border-radius:0}
+.clist>li{border-bottom:1px solid var(--line)!important;padding:20px 0}
+.clist{border-top:1px solid rgba(42,28,19,.55)!important}
+.clist>li.isnew{background:#fdf0bd!important;box-shadow:none!important;border-radius:12px;padding:20px 16px;margin:6px -16px}
+.z2l>li.isnew{box-shadow:none!important;border-radius:12px;margin:6px -12px;padding-left:12px!important;padding-right:12px!important}
+@media(max-width:800px){.board{gap:40px}.dpl{font-size:1.9rem}}
+.clist>li.isnew{border-radius:12px!important;border-bottom-color:transparent!important}
+.board{margin-top:34px}
+.wkhead{margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -1049,7 +1114,7 @@ function appView(){
   '<div class="hr"><button class="alert-t press'+(ALERT.on?" on":"")+'" data-a="alerts" id="alertT">'+(ALERT.on?"Alerts on":"Alerts off")+'</button><span class="sync"><i></i></span>'+
   '<a class="wl" href="'+SITE+'" target="_blank" rel="noopener">View site ↗</a><button data-a="out">Sign out</button></div></div></header>'+
   '<main><div id="view"></div><p class="sampleNote">Includes sample orders for the demo. <button data-a="reset">'+(U.sure==="reset"?"Tap again to reset everything":"Reset sample data")+'</button></p></main>';
- renderTabs();render();setSync(true);
+ renderTabs();render();setSync(true);enter();
 }
 function renderTabs(){
  var c=counts();
@@ -1069,7 +1134,7 @@ function render(){
 function switchTab(t){
  if(t===U.tab)return;U.tab=t;U.showPast=false;renderTabs();
  var v=$("#view");render();window.scrollTo(0,0);
- v.classList.remove("swap");void v.offsetWidth;v.classList.add("swap");
+ enter();
 }
 
 /* ---------- week ---------- */
@@ -1205,7 +1270,7 @@ function openDrawer(html){layer.querySelectorAll(".drawer").forEach(function(d){
 function closeDrawer(){var d=$(".drawer",layer);U.chat=null;U.pdraft=null;if(!d)return;d.classList.add("out");setTimeout(function(){d.remove();if(!$(".zoom",layer))document.body.style.overflow=""},340);U.draft=null}
 function openZoom(k,oid){U.zoom=k;U.decl=null;var z=$(".zoom",layer);if(z)z.remove();layer.insertAdjacentHTML("afterbegin",zoomHTML(k));document.body.style.overflow="hidden";if(oid){var el=document.getElementById("o"+oid);if(el){el.scrollIntoView({block:"center"});el.classList.add("just")}}}
 function refreshZoom(){if(!U.zoom)return;var z=$(".zoom",layer),st=z?$(".zbox",z).scrollTop:0;if(z)z.remove();layer.insertAdjacentHTML("afterbegin",zoomHTML(U.zoom).replace('class="zbox"','class="zbox" style="animation:none"').replace('class="scrim"','class="scrim" style="animation:none"'))}
-function closeZoom(){var z=$(".zoom",layer);if(z)z.remove();U.zoom=null;if(!$(".drawer",layer))document.body.style.overflow=""}
+function closeZoom(){var z=$(".zoom",layer);if(z){z.classList.add("out");setTimeout(function(){z.remove()},230)}U.zoom=null;if(!$(".drawer",layer))document.body.style.overflow=""}
 
 function packHTML(k){
  var ix=sizeIndex(),p=k.split("|"),pt=PT(p[1]),list=groupOrders(k).filter(live),rows={},n=0;
@@ -1422,8 +1487,9 @@ document.addEventListener("click",function(e){
 });
 C.out=function(){try{localStorage.removeItem("anitas-staff")}catch(e){}SY.mode="";SY.queue=[];closeZoom();closeDrawer();loginView()};
 C.reset=function(t){if(U.sure!=="reset"){arm("reset");t.textContent="Tap again to reset everything";return}U.sure="";t.textContent="Reset sample data";op({t:"reset"});U.menu=null;closeZoom();closeDrawer();render();toast(SY.mode==="live"?"Sample data restored on every device":"Sample data restored")};
-C.wk=function(t){var d=+t.dataset.d;U.week+=d;U.dir=d<0?"from-left":"from-right";render()};
-C.wk0=function(){U.dir=U.week>0?"from-left":"from-right";U.week=0;render()};
+function enter(){var v=$("#view");if(!v)return;v.classList.remove("enter");void v.offsetWidth;v.classList.add("enter");clearTimeout(enter.t);enter.t=setTimeout(function(){v.classList.remove("enter")},900)}
+C.wk=function(t){var d=+t.dataset.d;U.week+=d;U.dir=d<0?"from-left":"from-right";render();enter()};
+C.wk0=function(){U.dir=U.week>0?"from-left":"from-right";U.week=0;render();enter()};
 C.zoom=function(t){closeDrawer();openZoom(t.dataset.k,t.dataset.o)};
 C.unzoom=function(){closeZoom()};
 C.dclose=function(){closeDrawer()};
