@@ -1173,6 +1173,39 @@ li.rdy .ck{border-color:var(--blue)}
 .pk{display:block!important}
 .pk .pempty{flex:none}
 .pkw .wkhead>.wkr{justify-self:end}
+
+/* ===== v28: catering, the way Anita takes it on ===== */
+.cal{max-width:1320px}
+.cstage{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px;margin-bottom:26px}
+.cstage section{border-radius:16px;padding:16px 18px 8px}
+.cs-q{background:#fdf0bd}.cs-w{background:rgba(44,74,142,.07)}
+.cstage h3{font-family:var(--sans);font-weight:700;font-size:1rem;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.cstage h3 span{font-size:.75rem;border-radius:99px;padding:1px 8px;background:rgba(42,28,19,.1)}
+.csr{display:flex;align-items:center;gap:14px;padding:10px 0;border-top:1px solid rgba(42,28,19,.08)}
+.csr:first-of-type{border-top:0}
+.csl{flex:1;text-align:left;min-width:0}.csl b{display:block;font-weight:600}.csl small{display:block;font-size:.84rem;color:var(--mute)}
+.csl:hover b{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.btn.ghost{background:transparent!important;color:var(--blue)!important;box-shadow:inset 0 0 0 1.5px var(--blue)!important}
+.btn.ghost:hover{background:var(--blue)!important;color:#fff!important}
+.clay{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:30px;align-items:start}
+.cside{position:sticky;top:96px}
+.cside h3{font-family:var(--sans);font-weight:700;font-size:1rem;padding-bottom:10px;border-bottom:1px solid rgba(42,28,19,.55)}
+.agenda{list-style:none;padding:0;margin:0}
+.agenda li{border-bottom:1px solid var(--line)}
+.agenda button{display:grid;grid-template-columns:46px 1fr;gap:12px;width:100%;text-align:left;padding:12px 8px 12px 0;border-radius:10px;transition:background .25s var(--eo)}
+.agenda button:hover,.agenda button.on{background:rgba(251,248,242,.8)}
+.ad{text-align:center;font-size:.72rem;color:var(--mute);line-height:1.1}.ad b{display:block;font-size:1.35rem;font-weight:700;color:var(--ink);letter-spacing:-.02em}
+.ab b{display:block;font-weight:600;font-size:.95rem}.ab small{display:block;font-size:.8rem;color:var(--mute);margin-top:1px}
+.ab .a-new{color:#8a5a00;font-weight:600}.ab .a-quoted{color:var(--blue);font-weight:600}.ab .a-confirmed{color:#3f6b4e;font-weight:600}
+.ctot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.ctot p{font-size:.75rem;color:var(--mute);line-height:1.25}.ctot b{display:block;font-size:1.15rem;color:var(--ink);font-weight:700}
+.cev2{display:flex;align-items:baseline;gap:5px}
+.cev2 em{margin-left:auto;font-style:normal;font-size:.72rem;opacity:.75;padding-left:4px}
+.cev2 em::after{content:" ppl"}
+.bdrop{margin-top:auto;font-size:.68rem;font-weight:600;color:#a8957f;padding-left:2px}
+.cday{min-height:104px}
+@media(max-width:1100px){.clay{grid-template-columns:1fr}.cside{position:static;order:-1}}
+@media(max-width:800px){.bdrop{font-size:0;width:16px;height:2px;background:#d7bd95;border-radius:2px;margin-top:auto}.cstage{grid-template-columns:1fr}.csr{flex-wrap:wrap}.csr .btn{width:100%}}
 </style>
 </head>
 <body>
@@ -1626,16 +1659,27 @@ function cateringView(){
  if(!U.csel||U.csel.slice(0,7)!==mKey){var nx=S.catering.filter(function(c){return c.date.slice(0,7)===mKey&&c.date>=TODAY}).sort(function(a,b){return a.date<b.date?-1:1})[0];U.csel=nx?nx.date:(TODAY.slice(0,7)===mKey?TODAY:iso(first))}
  var nw=S.catering.filter(function(c){return c.status==="new"}).length;
  var h='<div class="cal"><div class="calh"><button class="u arr" data-a="cm" data-d="-1">‹ '+fd(addDays(iso(first),-1),{month:"long"})+'</button><div class="calt"><h2>'+fd(iso(first),{month:"long",year:"numeric"})+'</h2><small>'+(nw?plural(nw,"request")+" waiting on a quote":"Catering")+'</small></div><div class="calr"><button class="btn press" data-a="cadd">+ Add a request</button><button class="u arr" data-a="cm" data-d="1">'+fd(iso(new Date(first.getFullYear(),first.getMonth()+1,1,12)),{month:"long"})+' ›</button></div></div>';
+ var up=S.catering.filter(function(c){return c.status!=="done"&&c.date>=TODAY}).sort(function(a,b){return a.date<b.date?-1:1});
+ var needQ=up.filter(function(c){return c.status==="new"}),waitC=up.filter(function(c){return c.status==="quoted"});
+ if(needQ.length||waitC.length){h+='<div class="cstage">';
+  if(needQ.length)h+='<section class="cs-q"><h3>Needs a quote <span>'+needQ.length+'</span></h3>'+needQ.map(function(c){return '<div class="csr"><button class="csl" data-a="csel" data-d="'+c.date+'"><b>'+esc(c.event)+'</b><small>'+esc(c.org)+' \u00b7 '+c.guests+' guests \u00b7 '+fd(c.date,{weekday:"short",month:"short",day:"numeric"})+'</small></button><button class="btn sm press" data-a="cedit" data-id="'+c.id+'">Write quote</button></div>'}).join("")+'</section>';
+  if(waitC.length)h+='<section class="cs-w"><h3>Quote sent, waiting on them <span>'+waitC.length+'</span></h3>'+waitC.map(function(c){return '<div class="csr"><button class="csl" data-a="csel" data-d="'+c.date+'"><b>'+esc(c.event)+' \u00b7 '+money(+c.quote)+'</b><small>'+esc(c.org)+' \u00b7 '+c.guests+' guests \u00b7 '+fd(c.date,{weekday:"short",month:"short",day:"numeric"})+'</small></button><button class="btn sm ghost press" data-a="cst" data-id="'+c.id+'" data-s="confirmed">They said yes</button></div>'}).join("")+'</section>';
+  h+='</div>'}
+ h+='<div class="clay"><div class="cmain">';
  h+='<div class="calg" role="grid">'+["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(function(d){return '<div class="cdow">'+d+'</div>'}).join("");
  for(var d=start;d<=end;d=addDays(d,1)){
   var ev=(byDay[d]||[]).sort(function(a,b){return a.time<b.time?-1:1}),out=d.slice(0,7)!==mKey,cls="cday"+(out?" out":"")+(d===TODAY?" today":"")+(d===U.csel?" sel":"")+(d<TODAY?" past":"");
-  h+='<button class="'+cls+'" data-a="csel" data-d="'+d+'" aria-label="'+longd(d)+(ev.length?", "+plural(ev.length,"event"):"")+'"><span class="cnum">'+parse(d).getDate()+'</span>'+ev.map(function(c){return '<span class="cev2 st-'+c.status+'"><i>'+esc(c.time.replace(":00","").replace(" ",""))+'</i>'+esc(c.event)+'</span>'}).join("")+'</button>';
+  h+='<button class="'+cls+'" data-a="csel" data-d="'+d+'" aria-label="'+longd(d)+(ev.length?", "+plural(ev.length,"event"):"")+'"><span class="cnum">'+parse(d).getDate()+'</span>'+ev.map(function(c){return '<span class="cev2 st-'+c.status+'"><i>'+esc(c.time.replace(":00","").replace(" ",""))+'</i>'+esc(c.event)+'<em>'+c.guests+'</em></span>'}).join("")+(dropDay(d)?'<span class="bdrop">Bread drop</span>':'')+'</button>';
  }
  h+='</div>';
  var sel=(byDay[U.csel]||[]);
- h+='<div class="cdet"><h3>'+longd(U.csel)+'</h3>'+(sel.length?'<ul class="clist">'+sel.map(cevHTML).join("")+'</ul>':'<p class="cnone">Nothing booked this day. <button class="u" data-a="cadd">Add a request</button></p>')+'</div></div>';
+ var conf=up.filter(function(c){return c.status==="confirmed"});
+ h+='</div><aside class="cside"><h3>Coming up</h3>'+(up.length?'<ul class="agenda">'+up.slice(0,6).map(function(c){var dd=Math.round((parse(c.date)-parse(TODAY))/864e5);return '<li><button data-a="csel" data-d="'+c.date+'" class="'+(c.date===U.csel?"on":"")+'"><span class="ad"><b>'+parse(c.date).getDate()+'</b>'+fd(c.date,{month:"short"})+'</span><span class="ab"><b>'+esc(c.event)+'</b><small>'+c.guests+' guests \u00b7 '+esc(c.time)+' \u00b7 '+esc(c.mode.toLowerCase())+'</small><small class="a-'+c.status+'">'+(c.status==="new"?"Needs a quote":c.status==="quoted"?"Waiting on them":"Confirmed")+' \u00b7 '+(dd===0?"today":dd===1?"tomorrow":"in "+dd+" days")+'</small></span></button></li>'}).join("")+'</ul>':'<p class="cnone">Nothing booked yet.</p>')+
+  '<div class="ctot"><p><b>'+conf.length+'</b> confirmed</p><p><b>'+conf.reduce(function(a,c){return a+(+c.guests||0)},0)+'</b> guests to feed</p><p><b>'+money(conf.reduce(function(a,c){return a+(+c.quote||0)},0))+'</b> booked</p></div></aside></div>';
+ h+='<div class="cdet" id="cdet"><h3>'+longd(U.csel)+'</h3>'+(sel.length?'<ul class="clist">'+sel.map(cevHTML).join("")+'</ul>':'<p class="cnone">Nothing booked this day. <button class="u" data-a="cadd">Add a request</button></p>')+'</div></div>';
  return h;
 }
+function dropDay(d){var w=parse(d).getDay();return PORDER.some(function(k){var P=PT(k);return P.on&&(P.days||[]).indexOf(w)>-1})}
 function cevHTML(c){
  var days=Math.round((parse(c.date)-parse(TODAY))/864e5);
  var when=days===0?"today":days===1?"tomorrow":days>0?"in "+days+" days":Math.abs(days)+" days ago";
@@ -1644,8 +1688,8 @@ function cevHTML(c){
   '<div class="cr2"><span class="cnm">'+esc(c.event)+'</span>'+tag+(+c.quote?'<span class="cq">'+money(+c.quote)+'</span>':'')+'</div>'+
   '<p class="cmeta">'+esc(c.org)+' · '+c.guests+' guests · '+esc(c.mode.toLowerCase())+' at '+esc(c.time)+' · '+when+(c.diet&&c.diet!=="None"?' · '+esc(c.diet):'')+'</p>'+
   (c.menu?'<p class="cmenu">'+esc(c.menu)+'</p>':'')+'<div class="ca2">';
- if(c.status==="new")h+='<button class="btn press" data-a="cedit" data-id="'+c.id+'">Send quote</button>';
- if(c.status==="quoted")h+='<button class="btn press" data-a="cst" data-id="'+c.id+'" data-s="confirmed">Mark confirmed</button>';
+ if(c.status==="new")h+='<button class="btn press" data-a="cedit" data-id="'+c.id+'">Write quote</button>';
+ if(c.status==="quoted")h+='<button class="btn press" data-a="cst" data-id="'+c.id+'" data-s="confirmed">They said yes</button>';
  if(c.status==="confirmed")h+='<button class="btn press" data-a="cst" data-id="'+c.id+'" data-s="done">Mark delivered</button>';
  if(c.status==="done")h+='<button class="u" data-a="cst" data-id="'+c.id+'" data-s="confirmed">Undo</button>';
  h+=(c.phone?'<a class="u" href="tel:'+esc(c.phone.replace(/[^\d+]/g,""))+'">'+esc(c.phone)+'</a>':'')+'<button class="u z2more" data-a="cedit" data-id="'+c.id+'">Edit</button></div></div></li>';
@@ -1806,7 +1850,7 @@ C.fdel=function(){if(U.sure!=="del"){keepForm();arm("del");rerenderForm();return
 /* catering */
 C.past=function(){U.showPast=!U.showPast;render()};
 C.cm=function(t){U.cm=(U.cm||0)+(+t.dataset.d);U.csel=null;render();enter()};
-C.csel=function(t){U.csel=t.dataset.d;render();var e=$(".cdet");if(e&&innerWidth<800)e.scrollIntoView({behavior:"smooth",block:"start"})};
+C.csel=function(t){var d=t.dataset.d,f=t.closest(".cstage,.cside");if(d.slice(0,7)!==iso(new Date(parse(TODAY).getFullYear(),parse(TODAY).getMonth()+(U.cm||0),1,12)).slice(0,7)){var a=parse(d),b=parse(TODAY);U.cm=(a.getFullYear()-b.getFullYear())*12+a.getMonth()-b.getMonth()}U.csel=d;render();var e=$("#cdet");if(e&&(f||innerWidth<800))e.scrollIntoView({behavior:"smooth",block:"start"})};
 C.cst=function(t){var c=JSON.parse(JSON.stringify(cfind(t.dataset.id)));c.status=t.dataset.s;if(!op({t:"csave",c:c}))return;flash("c"+c.id);render();toast(c.event+": "+CST[c.status].toLowerCase())};
 C.cedit=function(t){U.ferr="";U.sure="";closeZoom();U.cdraft=JSON.parse(JSON.stringify(cfind(t.dataset.id)));openDrawer(cformHTML(U.cdraft))};
 C.cadd=function(){U.ferr="";U.sure="";U.cdraft={status:"new",mode:"Pickup",guests:20,date:addDays(TODAY,14),time:"12:00 pm"};openDrawer(cformHTML(U.cdraft))};
