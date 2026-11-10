@@ -997,6 +997,36 @@ h1,h2,h3,.wkmid h2,.zt h2,.sheet h2,.ph h2,.pgh h2,.dpl,.dropline b,.cd2 b,.hin 
  .cev2{width:8px;height:8px;padding:0;border-radius:50%;font-size:0;flex:none}.cev2 i{display:none}.cday{flex-direction:column}
  .cdet{margin-top:24px}}
 @media(max-width:800px){.cev2.st-new{background:#e0a800}.cev2.st-quoted{background:var(--blue)}}
+
+/* ===== v23: tap a customer, see only that customer ===== */
+.zoom.one .zbox.z1{max-width:520px;width:calc(100% - 32px);margin:auto;padding:30px 30px 24px;border-radius:18px;position:relative;align-self:center;max-height:calc(100vh - 48px);overflow:auto}
+.zoom.one{display:flex;align-items:center;justify-content:center}
+.x1{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;font-size:1rem;color:var(--mute);background:rgba(42,28,19,.06)}
+.x1:hover{background:rgba(42,28,19,.12);color:var(--ink)}
+.s1{display:inline-block;font-size:.8rem;font-weight:600;padding:4px 11px;border-radius:99px;background:rgba(42,28,19,.07);color:var(--ink)}
+.st1-pend{background:#fde89a;color:#3d2e00}.st1-packed{background:rgba(44,74,142,.12);color:var(--blue)}.st1-done{background:rgba(63,107,78,.12);color:#3f6b4e}.st1-gone{background:rgba(162,58,42,.1);color:#a23a2a}
+.z1 h2{font-size:2rem!important;margin:12px 0 4px;line-height:1.1}
+.m1{color:var(--mute);font-size:.92rem}
+.i1{list-style:none;padding:0;margin:20px 0 0;border-top:1px solid var(--line2)}
+.i1 li{display:flex;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);font-size:1rem}
+.i1 li b{font-weight:700;margin-right:2px}.i1 li em{font-style:normal;color:var(--mute)}
+.i1 .t1{font-weight:700;border-bottom:0}
+.n1{margin-top:12px;background:#fbf3d9;border-radius:10px;padding:12px 14px;font-size:.95rem}
+.p1{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin-top:16px;font-size:.92rem}
+.p1 a{font-weight:600;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line2)}
+.paid1{color:#3f6b4e;font-weight:600}
+.a1{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:22px}
+.big1{width:100%;min-height:56px!important;font-size:1.05rem!important}
+.ok1{font-weight:700;font-size:1.1rem;color:#3f6b4e;padding:8px 0}
+.e1{text-align:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.e1 .u{color:var(--mute)}
+.zoom.one .zbox{animation:pop1 .42s var(--eo) both}
+.zoom.one.out .zbox{animation:pop1 .2s ease-in reverse both}
+@keyframes pop1{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+@media(max-width:600px){.zoom.one{align-items:flex-end}.zoom.one .zbox.z1{width:100%;max-width:none;border-radius:20px 20px 0 0;margin:0;padding:26px 20px 22px;max-height:88vh}@keyframes pop1{from{opacity:.6;transform:translateY(40px)}to{opacity:1;transform:none}}}
+.zoom.one{position:fixed!important;inset:0!important;padding:0!important}
+@media(max-width:600px){.zoom.one .zbox.z1{margin:auto 0 0!important;padding-bottom:calc(22px + env(safe-area-inset-bottom))}}
+@media(max-width:600px){#toast{top:16px!important;bottom:auto!important}}
 </style>
 </head>
 <body>
@@ -1233,12 +1263,32 @@ function weekView(){
   if(!list.length)h+='<li class="empty"><span class="hand2">quiet so far, nothing booked yet</span></li>';
   h+='</ul><button class="newo" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ New order</button></section>';
  });
- h+='</div><p class="foot"><span>Tap any order to open it.</span><button class="lnk" data-a="totals">Week totals</button><button class="lnk" data-a="pts">Pickup days</button></p>';
+ h+='</div><p class="foot"><span>Tap a customer to confirm, pack or mark picked up.</span><button class="lnk" data-a="totals">Week totals</button><button class="lnk" data-a="pts">Pickup days</button></p>';
  U.dir="";
  return h;
 }
 
+function oneHTML(o){
+ var ix=sizeIndex(),pt=PT(o.point),st=o.status,gone=!live(o),pend=o.pending&&st==="new"&&!gone,tot=oTotal(o,ix);
+ var lab=gone?(o.declined?"Declined":"Cancelled"):pend?"Needs a yes":st==="new"?"To pack":st==="packed"?"Packed, waiting for pickup":pt.done;
+ var tel=o.phone?esc(o.phone.replace(/[^\d+]/g,"")):"";
+ var h='<div class="zoom one" role="dialog" aria-modal="true" aria-labelledby="zt"><div class="scrim" data-a="unzoom"></div><div class="zbox z1"><button class="x1" data-a="unzoom" aria-label="Close">✕</button>'+
+  '<span class="s1 st1-'+(gone?"gone":pend?"pend":st)+'">'+esc(lab)+'</span><h2 id="zt">'+esc(o.name)+'</h2>'+
+  '<p class="m1">'+esc(pt.name.replace(" bread drop",""))+' · '+wkd(o.date)+', '+short(o.date)+(o.slot?' · '+esc(o.slot):pt.hours?' · '+esc(pt.hours):'')+'</p>'+
+  '<ul class="i1">'+o.items.map(function(i){var l=itemLabel(i,ix),m=ix[i.s];return '<li><span><b>'+i.q+' ×</b> '+esc(l.n)+(l.z?' <em>'+esc(l.z)+'</em>':'')+'</span><span>'+money((m?m.z.price:0)*i.q)+'</span></li>'}).join("")+'<li class="t1"><span>Total</span><span>'+money(tot)+'</span></li></ul>'+
+  (o.note?'<p class="n1">“'+esc(o.note)+'”</p>':'')+(o.declined?'<p class="n1">Told the customer: '+esc(o.declined)+'</p>':'')+
+  '<p class="p1">'+(o.phone?'<a href="tel:'+tel+'">Call '+esc(o.phone)+'</a>':'')+(gone?'':o.paid?'<span class="paid1">Paid</span>':'<button class="u" data-a="paid" data-id="'+o.id+'">Not paid yet, mark paid</button>')+'</p><div class="a1">';
+ if(U.decl===o.id){
+  h+='<div class="decl"><span class="lab" style="margin:0 0 8px">Tell '+esc(o.name.split(" ")[0])+' why</span><div class="segs">'+["We're fully booked that day.","One of the items is sold out.","That's too short notice for us."].map(function(r){return '<button class="seg press" data-a="dreason" data-r="'+esc(r)+'">'+esc(r)+'</button>'}).join("")+'</div><input class="uin" id="dwhy" placeholder="Or write your own reason" maxlength="300"><div class="dacts"><button class="btn press" data-a="decline" data-id="'+o.id+'">Send and decline</button><button class="u" data-a="undecl">Keep the order</button></div></div>';
+ }else if(pend)h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm order</button><button class="u" data-a="decl" data-id="'+o.id+'">Can’t take it</button>';
+ else if(st==="new"&&!gone)h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="packed">Mark packed</button>';
+ else if(st==="packed")h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="done">'+esc(pt.done)+'</button><button class="u" data-a="st" data-id="'+o.id+'" data-s="new">Not packed yet</button>';
+ else if(st==="done")h+='<p class="ok1">✓ '+esc(pt.done)+'</p><button class="u" data-a="st" data-id="'+o.id+'" data-s="packed">Undo</button>';
+ else if(st==="cancelled"&&o.by!=="customer")h+='<button class="btn big1 press" data-a="st" data-id="'+o.id+'" data-s="new">Restore order</button>';
+ return h+'</div><p class="e1"><button class="u" data-a="edit" data-id="'+o.id+'">Edit order</button></p></div></div>';
+}
 function zoomHTML(k){
+ if(U.one&&find(U.one))return oneHTML(find(U.one));
  var ix=sizeIndex(),p=k.split("|"),pt=PT(p[1]),list=groupOrders(k),lv=list.filter(live),tot=lv.reduce(function(a,o){return a+oTotal(o,ix)},0),cl=isClosed(k),fut=p[0]>=TODAY;
  var h='<div class="zoom" role="dialog" aria-modal="true" aria-labelledby="zt"><div class="scrim" data-a="unzoom"></div><div class="zbox z2"><button class="back u" data-a="unzoom">‹ Back to week</button>'+
   '<div class="zt"><h2 id="zt">'+wkd(p[0])+', '+short(p[0])+'</h2><p>'+esc(pt.name)+(pt.hours?", "+pt.hours:"")+' <span class="mute">'+(lv.length?plural(lv.length,"order")+", "+money(tot):"no orders yet")+'</span></p>'+
@@ -1316,7 +1366,7 @@ function openDrawer(html){layer.querySelectorAll(".drawer").forEach(function(d){
 function closeDrawer(){var d=$(".drawer",layer);U.chat=null;U.pdraft=null;if(!d)return;d.classList.add("out");setTimeout(function(){d.remove();if(!$(".zoom",layer))document.body.style.overflow=""},340);U.draft=null}
 function openZoom(k,oid){U.zoom=k;U.decl=null;var z=$(".zoom",layer);if(z)z.remove();layer.insertAdjacentHTML("afterbegin",zoomHTML(k));document.body.style.overflow="hidden";if(oid){var el=document.getElementById("o"+oid);if(el){el.scrollIntoView({block:"center"});el.classList.add("just")}}}
 function refreshZoom(){if(!U.zoom)return;var z=$(".zoom",layer),st=z?$(".zbox",z).scrollTop:0;if(z)z.remove();layer.insertAdjacentHTML("afterbegin",zoomHTML(U.zoom).replace('class="zbox"','class="zbox" style="animation:none"').replace('class="scrim"','class="scrim" style="animation:none"'))}
-function closeZoom(){var z=$(".zoom",layer);if(z){z.classList.add("out");setTimeout(function(){z.remove()},230)}U.zoom=null;if(!$(".drawer",layer))document.body.style.overflow=""}
+function closeZoom(){U.one=null;var z=$(".zoom",layer);if(z){z.classList.add("out");setTimeout(function(){z.remove()},230)}U.zoom=null;if(!$(".drawer",layer))document.body.style.overflow=""}
 
 function packHTML(k){
  var ix=sizeIndex(),p=k.split("|"),pt=PT(p[1]),list=groupOrders(k).filter(live),rows={},n=0;
@@ -1546,7 +1596,7 @@ C.reset=function(t){if(U.sure!=="reset"){arm("reset");t.textContent="Tap again t
 function enter(){var v=$("#view");if(!v)return;v.classList.remove("enter");void v.offsetWidth;v.classList.add("enter");clearTimeout(enter.t);enter.t=setTimeout(function(){v.classList.remove("enter")},900)}
 C.wk=function(t){var d=+t.dataset.d;U.week+=d;U.dir=d<0?"from-left":"from-right";render();enter()};
 C.wk0=function(){U.dir=U.week>0?"from-left":"from-right";U.week=0;render();enter()};
-C.zoom=function(t){closeDrawer();openZoom(t.dataset.k,t.dataset.o)};
+C.zoom=function(t){closeDrawer();U.one=t.dataset.o?+t.dataset.o:null;openZoom(t.dataset.k,U.one?null:t.dataset.o)};
 C.unzoom=function(){closeZoom()};
 C.dclose=function(){closeDrawer()};
 C.pack=function(t){openDrawer(packHTML(t.dataset.k))};
@@ -1561,13 +1611,13 @@ C.alerts=function(t){ALERT.on=!ALERT.on;try{localStorage.setItem("anitas-alerts"
  if(ALERT.on){chime();if("Notification" in window&&Notification.permission==="default")Notification.requestPermission().catch(function(){})}toast(ALERT.on?"You\u2019ll hear a chime for new orders and messages":"Alerts off")};
 C.add=function(t){startForm(null,t.dataset.date,t.dataset.pt)};
 C.edit=function(t){startForm(find(t.dataset.id))};
-C.st=function(t){var o=find(t.dataset.id),s=t.dataset.s,pt=PT(o.point);if(!op({t:"status",id:o.id,s:s}))return;flash(o.id);refreshZoom();render();
+C.st=function(t){var o=find(t.dataset.id),s=t.dataset.s,pt=PT(o.point);if(!op({t:"status",id:o.id,s:s}))return;flash(o.id);refreshZoom();render();if(U.one&&s!=="new")setTimeout(closeZoom,650);
  toast(s==="confirm"?"Confirmed. "+o.name.split(" ")[0]+" sees it now":s==="packed"?o.name+" is packed"+(o.source==="online"?". They've been told":""):s==="done"?pt.done+": "+o.name:s==="new"?o.name+" is back to pack":"")};
 C.decl=function(t){U.decl=+t.dataset.id;refreshZoom();var i=$("#dwhy");if(i)i.focus({preventScroll:true})};
 C.undecl=function(){U.decl=null;refreshZoom()};
 C.dreason=function(t){var i=$("#dwhy");if(i){i.value=t.dataset.r;i.focus()}};
 C.decline=function(t){var o=find(t.dataset.id),r=($("#dwhy")||{}).value||"";if(!r.trim()){var i=$("#dwhy");if(i){i.focus();i.classList.add("need")}return}
- U.decl=null;if(!op({t:"status",id:o.id,s:"decline",reason:r.trim()}))return;flash(o.id);refreshZoom();render();toast("Declined. "+o.name.split(" ")[0]+" has been told why")};
+ U.decl=null;if(!op({t:"status",id:o.id,s:"decline",reason:r.trim()}))return;flash(o.id);refreshZoom();render();if(U.one)setTimeout(closeZoom,650);toast("Declined. "+o.name.split(" ")[0]+" has been told why")};
 C.close=function(t){var k=t.dataset.k,p=k.split("|"),v=!isClosed(k);op({t:"closed",date:p[0],point:p[1],v:v});refreshZoom();render();toast(v?"Closed to online orders":"Open to online orders again")};
 C.paid=function(t){var o=find(t.dataset.id);if(!op({t:"paid",id:o.id}))return;refreshZoom();render();toast(o.name+" marked paid")};
 C.fpt=function(t){keepForm();var d=U.draft,k=t.dataset.k;d.point=k;d.slot=(PT(k).slots||[""])[0];if(true){var m=mondayOf(d.date),n=addDays(m,(PT(k).dow+6)%7);d.date=n<TODAY?addDays(n,7):n}rerenderForm()};
