@@ -1213,6 +1213,26 @@ li.rdy .ck{border-color:var(--blue)}
 .lock-top{background:#2a1c13!important}
 .lock-top .wm,.lock-top h1{font-family:"Albert",sans-serif!important;font-weight:700!important;font-style:normal!important}
 .bars .br i,.bar i,.wkbar i{background:#2a1c13}
+
+/* ===== v30: catering steps you can follow ===== */
+.cev3{background:none!important;box-shadow:none!important;border-radius:0!important;margin:0!important}
+.csteps{list-style:none;display:flex;gap:6px;padding:0;margin:14px 0 4px;flex-wrap:wrap}
+.csteps li{display:flex;align-items:center;gap:7px;font-size:.82rem;font-weight:600;color:#a8957f;padding:5px 12px 5px 6px;border-radius:99px;background:rgba(42,28,19,.05)}
+.csteps i{font-style:normal;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:.72rem;background:rgba(42,28,19,.1);color:var(--mute)}
+.csteps li.done{color:#3f6b4e;background:rgba(63,107,78,.09)}.csteps li.done i{background:#3f6b4e;color:#fff}
+.csteps li.now{color:var(--ink);background:#fde89a}.csteps li.now i{background:var(--ink);color:#fff}
+.cev3.s1 .csteps li.now,.cev3.s2 .csteps li.now{background:rgba(44,74,142,.12);color:var(--blue)}.cev3.s1 .csteps li.now i,.cev3.s2 .csteps li.now i{background:var(--blue)}
+.cnext{margin-top:12px;padding:16px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+.cev3.s0 .cnext{background:#fdf0bd;border-color:rgba(231,180,22,.5)}
+.cq1{font-size:.92rem;color:#5a402d}.cq1 b{color:var(--ink)}
+.cqrow{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:12px}
+.cqin{display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid rgba(42,28,19,.25);border-radius:99px;padding:0 16px;height:44px;min-width:180px}
+.cqin:focus-within{border-color:var(--ink)}
+.cqin span{font-weight:700;color:var(--mute)}
+.cqin input{border:0;outline:0;background:none;font:600 1rem var(--sans);width:120px;color:var(--ink)}
+.cfoot{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;font-size:.88rem}
+.cfoot .u{color:var(--mute)}
+@media(max-width:700px){.cqrow .btn,.cqin{width:100%}.cqin input{width:100%}}
 </style>
 </head>
 <body>
@@ -1656,7 +1676,7 @@ function startForm(o,date,pt){
 }
 
 /* ---------- catering ---------- */
-var CST={new:"New request",quoted:"Quote sent",confirmed:"Confirmed",done:"Delivered"};
+var CST={new:"Needs a price",quoted:"Price sent",confirmed:"Booked",done:"Done"};
 var CCHIP={new:"new",quoted:"done",confirmed:"ok",done:"done"};
 function cateringView(){
  if(U.cm==null)U.cm=0;
@@ -1665,12 +1685,12 @@ function cateringView(){
  var byDay={};S.catering.forEach(function(c){(byDay[c.date]=byDay[c.date]||[]).push(c)});
  if(!U.csel||U.csel.slice(0,7)!==mKey){var nx=S.catering.filter(function(c){return c.date.slice(0,7)===mKey&&c.date>=TODAY}).sort(function(a,b){return a.date<b.date?-1:1})[0];U.csel=nx?nx.date:(TODAY.slice(0,7)===mKey?TODAY:iso(first))}
  var nw=S.catering.filter(function(c){return c.status==="new"}).length;
- var h='<div class="cal"><div class="calh"><button class="u arr" data-a="cm" data-d="-1">‹ '+fd(addDays(iso(first),-1),{month:"long"})+'</button><div class="calt"><h2>'+fd(iso(first),{month:"long",year:"numeric"})+'</h2><small>'+(nw?plural(nw,"request")+" waiting on a quote":"Catering")+'</small></div><div class="calr"><button class="btn press" data-a="cadd">+ Add a request</button><button class="u arr" data-a="cm" data-d="1">'+fd(iso(new Date(first.getFullYear(),first.getMonth()+1,1,12)),{month:"long"})+' ›</button></div></div>';
+ var h='<div class="cal"><div class="calh"><button class="u arr" data-a="cm" data-d="-1">‹ '+fd(addDays(iso(first),-1),{month:"long"})+'</button><div class="calt"><h2>'+fd(iso(first),{month:"long",year:"numeric"})+'</h2><small>'+(nw?plural(nw,"request")+" waiting on a price":"Catering")+'</small></div><div class="calr"><button class="btn press" data-a="cadd">+ Add a request</button><button class="u arr" data-a="cm" data-d="1">'+fd(iso(new Date(first.getFullYear(),first.getMonth()+1,1,12)),{month:"long"})+' ›</button></div></div>';
  var up=S.catering.filter(function(c){return c.status!=="done"&&c.date>=TODAY}).sort(function(a,b){return a.date<b.date?-1:1});
  var needQ=up.filter(function(c){return c.status==="new"}),waitC=up.filter(function(c){return c.status==="quoted"});
  if(needQ.length||waitC.length){h+='<div class="cstage">';
-  if(needQ.length)h+='<section class="cs-q"><h3>Needs a quote <span>'+needQ.length+'</span></h3>'+needQ.map(function(c){return '<div class="csr"><button class="csl" data-a="csel" data-d="'+c.date+'"><b>'+esc(c.event)+'</b><small>'+esc(c.org)+' \u00b7 '+c.guests+' guests \u00b7 '+fd(c.date,{weekday:"short",month:"short",day:"numeric"})+'</small></button><button class="btn sm press" data-a="cedit" data-id="'+c.id+'">Write quote</button></div>'}).join("")+'</section>';
-  if(waitC.length)h+='<section class="cs-w"><h3>Quote sent, waiting on them <span>'+waitC.length+'</span></h3>'+waitC.map(function(c){return '<div class="csr"><button class="csl" data-a="csel" data-d="'+c.date+'"><b>'+esc(c.event)+' \u00b7 '+money(+c.quote)+'</b><small>'+esc(c.org)+' \u00b7 '+c.guests+' guests \u00b7 '+fd(c.date,{weekday:"short",month:"short",day:"numeric"})+'</small></button><button class="btn sm ghost press" data-a="cst" data-id="'+c.id+'" data-s="confirmed">They said yes</button></div>'}).join("")+'</section>';
+  if(needQ.length)h+='<section class="cs-q"><h3>Needs a price <span>'+needQ.length+'</span></h3>'+needQ.map(function(c){return '<div class="csr"><button class="csl" data-a="csel" data-d="'+c.date+'"><b>'+esc(c.event)+'</b><small>'+esc(c.org)+' \u00b7 '+c.guests+' guests \u00b7 '+fd(c.date,{weekday:"short",month:"short",day:"numeric"})+'</small></button><button class="btn sm press" data-a="cgo" data-d="'+c.date+'" data-id="'+c.id+'">Add a price</button></div>'}).join("")+'</section>';
+  if(waitC.length)h+='<section class="cs-w"><h3>Price sent, waiting on them <span>'+waitC.length+'</span></h3>'+waitC.map(function(c){return '<div class="csr"><button class="csl" data-a="csel" data-d="'+c.date+'"><b>'+esc(c.event)+' \u00b7 '+money(+c.quote)+'</b><small>'+esc(c.org)+' \u00b7 '+c.guests+' guests \u00b7 '+fd(c.date,{weekday:"short",month:"short",day:"numeric"})+'</small></button><button class="btn sm ghost press" data-a="cst" data-id="'+c.id+'" data-s="confirmed">They said yes</button></div>'}).join("")+'</section>';
   h+='</div>'}
  h+='<div class="clay"><div class="cmain">';
  h+='<div class="calg" role="grid">'+["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(function(d){return '<div class="cdow">'+d+'</div>'}).join("");
@@ -1681,7 +1701,7 @@ function cateringView(){
  h+='</div>';
  var sel=(byDay[U.csel]||[]);
  var conf=up.filter(function(c){return c.status==="confirmed"});
- h+='</div><aside class="cside"><h3>Coming up</h3>'+(up.length?'<ul class="agenda">'+up.slice(0,6).map(function(c){var dd=Math.round((parse(c.date)-parse(TODAY))/864e5);return '<li><button data-a="csel" data-d="'+c.date+'" class="'+(c.date===U.csel?"on":"")+'"><span class="ad"><b>'+parse(c.date).getDate()+'</b>'+fd(c.date,{month:"short"})+'</span><span class="ab"><b>'+esc(c.event)+'</b><small>'+c.guests+' guests \u00b7 '+esc(c.time)+' \u00b7 '+esc(c.mode.toLowerCase())+'</small><small class="a-'+c.status+'">'+(c.status==="new"?"Needs a quote":c.status==="quoted"?"Waiting on them":"Confirmed")+' \u00b7 '+(dd===0?"today":dd===1?"tomorrow":"in "+dd+" days")+'</small></span></button></li>'}).join("")+'</ul>':'<p class="cnone">Nothing booked yet.</p>')+
+ h+='</div><aside class="cside"><h3>Coming up</h3>'+(up.length?'<ul class="agenda">'+up.slice(0,6).map(function(c){var dd=Math.round((parse(c.date)-parse(TODAY))/864e5);return '<li><button data-a="csel" data-d="'+c.date+'" class="'+(c.date===U.csel?"on":"")+'"><span class="ad"><b>'+parse(c.date).getDate()+'</b>'+fd(c.date,{month:"short"})+'</span><span class="ab"><b>'+esc(c.event)+'</b><small>'+c.guests+' guests \u00b7 '+esc(c.time)+' \u00b7 '+esc(c.mode.toLowerCase())+'</small><small class="a-'+c.status+'">'+(c.status==="new"?"Needs a price":c.status==="quoted"?"Waiting on them":"Booked")+' \u00b7 '+(dd===0?"today":dd===1?"tomorrow":"in "+dd+" days")+'</small></span></button></li>'}).join("")+'</ul>':'<p class="cnone">Nothing booked yet.</p>')+
   '<div class="ctot"><p><b>'+conf.length+'</b> confirmed</p><p><b>'+conf.reduce(function(a,c){return a+(+c.guests||0)},0)+'</b> guests to feed</p><p><b>'+money(conf.reduce(function(a,c){return a+(+c.quote||0)},0))+'</b> booked</p></div></aside></div>';
  h+='<div class="cdet" id="cdet"><h3>'+longd(U.csel)+'</h3>'+(sel.length?'<ul class="clist">'+sel.map(cevHTML).join("")+'</ul>':'<p class="cnone">Nothing booked this day. <button class="u" data-a="cadd">Add a request</button></p>')+'</div></div>';
  return h;
@@ -1690,16 +1710,18 @@ function dropDay(d){var w=parse(d).getDay();return PORDER.some(function(k){var P
 function cevHTML(c){
  var days=Math.round((parse(c.date)-parse(TODAY))/864e5);
  var when=days===0?"today":days===1?"tomorrow":days>0?"in "+days+" days":Math.abs(days)+" days ago";
- var tag=c.status==="new"?'<span class="chip ask">Needs a quote</span>':c.status==="quoted"?'<span class="chip new">Quote sent</span>':c.status==="confirmed"?'<span class="chip packed">Confirmed</span>':'<span class="chip done">Delivered</span>';
- var h='<li class="'+(c.status==="new"?"isnew ":"")+(c.status==="done"?"dim ":"")+(U.just["c"+c.id]?"just":"")+'"><div class="cd2"><b>'+parse(c.date).getDate()+'</b><span>'+fd(c.date,{weekday:"short"})+', '+fd(c.date,{month:"short"})+'</span></div><div class="cb2">'+
-  '<div class="cr2"><span class="cnm">'+esc(c.event)+'</span>'+tag+(+c.quote?'<span class="cq">'+money(+c.quote)+'</span>':'')+'</div>'+
-  '<p class="cmeta">'+esc(c.org)+' · '+c.guests+' guests · '+esc(c.mode.toLowerCase())+' at '+esc(c.time)+' · '+when+(c.diet&&c.diet!=="None"?' · '+esc(c.diet):'')+'</p>'+
-  (c.menu?'<p class="cmenu">'+esc(c.menu)+'</p>':'')+'<div class="ca2">';
- if(c.status==="new")h+='<button class="btn press" data-a="cedit" data-id="'+c.id+'">Write quote</button>';
- if(c.status==="quoted")h+='<button class="btn press" data-a="cst" data-id="'+c.id+'" data-s="confirmed">They said yes</button>';
- if(c.status==="confirmed")h+='<button class="btn press" data-a="cst" data-id="'+c.id+'" data-s="done">Mark delivered</button>';
- if(c.status==="done")h+='<button class="u" data-a="cst" data-id="'+c.id+'" data-s="confirmed">Undo</button>';
- h+=(c.phone?'<a class="u" href="tel:'+esc(c.phone.replace(/[^\d+]/g,""))+'">'+esc(c.phone)+'</a>':'')+'<button class="u z2more" data-a="cedit" data-id="'+c.id+'">Edit</button></div></div></li>';
+ var who=c.org||c.name||"them",first=(c.contact||c.name||c.org||"them").split(" ")[0],pick=/pick/i.test(c.mode||"");
+ var steps=["Request in","Price sent","Booked",pick?"Picked up":"Delivered"],at={new:0,quoted:1,confirmed:2,done:3}[c.status]||0;
+ var h='<li class="cev3 s'+at+(U.just["c"+c.id]?" just":"")+'" id="cev'+c.id+'"><div class="cd2"><b>'+parse(c.date).getDate()+'</b><span>'+fd(c.date,{weekday:"short"})+', '+fd(c.date,{month:"short"})+'</span></div><div class="cb2">'+
+  '<div class="cr2"><span class="cnm">'+esc(c.event)+'</span>'+(+c.quote?'<span class="cq">'+money(+c.quote)+'</span>':'')+'</div>'+
+  '<p class="cmeta">'+esc(who)+' \u00b7 '+c.guests+' guests \u00b7 '+esc((c.mode||"").toLowerCase())+' at '+esc(c.time)+' \u00b7 '+when+(c.diet&&c.diet!=="None"?' \u00b7 '+esc(c.diet):'')+'</p>'+
+  (c.menu?'<p class="cmenu">'+esc(c.menu)+'</p>':'')+
+  '<ol class="csteps">'+steps.map(function(t,i){return '<li class="'+(i<at?"done":i===at?"now":"")+'"><i>'+(i<at?"\u2713":i+1)+'</i>'+t+'</li>'}).join("")+'</ol>';
+ if(c.status==="new")h+='<div class="cnext"><p class="cq1"><b>Next: give '+esc(first)+' a price.</b> Call or message them with it, then save it here so you remember.</p><div class="cqrow"><label class="cqin"><span>$</span><input id="cq'+c.id+'" type="number" inputmode="decimal" min="0" step="5" placeholder="Total price"></label><button class="btn press" data-a="cquote" data-id="'+c.id+'">Save price</button></div></div>';
+ if(c.status==="quoted")h+='<div class="cnext"><p class="cq1"><b>Next: wait for '+esc(first)+' to say yes</b> to '+money(+c.quote)+'.</p><div class="cqrow"><button class="btn press" data-a="cst" data-id="'+c.id+'" data-s="confirmed">They said yes, book it</button><button class="u" data-a="cst" data-id="'+c.id+'" data-s="new">Change the price</button></div></div>';
+ if(c.status==="confirmed")h+='<div class="cnext"><p class="cq1"><b>Booked.</b> '+(pick?esc(first)+' picks up':'You deliver')+' '+fd(c.date,{weekday:"long"})+' at '+esc(c.time)+'.</p><div class="cqrow"><button class="btn press" data-a="cst" data-id="'+c.id+'" data-s="done">Mark '+(pick?"picked up":"delivered")+'</button></div></div>';
+ if(c.status==="done")h+='<div class="cnext"><p class="cq1"><b>All done.</b></p><div class="cqrow"><button class="u" data-a="cst" data-id="'+c.id+'" data-s="confirmed">Undo</button></div></div>';
+ h+='<p class="cfoot">'+(c.phone?'<a class="u" href="tel:'+esc(c.phone.replace(/[^\d+]/g,""))+'">Call '+esc(first)+', '+esc(c.phone)+'</a>':'')+'<button class="u" data-a="cedit" data-id="'+c.id+'">Edit details</button></p></div></li>';
  return h;
 }
 function cformHTML(c){
@@ -1858,6 +1880,8 @@ C.fdel=function(){if(U.sure!=="del"){keepForm();arm("del");rerenderForm();return
 C.past=function(){U.showPast=!U.showPast;render()};
 C.cm=function(t){U.cm=(U.cm||0)+(+t.dataset.d);U.csel=null;render();enter()};
 C.csel=function(t){var d=t.dataset.d,f=t.closest(".cstage,.cside");if(d.slice(0,7)!==iso(new Date(parse(TODAY).getFullYear(),parse(TODAY).getMonth()+(U.cm||0),1,12)).slice(0,7)){var a=parse(d),b=parse(TODAY);U.cm=(a.getFullYear()-b.getFullYear())*12+a.getMonth()-b.getMonth()}U.csel=d;render();var e=$("#cdet");if(e&&(f||innerWidth<800))e.scrollIntoView({behavior:"smooth",block:"start"})};
+C.cquote=function(t){var id=t.dataset.id,i=$('#cq'+id),v=parseFloat(i&&i.value);if(!(v>0)){toast("Type the price first");if(i)i.focus();return}var c=JSON.parse(JSON.stringify(cfind(id)));c.quote=Math.round(v*100)/100;c.status="quoted";if(!op({t:"csave",c:c}))return;flash("c"+c.id);render();toast("Price saved: "+money(c.quote))};
+C.cgo=function(t){U.csel=t.dataset.d;render();setTimeout(function(){var e=$('#cev'+t.dataset.id);if(e){e.scrollIntoView({behavior:"smooth",block:"center"});var i=$('#cq'+t.dataset.id);if(i)setTimeout(function(){i.focus({preventScroll:true})},450)}},60)};
 C.cst=function(t){var c=JSON.parse(JSON.stringify(cfind(t.dataset.id)));c.status=t.dataset.s;if(!op({t:"csave",c:c}))return;flash("c"+c.id);render();toast(c.event+": "+CST[c.status].toLowerCase())};
 C.cedit=function(t){U.ferr="";U.sure="";closeZoom();U.cdraft=JSON.parse(JSON.stringify(cfind(t.dataset.id)));openDrawer(cformHTML(U.cdraft))};
 C.cadd=function(){U.ferr="";U.sure="";U.cdraft={status:"new",mode:"Pickup",guests:20,date:addDays(TODAY,14),time:"12:00 pm"};openDrawer(cformHTML(U.cdraft))};
