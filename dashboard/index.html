@@ -1129,6 +1129,29 @@ li.rdy .ck{border-color:var(--blue)}
 #view.enter .seg2,#view.enter .tiles,#view.enter .stop1{animation:rise .55s var(--eo) both}
 #view.enter .tiles{animation-delay:.05s}
 @media(max-width:800px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.seg2 button{padding:10px 12px}.seg2 button b{font-size:.95rem}.pl li{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"c r a" "c p a"}.pl li .ck{grid-area:c}.pl li .row{grid-area:r}.pl li .pill{grid-area:p;justify-self:start}.pl li .amt{grid-area:a}.pkw .wkhead{grid-template-columns:1fr 1fr}}
+
+/* ===== v26: every stop on screen at once ===== */
+.pkw{max-width:1320px}
+.pkw .hello,.pkw .needline{max-width:none}
+.seg2{display:none}
+.pks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:8px}
+.pks.n2{grid-template-columns:repeat(2,minmax(0,1fr))}.pks.n4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.pk{margin-top:0;background:rgba(251,248,242,.55);border-radius:18px;padding:20px 20px 16px;display:flex;flex-direction:column;min-height:260px}
+.pk.off{background:rgba(42,28,19,.035)}
+.pk.off .pkn b,.pk.off .pkt{color:#8b7763}
+.pkh{grid-template-columns:1fr auto;align-items:start;border-bottom:0;padding-bottom:0}
+.pkn b{font-size:1.15rem}
+.pkt{font-size:1.5rem}
+.pks2{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.8rem;font-weight:600;color:var(--mute);margin:10px 0 6px;padding-bottom:12px;border-bottom:1px solid var(--line2)}
+.offl{color:#8a5a00}
+.pk .pl li{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"c r a" "c p a";gap:4px 12px;padding:12px 0}
+.pk .pl li .ck{grid-area:c;width:38px;height:38px}.pk .pl li .row{grid-area:r}.pk .pl li .pill{grid-area:p;justify-self:start;margin-top:4px}.pk .pl li .amt{grid-area:a;align-self:start}
+.pk .pempty{flex:1;display:grid;place-items:center;color:#a8957f;font-size:.9rem;padding:26px 0;border:1.5px dashed rgba(42,28,19,.15);border-radius:12px;margin-top:12px}
+.pfoot2{margin-top:auto;padding-top:12px}
+.pfoot2 .u{color:var(--blue);border-bottom-color:rgba(44,74,142,.3);font-size:.88rem}
+.who{margin:0 0 16px}
+@media(max-width:1100px){.pks,.pks.n4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.pks,.pks.n2,.pks.n4{grid-template-columns:1fr}.pk{min-height:0}}
 </style>
 </head>
 <body>
@@ -1357,22 +1380,26 @@ function weekView(){
  var sub2=U.week===0?"This week’s bread drop":U.week===1?"Next week’s bread drop":U.week===-1?"Last week’s bread drop":'<button class="u" data-a="wk0">Back to this week</button>';
  h+='<div class="wkhead"><button class="u arr" data-a="wk" data-d="-1">‹ '+short(addDays(mon,-4))+'</button><div class="wkmid"><h2>'+title+'</h2><small>'+sub2+'</small></div><button class="u arr" data-a="wk" data-d="1">'+short(addDays(mon,10))+' ›</button></div>';
  if(pend.length)h+='<section class="pend2"><h3>Waiting for your yes <span>'+pend.length+'</span></h3><ul>'+pend.map(function(o){return '<li data-name="'+esc(o.name.toLowerCase())+'"><button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+'</span><span class="its1">'+itemsShort(o,ix)+'</span><span class="wh">'+esc(stopName(o.point))+' · '+money(oTotal(o,ix))+'</span></button><button class="btn sm press" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm</button></li>'}).join("")+'</ul></section>';
- var stops=keys.map(function(k){var p=k.split("|"),list=groupOrders(k).filter(function(o){return live(o)&&!(o.pending&&o.status==="new")});return {k:k,d:p[0],pt:p[1],P:PT(p[1]),list:list}});
- if(!stops.length){h+='<p class="pempty big">No bread drop this week.</p></div>';return h}
- if(!U.stopk||!stops.some(function(x){return x.k===U.stopk})){var open=stops.filter(function(x){return x.list.some(function(o){return o.status!=="done"})})[0];U.stopk=(open||stops[0]).k}
- var cur=stops.filter(function(x){return x.k===U.stopk})[0];
- if(stops.length>1)h+='<div class="seg2" role="tablist">'+stops.map(function(x){var left=x.list.filter(function(o){return o.status!=="done"}).length;return '<button role="tab" aria-selected="'+(x.k===U.stopk)+'" class="'+(x.k===U.stopk?"on":"")+'" data-a="stop" data-k="'+x.k+'"><b>'+esc(stopName(x.pt))+'</b><span>'+esc(startTime(x.P))+(dl.length>1?' · '+fd(x.d,{weekday:"short"}):'')+'</span><i>'+left+'</i></button>'}).join("")+'</div>';
- var L2=cur.list,toBag=L2.filter(function(o){return o.status==="new"}),ready=L2.filter(function(o){return o.status==="packed"}),done=L2.filter(function(o){return o.status==="done"});
- var owe=L2.filter(function(o){return o.status!=="done"&&!o.paid}).reduce(function(a,o){return a+oTotal(o,ix)},0);
+ var kset={};PORDER.forEach(function(k){var P=PT(k),d=addDays(mon,(((P.days||[4])[0])+6)%7);kset[d+"|"+k]=1});keys.forEach(function(k){kset[k]=1});
+ var stops=Object.keys(kset).map(function(k){var p=k.split("|");return {k:k,d:p[0],pt:p[1],P:PT(p[1]),list:groupOrders(k).filter(function(o){return live(o)&&!(o.pending&&o.status==="new")})}})
+  .filter(function(x){return x.P.on||x.list.length||PORDER.indexOf(x.pt)>-1}).sort(function(a,b){return PORDER.indexOf(a.pt)-PORDER.indexOf(b.pt)||(a.d<b.d?-1:1)});
+ var A=[];stops.forEach(function(x){A=A.concat(x.list)});
+ var cnt=function(L,st){return L.filter(function(o){return o.status===st}).length},owe=function(L){return L.filter(function(o){return o.status!=="done"&&!o.paid}).reduce(function(a,o){return a+oTotal(o,ix)},0)};
+ h+='<div class="tiles"><div class="t-bag"><b>'+cnt(A,"new")+'</b><span>To bag</span></div><div class="t-rdy"><b>'+cnt(A,"packed")+'</b><span>Bag ready</span></div><div class="t-dn"><b>'+cnt(A,"done")+'</b><span>Picked up</span></div><div class="t-owe"><b>'+money(owe(A))+'</b><span>To collect</span></div></div>';
+ if(A.length>5)h+='<input id="who" class="who" type="search" placeholder="Find a name" autocomplete="off" value="'+esc(U.who||"")+'">';
  var srt=function(a,b){return a.name.localeCompare(b.name)};
- h+='<section class="stop1"><p class="where">'+esc(placeOnly(cur.P))+' · '+wkd(cur.d)+(cur.P.hours?', '+esc(cur.P.hours):'')+' <button class="u" data-a="zoom" data-k="'+cur.k+'">Pickup list</button></p>';
- h+='<div class="tiles"><div class="t-bag"><b>'+toBag.length+'</b><span>To bag</span></div><div class="t-rdy"><b>'+ready.length+'</b><span>Bag ready</span></div><div class="t-dn"><b>'+done.length+'</b><span>Picked up</span></div><div class="t-owe"><b>'+money(owe)+'</b><span>To collect</span></div></div>';
- if(L2.length>5)h+='<input id="who" class="who" type="search" placeholder="Find a name" autocomplete="off" value="'+esc(U.who||"")+'">';
- h+='<ul class="pl">'+toBag.sort(srt).concat(ready.sort(srt)).map(function(o){return rowPU(o,ix)}).join("")+'</ul>';
- if(!L2.length)h+='<p class="pempty">No orders for '+esc(stopName(cur.pt))+' yet.</p>';
- if(done.length)h+='<details class="pdone"'+(toBag.length+ready.length?'':' open')+'><summary>Picked up ('+done.length+')</summary><ul class="pl">'+done.sort(srt).map(function(o){return rowPU(o,ix)}).join("")+'</ul></details>';
- h+='<div class="pfoot"><button class="btn press" data-a="add" data-date="'+cur.d+'" data-pt="'+cur.pt+'">+ Add an order for '+esc(stopName(cur.pt))+'</button></div></section>';
- h+='<p class="foot"><span>Tap the pill when a bag is ready. Tick the circle when they pick it up.</span><button class="lnk" data-a="pts">Pickup days</button></p></div>';
+ h+='<div class="pks n'+stops.length+' '+U.dir+'">';
+ stops.forEach(function(x){
+  var L2=x.list,toBag=L2.filter(function(o){return o.status==="new"}).sort(srt),ready=L2.filter(function(o){return o.status==="packed"}).sort(srt),done=L2.filter(function(o){return o.status==="done"}).sort(srt);
+  h+='<section class="pk'+(x.P.on?'':' off')+'"><button class="pkh" data-a="zoom" data-k="'+x.k+'"><span class="pkn"><b>'+esc(stopName(x.pt))+'</b><small>'+esc(placeOnly(x.P))+'</small></span><span class="pkt">'+esc(startTime(x.P)||wkd(x.d))+'</span></button>';
+  h+='<p class="pks2">'+(x.P.on?'':'<span class="offl">Off for the season</span>')+(L2.length?'<span>'+toBag.length+' to bag</span><span>'+ready.length+' ready</span><span>'+done.length+' picked up</span>':'')+'</p>';
+  h+='<ul class="pl">'+toBag.concat(ready).map(function(o){return rowPU(o,ix)}).join("")+'</ul>';
+  if(!L2.length)h+='<p class="pempty">No orders</p>';
+  if(done.length)h+='<details class="pdone"'+(toBag.length+ready.length?'':' open')+'><summary>Picked up ('+done.length+')</summary><ul class="pl">'+done.map(function(o){return rowPU(o,ix)}).join("")+'</ul></details>';
+  h+='<p class="pfoot2"><button class="u" data-a="add" data-date="'+x.d+'" data-pt="'+x.pt+'">+ Add an order</button></p></section>';
+ });
+ h+='</div>';
+ h+='<p class="foot"><span>Tap the yellow pill when a bag is ready. Tick the circle when they pick it up.</span><button class="lnk" data-a="pts">Pickup days</button></p></div>';
  U.dir="";return h;
 }
 function stopName(k){return PT(k).name.replace(" bread drop","")}
