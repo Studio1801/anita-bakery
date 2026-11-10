@@ -1082,6 +1082,53 @@ li.just{background:rgba(63,107,78,.08)}
 @media(max-width:800px){.pks{grid-template-columns:1fr}.pkt{font-size:1.7rem}.who{margin-left:0;width:100%}.pend2 li{grid-template-columns:1fr auto;gap:8px 12px}.pend2 li .btn{grid-column:1/-1;width:100%}.ck{width:44px;height:44px}}
 .hello{margin-bottom:14px!important}
 .needline{margin-bottom:4px}
+/* ===== v25: one stop at a time, centred and even ===== */
+.pkw{max-width:900px;margin:0 auto}
+.pkw .hello{margin-top:26px}
+.pkw .wkhead{grid-template-columns:1fr auto 1fr;margin:18px 0 22px}
+.pkw .wkhead>.arr:last-child{justify-self:end}
+.pend2{margin-bottom:26px}
+.pend2 h3{font-weight:700;font-size:1rem;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.pend2 h3 span{font-size:.78rem;background:#fde89a;color:#3d2e00;border-radius:99px;padding:2px 9px}
+.pend2 li{grid-template-columns:1fr auto}
+.seg2{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;padding:6px;background:rgba(42,28,19,.07);border-radius:16px;margin-bottom:22px}
+.seg2 button{display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto;align-items:center;text-align:left;gap:0 10px;padding:12px 16px;border-radius:12px;color:var(--mute);transition:background .3s var(--eo),color .3s var(--eo),box-shadow .3s var(--eo)}
+.seg2 button b{font-weight:700;font-size:1rem;color:inherit}
+.seg2 button span{grid-row:2;font-size:.82rem}
+.seg2 button i{grid-row:1/3;grid-column:2;font-style:normal;font-weight:700;font-size:.8rem;min-width:26px;height:26px;border-radius:99px;display:grid;place-items:center;background:rgba(42,28,19,.08);color:var(--ink)}
+.seg2 button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(42,28,19,.08),0 6px 16px -10px rgba(42,28,19,.4)}
+.seg2 button.on i{background:var(--ink);color:#fbf8f2}
+.where{font-size:.92rem;color:var(--mute);display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline}
+.where .u{font-size:.85rem;color:var(--mute)}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0 18px}
+.tiles>div{border-radius:14px;padding:14px 16px;background:rgba(251,248,242,.7);border:1px solid var(--line)}
+.tiles b{display:block;font-size:1.6rem;font-weight:700;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.tiles span{font-size:.8rem;font-weight:600;color:var(--mute)}
+.t-bag b{color:#8a5a00}.t-rdy b{color:var(--blue)}.t-dn b{color:#3f6b4e}
+.who{display:block;width:100%;margin:0 0 6px}
+.pl li{grid-template-columns:auto minmax(0,1fr) auto 76px;gap:14px}
+.pl li.bag{background:linear-gradient(90deg,rgba(253,232,154,.0),rgba(253,232,154,0))}
+.pill{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;font-size:.82rem;font-weight:700;border-radius:99px;padding:7px 13px;transition:background .25s var(--eo),color .25s var(--eo),border-color .25s var(--eo),transform .2s var(--eo)}
+.pill i{width:8px;height:8px;border-radius:50%}
+.p-bag{background:#fff6d6;color:#7a5200;box-shadow:inset 0 0 0 1.5px #e7b416}
+.p-bag i{border:2px solid #d09a00;width:9px;height:9px}
+.p-bag:hover{background:#fdeba6}
+.p-rdy{background:var(--blue);color:#fff}
+.p-rdy i{background:#fff}
+.p-rdy:hover{background:#233c75}
+.p-dn{background:none;color:#3f6b4e;padding-right:0}
+.fresh{font-size:.7rem;font-weight:700;color:#fff;background:#3f6b4e;border-radius:99px;padding:2px 8px;letter-spacing:.01em}
+li.bag .ck{border-color:rgba(42,28,19,.25)}
+li.rdy .ck{border-color:var(--blue)}
+.amt{min-width:0}
+.pfoot{justify-content:center;padding-top:22px}
+.pfoot .btn{min-height:46px;padding:0 26px}
+.stop1.sw{animation:rise .45s var(--eo) both}
+.stop1.sw .pl li{animation:rise .4s var(--eo) both}
+.stop1.sw .pl li:nth-child(2){animation-delay:.04s}.stop1.sw .pl li:nth-child(n+3){animation-delay:.08s}
+#view.enter .seg2,#view.enter .tiles,#view.enter .stop1{animation:rise .55s var(--eo) both}
+#view.enter .tiles{animation-delay:.05s}
+@media(max-width:800px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.seg2 button{padding:10px 12px}.seg2 button b{font-size:.95rem}.pl li{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"c r a" "c p a"}.pl li .ck{grid-area:c}.pl li .row{grid-area:r}.pl li .pill{grid-area:p;justify-self:start}.pl li .amt{grid-area:a}.pkw .wkhead{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -1298,44 +1345,44 @@ setInterval(function(){var e=document.querySelector("[data-cdn]");if(e&&!documen
 function weekView(){
  var ix=sizeIndex(),mon=monday(U.week),keys=weekKeys(U.week),h="";
  var hr=new Date().getHours(),hi=hr<12?"Good morning":hr<17?"Good afternoon":"Good evening";
- h+='<p class="hello">'+hi+', Anita</p>';
- if(U.week===0){
-  var um=unreadThreads().length,nc=S.catering.filter(function(c){return c.status==="new"}).length,todo=[];
+ h+='<div class="pkw"><p class="hello">'+hi+', Anita</p>';
+ if(U.week===0){var um=unreadThreads().length,nc=S.catering.filter(function(c){return c.status==="new"}).length,todo=[];
   if(um)todo.push('<button class="need u" data-tab="Messages">'+plural(um,"new message")+'</button>');
   if(nc)todo.push('<button class="need u" data-tab="Catering">'+plural(nc,"catering request")+'</button>');
-  if(todo.length)h+='<p class="needline">'+todo.join("")+'</p>';
- }
- var dates={};keys.forEach(function(k){var d=k.split("|")[0];(dates[d]=dates[d]||[]).push(k)});
- var dl=Object.keys(dates).sort(),all=[];keys.forEach(function(k){all=all.concat(groupOrders(k))});
- var lv=all.filter(live),pend=lv.filter(function(o){return o.pending&&o.status==="new"}),act=lv.filter(function(o){return !(o.pending&&o.status==="new")});
- var got=act.filter(function(o){return o.status==="done"}).length,owe=act.filter(function(o){return o.status!=="done"&&!o.paid}).reduce(function(a,o){return a+oTotal(o,ix)},0);
+  if(todo.length)h+='<p class="needline">'+todo.join("")+'</p>'}
+ var all=[];keys.forEach(function(k){all=all.concat(groupOrders(k))});
+ var lv=all.filter(live),pend=lv.filter(function(o){return o.pending&&o.status==="new"});
+ var dl=[];keys.forEach(function(k){var d=k.split("|")[0];if(dl.indexOf(d)<0)dl.push(d)});
  var title=dl.length===1?wkd(dl[0])+', '+fd(dl[0],{month:"long",day:"numeric"}):short(mon)+' to '+short(addDays(mon,6));
  var sub2=U.week===0?"This week’s bread drop":U.week===1?"Next week’s bread drop":U.week===-1?"Last week’s bread drop":'<button class="u" data-a="wk0">Back to this week</button>';
- h+='<div class="wkhead"><button class="u arr" data-a="wk" data-d="-1">‹ '+short(addDays(mon,-4))+'</button><div class="wkmid"><h2>'+title+'</h2><small>'+sub2+'</small></div><div class="wkr"><button class="btn press" data-a="add">+ Add an order</button><button class="u arr" data-a="wk" data-d="1">'+short(addDays(mon,10))+' ›</button></div></div>';
- if(act.length)h+='<div class="prog"><div class="pbar"><i style="width:'+Math.round(got/act.length*100)+'%"></i></div><p><b>'+got+' of '+act.length+'</b> picked up'+(owe?' · <b>'+money(owe)+'</b> still to collect':' · all paid')+'</p>'+(act.length>5?'<input id="who" class="who" type="search" placeholder="Find a name" autocomplete="off" value="'+esc(U.who||"")+'">':'')+'</div>';
- if(pend.length){
-  h+='<section class="pk pend2"><h3>Waiting for your yes <span>'+pend.length+'</span></h3><ul>'+pend.map(function(o){return '<li data-name="'+esc(o.name.toLowerCase())+'"><button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+'</span><span class="its1">'+itemsShort(o,ix)+'</span><span class="wh">'+esc(PT(o.point).name.replace(" bread drop",""))+' · '+wkd(o.date)+'</span></button><span class="amt">'+money(oTotal(o,ix))+'</span><button class="btn sm press" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm</button></li>'}).join("")+'</ul></section>';
- }
- h+='<div class="pks '+U.dir+'">';
- dl.forEach(function(d){dates[d].forEach(function(k){
-  var p=k.split("|"),pt=PT(p[1]),list=groupOrders(k).filter(function(o){return live(o)&&!(o.pending&&o.status==="new")}).sort(function(a,b){return a.name.localeCompare(b.name)});
-  var todo2=list.filter(function(o){return o.status!=="done"}),done=list.filter(function(o){return o.status==="done"}),gone=groupOrders(k).filter(function(o){return !live(o)}).length;
-  var when=(pt.hours||"").split(" to ")[0];
-  h+='<section class="pk"><button class="pkh" data-a="zoom" data-k="'+k+'"><span class="pkt">'+esc(when||wkd(p[0]))+'</span><span class="pkn"><b>'+esc(pt.name.replace(" bread drop",""))+'</b><small>'+esc(pt.place.replace(", "+pt.name.replace(" bread drop",""),""))+(dl.length>1||!when?'':'')+(dl.length>1?' · '+wkd(p[0]):'')+'</small></span><span class="pkc">'+(list.length?done.length+' of '+list.length+' picked up':'No orders yet')+'</span></button>';
-  h+='<ul class="pl">'+todo2.map(function(o){return rowPU(o,ix)}).join("")+'</ul>';
-  if(!list.length)h+='<p class="pempty"><button class="u" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ Add the first order</button></p>';
-  if(done.length)h+='<details class="pdone"'+(todo2.length?'':' open')+'><summary>Picked up ('+done.length+')</summary><ul class="pl">'+done.map(function(o){return rowPU(o,ix)}).join("")+'</ul></details>';
-  h+='<p class="pfoot"><button class="u" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ New order for '+esc(pt.name.replace(" bread drop",""))+'</button>'+(gone?'<span>'+plural(gone,"cancelled order")+'</span>':'')+'</p></section>';
- })});
- if(!dl.length)h+='<p class="pempty big">No bread drop this week.</p>';
- h+='</div><p class="foot"><span>Tick the circle when someone picks up. Tap a name for details.</span><button class="lnk" data-a="pts">Pickup days</button></p>';
- U.dir="";
- return h;
+ h+='<div class="wkhead"><button class="u arr" data-a="wk" data-d="-1">‹ '+short(addDays(mon,-4))+'</button><div class="wkmid"><h2>'+title+'</h2><small>'+sub2+'</small></div><button class="u arr" data-a="wk" data-d="1">'+short(addDays(mon,10))+' ›</button></div>';
+ if(pend.length)h+='<section class="pend2"><h3>Waiting for your yes <span>'+pend.length+'</span></h3><ul>'+pend.map(function(o){return '<li data-name="'+esc(o.name.toLowerCase())+'"><button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+'</span><span class="its1">'+itemsShort(o,ix)+'</span><span class="wh">'+esc(stopName(o.point))+' · '+money(oTotal(o,ix))+'</span></button><button class="btn sm press" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm</button></li>'}).join("")+'</ul></section>';
+ var stops=keys.map(function(k){var p=k.split("|"),list=groupOrders(k).filter(function(o){return live(o)&&!(o.pending&&o.status==="new")});return {k:k,d:p[0],pt:p[1],P:PT(p[1]),list:list}});
+ if(!stops.length){h+='<p class="pempty big">No bread drop this week.</p></div>';return h}
+ if(!U.stopk||!stops.some(function(x){return x.k===U.stopk})){var open=stops.filter(function(x){return x.list.some(function(o){return o.status!=="done"})})[0];U.stopk=(open||stops[0]).k}
+ var cur=stops.filter(function(x){return x.k===U.stopk})[0];
+ if(stops.length>1)h+='<div class="seg2" role="tablist">'+stops.map(function(x){var left=x.list.filter(function(o){return o.status!=="done"}).length;return '<button role="tab" aria-selected="'+(x.k===U.stopk)+'" class="'+(x.k===U.stopk?"on":"")+'" data-a="stop" data-k="'+x.k+'"><b>'+esc(stopName(x.pt))+'</b><span>'+esc(startTime(x.P))+(dl.length>1?' · '+fd(x.d,{weekday:"short"}):'')+'</span><i>'+left+'</i></button>'}).join("")+'</div>';
+ var L2=cur.list,toBag=L2.filter(function(o){return o.status==="new"}),ready=L2.filter(function(o){return o.status==="packed"}),done=L2.filter(function(o){return o.status==="done"});
+ var owe=L2.filter(function(o){return o.status!=="done"&&!o.paid}).reduce(function(a,o){return a+oTotal(o,ix)},0);
+ var srt=function(a,b){return a.name.localeCompare(b.name)};
+ h+='<section class="stop1"><p class="where">'+esc(placeOnly(cur.P))+' · '+wkd(cur.d)+(cur.P.hours?', '+esc(cur.P.hours):'')+' <button class="u" data-a="zoom" data-k="'+cur.k+'">Pickup list</button></p>';
+ h+='<div class="tiles"><div class="t-bag"><b>'+toBag.length+'</b><span>To bag</span></div><div class="t-rdy"><b>'+ready.length+'</b><span>Bag ready</span></div><div class="t-dn"><b>'+done.length+'</b><span>Picked up</span></div><div class="t-owe"><b>'+money(owe)+'</b><span>To collect</span></div></div>';
+ if(L2.length>5)h+='<input id="who" class="who" type="search" placeholder="Find a name" autocomplete="off" value="'+esc(U.who||"")+'">';
+ h+='<ul class="pl">'+toBag.sort(srt).concat(ready.sort(srt)).map(function(o){return rowPU(o,ix)}).join("")+'</ul>';
+ if(!L2.length)h+='<p class="pempty">No orders for '+esc(stopName(cur.pt))+' yet.</p>';
+ if(done.length)h+='<details class="pdone"'+(toBag.length+ready.length?'':' open')+'><summary>Picked up ('+done.length+')</summary><ul class="pl">'+done.sort(srt).map(function(o){return rowPU(o,ix)}).join("")+'</ul></details>';
+ h+='<div class="pfoot"><button class="btn press" data-a="add" data-date="'+cur.d+'" data-pt="'+cur.pt+'">+ Add an order for '+esc(stopName(cur.pt))+'</button></div></section>';
+ h+='<p class="foot"><span>Tap the pill when a bag is ready. Tick the circle when they pick it up.</span><button class="lnk" data-a="pts">Pickup days</button></p></div>';
+ U.dir="";return h;
 }
+function stopName(k){return PT(k).name.replace(" bread drop","")}
+function startTime(P){var t=(P.hours||"").split(" to ")[0];if(!t)return"";if(!/am|pm/.test(t)){var m=(P.hours||"").match(/(am|pm)/);t+=m?" "+m[1]:""}return t}
+function placeOnly(P){return (P.place||"").replace(", "+P.name.replace(" bread drop","").replace(" Farmers' Market",""),"")}
 function itemsShort(o,ix){return o.items.map(function(i){var l=itemLabel(i,ix);return (i.q>1?i.q+' × ':'')+esc(l.n)+(l.z?' <em>('+esc(l.z)+')</em>':'')}).join(", ")}
-function rowPU(o,ix){var dn=o.status==="done",tot=oTotal(o,ix),th=threadOf(o);
- return '<li class="'+(dn?"dn":"")+(U.just[o.id]?" just":"")+'" data-name="'+esc(o.name.toLowerCase())+'"><button class="ck press" data-a="'+(dn?"unpu":"pu")+'" data-id="'+o.id+'" aria-label="'+(dn?"Undo picked up for ":"Mark picked up: ")+esc(o.name)+'" aria-pressed="'+dn+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9"/></svg></button>'+
-  '<button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+unreadDot(th)+(o.note?'<span class="nflag">note</span>':'')+'</span><span class="its1">'+itemsShort(o,ix)+'</span></button>'+
+function rowPU(o,ix){var dn=o.status==="done",rd=o.status==="packed",tot=oTotal(o,ix),th=threadOf(o),fresh=!dn&&(U.just[o.id]||Date.now()-(o.placed||0)<45*6e4);
+ var pill=dn?'<span class="pill p-dn">Picked up</span>':rd?'<button class="pill p-rdy press" data-a="st" data-id="'+o.id+'" data-s="new" title="Tap if it isn’t ready after all"><i></i>Bag ready</button>':'<button class="pill p-bag press" data-a="st" data-id="'+o.id+'" data-s="packed" title="Tap when the bag is ready"><i></i>Not ready</button>';
+ return '<li class="'+(dn?"dn":rd?"rdy":"bag")+(U.just[o.id]?" just":"")+'" data-name="'+esc(o.name.toLowerCase())+'"><button class="ck press" data-a="'+(dn?"unpu":"pu")+'" data-id="'+o.id+'" aria-label="'+(dn?"Undo picked up for ":"Mark picked up: ")+esc(o.name)+'" aria-pressed="'+dn+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9"/></svg></button>'+
+  '<button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+(fresh?'<span class="fresh">Just added</span>':'')+unreadDot(th)+(o.note?'<span class="nflag">note</span>':'')+'</span><span class="its1">'+itemsShort(o,ix)+'</span></button>'+pill+
   '<span class="amt">'+money(tot)+'<small class="'+(o.paid?"pd":"due")+'">'+(o.paid?"paid":dn?"":"collect")+'</small></span></li>'}
 function oneHTML(o){
  var ix=sizeIndex(),pt=PT(o.point),st=o.status,gone=!live(o),pend=o.pending&&st==="new"&&!gone,tot=oTotal(o,ix);
@@ -1495,7 +1542,7 @@ function formHTML(){
  var d=U.draft,ix=sizeIndex(),mon=mondayOf(d.date),days=[0,1,2,3,4,5,6].map(function(i){return addDays(mon,i)});
  var n=0,tot=0;Object.keys(d.items).forEach(function(s){var q=d.items[s];n+=q;tot+=(ix[s]?ix[s].z.price:0)*q});
  var h='<p class="kick">'+(d.id?"Edit order #"+d.id:"Write an order")+'</p><h2>'+longd(d.date)+'</h2>'+
- '<span class="lab">How they get it</span><div class="segs">'+PORDER.map(function(k){return '<button class="seg press'+(d.point===k?" on":"")+'" data-a="fpt" data-k="'+k+'">'+PT(k).name+'</button>'}).join("")+'</div>'+
+ '<span class="lab">Pickup stop</span><div class="segs">'+PORDER.filter(function(k){return PT(k).on||d.point===k}).map(function(k){return '<button class="seg press'+(d.point===k?" on":"")+'" data-a="fpt" data-k="'+k+'">'+PT(k).name+'</button>'}).join("")+'</div>'+
  '<p class="mute" style="font-size:.88rem;margin-top:8px">'+esc(PT(d.point).place)+(PT(d.point).hours?", "+PT(d.point).hours:"")+'</p>'+
  '<span class="lab">Day</span><div class="daysel">'+days.map(function(k){return '<button class="press'+(k===d.date?" on":"")+(k===TODAY?" td":"")+'" data-a="fday" data-k="'+k+'"><small>'+fd(k,{weekday:"short"})+'</small><b>'+parse(k).getDate()+'</b></button>'}).join("")+'</div>'+
  '<label class="inl">Another date <input type="date" id="fdate" value="'+d.date+'"></label>'+
@@ -1517,7 +1564,7 @@ function rerenderForm(){var sh=$(".sheet",layer);if(!sh)return;var st=sh.scrollT
 function startForm(o,date,pt){
  U.ferr="";U.sure="";
  if(o){var it={};o.items.forEach(function(i){it[i.s]=i.q});U.draft={id:o.id,date:o.date,point:o.point,slot:o.slot||"",name:o.name,phone:o.phone,items:it,note:o.note,paid:o.paid,status:o.status}}
- else{pt=pt||"market";var dt=date||(function(){var m=monday(U.week),d=addDays(m,(PT(pt).dow+6)%7);return d<TODAY&&U.week===0?addDays(d,7):d})();U.draft={date:dt,point:pt,slot:(PT(pt).slots||[""])[0],name:"",phone:"",items:{},note:"",paid:false}}
+ else{pt=pt||(U.stopk&&U.stopk.split("|")[1])||PORDER.filter(function(k){return PT(k).on})[0]||PORDER[0];if(!date&&U.stopk&&U.stopk.split("|")[1]===pt)date=U.stopk.split("|")[0];var dt=date||(function(){var m=monday(U.week),d=addDays(m,(((PT(pt).days||[4])[0])+6)%7);return d<TODAY&&U.week===0?addDays(d,7):d})();U.draft={date:dt,point:pt,slot:(PT(pt).slots||[""])[0],name:"",phone:"",items:{},note:"",paid:false}}
  openDrawer(formHTML());
 }
 
@@ -1680,6 +1727,7 @@ C.alerts=function(t){ALERT.on=!ALERT.on;try{localStorage.setItem("anitas-alerts"
  if(ALERT.on){chime();if("Notification" in window&&Notification.permission==="default")Notification.requestPermission().catch(function(){})}toast(ALERT.on?"You\u2019ll hear a chime for new orders and messages":"Alerts off")};
 C.add=function(t){startForm(null,t.dataset.date,t.dataset.pt)};
 C.edit=function(t){startForm(find(t.dataset.id))};
+C.stop=function(t){U.stopk=t.dataset.k;U.who="";render();var v=$(".stop1");if(v){v.classList.remove("sw");void v.offsetWidth;v.classList.add("sw")}};
 C.pu=function(t){var o=find(+t.dataset.id);if(!o)return;var wasPaid=o.paid;if(!wasPaid)op({t:"paid",id:o.id});if(!op({t:"status",id:o.id,s:"done"}))return;flash(o.id);render();toast(o.name.split(" ")[0]+" picked up"+(wasPaid?"":", "+money(oTotal(o,sizeIndex()))+" collected"))};
 C.unpu=function(t){var o=find(+t.dataset.id);if(!o||!op({t:"status",id:o.id,s:"packed"}))return;render();toast(o.name.split(" ")[0]+" is back on the list")};
 C.st=function(t){var o=find(t.dataset.id),s=t.dataset.s,pt=PT(o.point);if(!op({t:"status",id:o.id,s:s}))return;flash(o.id);refreshZoom();render();if(U.one&&s!=="new")setTimeout(closeZoom,650);
