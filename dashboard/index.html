@@ -1027,6 +1027,61 @@ h1,h2,h3,.wkmid h2,.zt h2,.sheet h2,.ph h2,.pgh h2,.dpl,.dropline b,.cd2 b,.hin 
 .zoom.one{position:fixed!important;inset:0!important;padding:0!important}
 @media(max-width:600px){.zoom.one .zbox.z1{margin:auto 0 0!important;padding-bottom:calc(22px + env(safe-area-inset-bottom))}}
 @media(max-width:600px){#toast{top:16px!important;bottom:auto!important}}
+/* ===== v24: Pickups, built for the Thursday run ===== */
+.prog{display:flex;align-items:center;gap:14px 22px;flex-wrap:wrap;margin:18px 0 8px}
+.pbar{flex:1 1 220px;max-width:360px;height:8px;border-radius:99px;background:rgba(42,28,19,.1);overflow:hidden}
+.pbar i{display:block;height:100%;background:#3f6b4e;border-radius:99px;transition:width .6s var(--eo)}
+.prog p{font-size:.95rem;color:var(--mute)}.prog p b{color:var(--ink);font-weight:700}
+.who{margin-left:auto;width:220px;max-width:100%;border:1px solid var(--line2);background:rgba(251,248,242,.7);border-radius:99px;padding:10px 16px;font:500 .95rem var(--sans);color:var(--ink);outline:none}
+.who:focus{border-color:var(--ink);background:var(--card)}
+.pk{margin-top:30px}
+.pk h3{font-family:var(--sans);font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.pk h3 span{font-size:.78rem;background:#fde89a;color:#3d2e00;border-radius:99px;padding:2px 9px}
+.pend2 ul{list-style:none;padding:0;background:#fdf0bd;border-radius:14px;overflow:hidden}
+.pend2 li{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:16px;padding:12px 16px 12px 18px;border-bottom:1px solid rgba(61,46,0,.1)}
+.pend2 li:last-child{border-bottom:0}
+.pend2 .wh{display:block;font-size:.8rem;color:#6b5410;margin-top:2px}
+.pks{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:0 clamp(32px,5vw,64px)}
+.pkh{display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:16px;width:100%;text-align:left;padding-bottom:14px;border-bottom:1px solid rgba(42,28,19,.55)}
+.pkt{font-family:var(--sans);font-weight:700;font-size:2rem;letter-spacing:-.035em;line-height:1;color:var(--ink)}
+.pkn b{display:block;font-weight:700;font-size:1.05rem;color:var(--ink)}.pkn small{display:block;font-size:.85rem;color:var(--mute)}
+.pkc{font-size:.85rem;font-weight:600;color:var(--mute);white-space:nowrap}
+.pkh:hover .pkn b{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.pl{list-style:none;padding:0;margin:0}
+.pl li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);transition:background .3s var(--eo),opacity .3s var(--eo)}
+.ck{width:40px;height:40px;border-radius:50%;border:2px solid rgba(42,28,19,.35);display:grid;place-items:center;background:var(--card);transition:background .25s var(--eo),border-color .25s var(--eo),transform .2s var(--eo)}
+.ck svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset .35s var(--eo)}
+.ck:hover{border-color:#3f6b4e}
+.ck:hover svg{stroke:#3f6b4e;stroke-dashoffset:0;opacity:.35}
+li.dn .ck{background:#3f6b4e;border-color:#3f6b4e}
+li.dn .ck svg{stroke:#fff;stroke-dashoffset:0;opacity:1}
+.row{text-align:left;min-width:0;padding:2px 0}
+.row .nm{display:flex;align-items:center;gap:8px;font-weight:600;font-size:1.02rem;color:var(--ink)}
+.row .its1{display:block;white-space:normal;font-size:.88rem;color:#5a402d;margin-top:1px;line-height:1.4}
+.row .its1 em{font-style:normal;color:var(--mute)}
+.row:hover .nm{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.amt{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.amt small{display:block;font-size:.75rem;font-weight:600;margin-top:1px}
+.amt .due{color:#8a5a00}.amt .pd{color:#3f6b4e}
+li.dn .row .nm,li.dn .row .its1{color:#a8957f;text-decoration:line-through;text-decoration-color:rgba(42,28,19,.3)}
+li.dn .amt{color:#a8957f}
+li.just{background:rgba(63,107,78,.08)}
+.pdone{margin-top:6px}
+.pdone summary{cursor:pointer;list-style:none;padding:12px 0;font-size:.9rem;font-weight:600;color:var(--mute)}
+.pdone summary::-webkit-details-marker{display:none}
+.pdone summary::before{content:"\203A";display:inline-block;margin-right:8px;transition:transform .25s var(--eo)}
+.pdone[open] summary::before{transform:rotate(90deg)}
+.pfoot{display:flex;justify-content:space-between;gap:12px;padding:14px 0 0;font-size:.85rem;color:var(--mute)}
+.pfoot .u{color:var(--blue);border-bottom-color:rgba(44,74,142,.3)}
+.pempty{padding:18px 0;color:var(--mute)}.pempty.big{font-size:1.05rem;padding:30px 0}
+#view.enter .pk,#view.enter .prog{animation:rise .55s var(--eo) both}
+#view.enter .pk:nth-child(2){animation-delay:.06s}#view.enter .pk:nth-child(3){animation-delay:.12s}
+#view.enter .pl li{animation:rise .45s var(--eo) both}
+#view.enter .pl li:nth-child(2){animation-delay:.04s}#view.enter .pl li:nth-child(3){animation-delay:.08s}#view.enter .pl li:nth-child(n+4){animation-delay:.12s}
+#view.enter .pks.from-right .pk{animation-name:fromR}#view.enter .pks.from-left .pk{animation-name:fromL}
+@media(max-width:800px){.pks{grid-template-columns:1fr}.pkt{font-size:1.7rem}.who{margin-left:0;width:100%}.pend2 li{grid-template-columns:1fr auto;gap:8px 12px}.pend2 li .btn{grid-column:1/-1;width:100%}.ck{width:44px;height:44px}}
+.hello{margin-bottom:14px!important}
+.needline{margin-bottom:4px}
 </style>
 </head>
 <body>
@@ -1194,7 +1249,7 @@ function appView(){
 }
 function renderTabs(){
  var c=counts();
- $("#tabs").innerHTML=TABS.map(function(t){var n=t==="Week"?0:t==="Messages"?c.msg:t==="Catering"?c.cat:0;return '<button data-tab="'+t+'" class="'+(U.tab===t?"on":"")+'" aria-pressed="'+(U.tab===t)+'">'+t+(n?'<span class="cnt">'+n+'</span>':"")+'</button>'}).join("")+'<span class="tabbar" id="tabbar"></span>';
+ $("#tabs").innerHTML=TABS.map(function(t){var n=t==="Week"?0:t==="Messages"?c.msg:t==="Catering"?c.cat:0;return '<button data-tab="'+t+'" class="'+(U.tab===t?"on":"")+'" aria-pressed="'+(U.tab===t)+'">'+(t==="Week"?"Pickups":t)+(n?'<span class="cnt">'+n+'</span>':"")+'</button>'}).join("")+'<span class="tabbar" id="tabbar"></span>';
  placeBar();
  var n=c.pend+c.msg+c.cat;document.title=n?"("+n+") Anita’s Orders":"Anita’s Orders";
 }
@@ -1241,33 +1296,47 @@ function dropBar(){var d=nextDropDate();if(!d)return"";
  return '<p class="hello">'+hi+', Anita</p><div class="dropline"><p><span class="dk">Next drop</span><b>'+fd(d,{weekday:"long",month:"long",day:"numeric"})+'</b><span class="dk">Orders close Monday at midnight</span></p></div>'}
 setInterval(function(){var e=document.querySelector("[data-cdn]");if(e&&!document.hidden)e.textContent=cdText(e.getAttribute("data-cdn"))},1000);
 function weekView(){
- var ix=sizeIndex(),mon=monday(U.week),sun=addDays(mon,6),keys=weekKeys(U.week),h="";
- if(U.week===0)h+=dropBar();
+ var ix=sizeIndex(),mon=monday(U.week),keys=weekKeys(U.week),h="";
+ var hr=new Date().getHours(),hi=hr<12?"Good morning":hr<17?"Good afternoon":"Good evening";
+ h+='<p class="hello">'+hi+', Anita</p>';
  if(U.week===0){
-  var pend=pendingOrders(),um=unreadThreads().length,nc=S.catering.filter(function(c){return c.status==="new"}).length,todo=[];
-  if(pend.length)todo.push('<button class="need hot u" data-a="zoom" data-k="'+pend[0].date+"|"+pend[0].point+'" data-o="'+pend[0].id+'"><span class="pulse" aria-hidden="true"></span>'+plural(pend.length,"order")+' to confirm</button>');
+  var um=unreadThreads().length,nc=S.catering.filter(function(c){return c.status==="new"}).length,todo=[];
   if(um)todo.push('<button class="need u" data-tab="Messages">'+plural(um,"new message")+'</button>');
   if(nc)todo.push('<button class="need u" data-tab="Catering">'+plural(nc,"catering request")+'</button>');
   if(todo.length)h+='<p class="needline">'+todo.join("")+'</p>';
  }
- h+='<div class="wkhead"><button class="u arr" data-a="wk" data-d="-1">‹ Last week</button><div class="wkmid"><h2>'+short(mon)+' to '+short(sun)+'</h2><small>'+(U.week===0?'This week':U.week===1?'Next week':U.week===-1?'Last week':'<button class="u" data-a="wk0">Back to this week</button>')+'</small></div><div class="wkr"><button class="btn press" data-a="add">+ Add an order</button><button class="u arr" data-a="wk" data-d="1">Next week ›</button></div></div>';
- h+='<div class="board '+U.dir+'">';
- keys.forEach(function(k,ki){
-  var p=k.split("|"),pt=PT(p[1]),list=groupOrders(k),lv=list.filter(live),isT=p[0]===TODAY,tot=lv.reduce(function(a,o){return a+oTotal(o,ix)},0),cl=isClosed(k),full=pt.cap&&lv.length>=pt.cap&&p[0]>=TODAY;
-  h+='<section class="day'+(isT?" today":"")+'"><button class="dh" data-a="zoom" data-k="'+k+'" aria-label="Open '+longd(p[0])+', '+pt.name+'"><span class="dpl">'+esc(pt.name.replace(" bread drop",""))+'</span><span class="dmeta">'+wkd(p[0])+', '+short(p[0])+(isT?' · today':'')+'</span><span class="dmeta">'+plural(lv.length,"order")+' · '+money(tot)+'</span></button>'+
-   (cl||full?'<div class="place"><span class="chip warn">'+(cl?"Closed online":"Full online")+'</span></div>':'')+'<ul class="ol">';
-  list.forEach(function(o){var dim=o.status==="done"||!live(o),th=threadOf(o),pend=o.pending&&o.status==="new"&&live(o);
-   var its=o.items.map(function(i){var l=itemLabel(i,ix);return esc(l.n)+(i.q>1?' ×'+i.q:'')}).join(", ");
-   var st=pend?'<span class="chip ask">Needs a yes</span>':o.declined?'<span class="chip warn">Declined</span>':o.status==="cancelled"?'<span class="chip warn">Cancelled</span>':o.status==="new"?'':o.status==="packed"?'<span class="chip packed">Ready</span>':'<span class="chip done">'+PT(o.point).done+'</span>';
-   h+='<li><button class="ob'+(dim?" dim":"")+(pend?" pend":"")+'" data-a="zoom" data-k="'+k+'" data-o="'+o.id+'"><span class="r1"><span class="nm">'+esc(o.name)+unreadDot(th)+(o.note?'<span class="nflag" title="Has a note">note</span>':'')+'</span><span class="tt">'+money(oTotal(o,ix))+'</span></span><span class="its1">'+its+'</span>'+(st||(!o.paid&&live(o)?'':''))+(st?'':'')+'</button></li>'});
-  if(!list.length)h+='<li class="empty"><span class="hand2">quiet so far, nothing booked yet</span></li>';
-  h+='</ul><button class="newo" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ New order</button></section>';
- });
- h+='</div><p class="foot"><span>Tap a customer to confirm, mark ready or picked up.</span><button class="lnk" data-a="totals">Week totals</button><button class="lnk" data-a="pts">Pickup days</button></p>';
+ var dates={};keys.forEach(function(k){var d=k.split("|")[0];(dates[d]=dates[d]||[]).push(k)});
+ var dl=Object.keys(dates).sort(),all=[];keys.forEach(function(k){all=all.concat(groupOrders(k))});
+ var lv=all.filter(live),pend=lv.filter(function(o){return o.pending&&o.status==="new"}),act=lv.filter(function(o){return !(o.pending&&o.status==="new")});
+ var got=act.filter(function(o){return o.status==="done"}).length,owe=act.filter(function(o){return o.status!=="done"&&!o.paid}).reduce(function(a,o){return a+oTotal(o,ix)},0);
+ var title=dl.length===1?wkd(dl[0])+', '+fd(dl[0],{month:"long",day:"numeric"}):short(mon)+' to '+short(addDays(mon,6));
+ var sub2=U.week===0?"This week’s bread drop":U.week===1?"Next week’s bread drop":U.week===-1?"Last week’s bread drop":'<button class="u" data-a="wk0">Back to this week</button>';
+ h+='<div class="wkhead"><button class="u arr" data-a="wk" data-d="-1">‹ '+short(addDays(mon,-4))+'</button><div class="wkmid"><h2>'+title+'</h2><small>'+sub2+'</small></div><div class="wkr"><button class="btn press" data-a="add">+ Add an order</button><button class="u arr" data-a="wk" data-d="1">'+short(addDays(mon,10))+' ›</button></div></div>';
+ if(act.length)h+='<div class="prog"><div class="pbar"><i style="width:'+Math.round(got/act.length*100)+'%"></i></div><p><b>'+got+' of '+act.length+'</b> picked up'+(owe?' · <b>'+money(owe)+'</b> still to collect':' · all paid')+'</p>'+(act.length>5?'<input id="who" class="who" type="search" placeholder="Find a name" autocomplete="off" value="'+esc(U.who||"")+'">':'')+'</div>';
+ if(pend.length){
+  h+='<section class="pk pend2"><h3>Waiting for your yes <span>'+pend.length+'</span></h3><ul>'+pend.map(function(o){return '<li data-name="'+esc(o.name.toLowerCase())+'"><button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+'</span><span class="its1">'+itemsShort(o,ix)+'</span><span class="wh">'+esc(PT(o.point).name.replace(" bread drop",""))+' · '+wkd(o.date)+'</span></button><span class="amt">'+money(oTotal(o,ix))+'</span><button class="btn sm press" data-a="st" data-id="'+o.id+'" data-s="confirm">Confirm</button></li>'}).join("")+'</ul></section>';
+ }
+ h+='<div class="pks '+U.dir+'">';
+ dl.forEach(function(d){dates[d].forEach(function(k){
+  var p=k.split("|"),pt=PT(p[1]),list=groupOrders(k).filter(function(o){return live(o)&&!(o.pending&&o.status==="new")}).sort(function(a,b){return a.name.localeCompare(b.name)});
+  var todo2=list.filter(function(o){return o.status!=="done"}),done=list.filter(function(o){return o.status==="done"}),gone=groupOrders(k).filter(function(o){return !live(o)}).length;
+  var when=(pt.hours||"").split(" to ")[0];
+  h+='<section class="pk"><button class="pkh" data-a="zoom" data-k="'+k+'"><span class="pkt">'+esc(when||wkd(p[0]))+'</span><span class="pkn"><b>'+esc(pt.name.replace(" bread drop",""))+'</b><small>'+esc(pt.place.replace(", "+pt.name.replace(" bread drop",""),""))+(dl.length>1||!when?'':'')+(dl.length>1?' · '+wkd(p[0]):'')+'</small></span><span class="pkc">'+(list.length?done.length+' of '+list.length+' picked up':'No orders yet')+'</span></button>';
+  h+='<ul class="pl">'+todo2.map(function(o){return rowPU(o,ix)}).join("")+'</ul>';
+  if(!list.length)h+='<p class="pempty"><button class="u" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ Add the first order</button></p>';
+  if(done.length)h+='<details class="pdone"'+(todo2.length?'':' open')+'><summary>Picked up ('+done.length+')</summary><ul class="pl">'+done.map(function(o){return rowPU(o,ix)}).join("")+'</ul></details>';
+  h+='<p class="pfoot"><button class="u" data-a="add" data-date="'+p[0]+'" data-pt="'+p[1]+'">+ New order for '+esc(pt.name.replace(" bread drop",""))+'</button>'+(gone?'<span>'+plural(gone,"cancelled order")+'</span>':'')+'</p></section>';
+ })});
+ if(!dl.length)h+='<p class="pempty big">No bread drop this week.</p>';
+ h+='</div><p class="foot"><span>Tick the circle when someone picks up. Tap a name for details.</span><button class="lnk" data-a="pts">Pickup days</button></p>';
  U.dir="";
  return h;
 }
-
+function itemsShort(o,ix){return o.items.map(function(i){var l=itemLabel(i,ix);return (i.q>1?i.q+' × ':'')+esc(l.n)+(l.z?' <em>('+esc(l.z)+')</em>':'')}).join(", ")}
+function rowPU(o,ix){var dn=o.status==="done",tot=oTotal(o,ix),th=threadOf(o);
+ return '<li class="'+(dn?"dn":"")+(U.just[o.id]?" just":"")+'" data-name="'+esc(o.name.toLowerCase())+'"><button class="ck press" data-a="'+(dn?"unpu":"pu")+'" data-id="'+o.id+'" aria-label="'+(dn?"Undo picked up for ":"Mark picked up: ")+esc(o.name)+'" aria-pressed="'+dn+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12.5l4 4 8-9"/></svg></button>'+
+  '<button class="row" data-a="zoom" data-k="'+o.date+"|"+o.point+'" data-o="'+o.id+'"><span class="nm">'+esc(o.name)+unreadDot(th)+(o.note?'<span class="nflag">note</span>':'')+'</span><span class="its1">'+itemsShort(o,ix)+'</span></button>'+
+  '<span class="amt">'+money(tot)+'<small class="'+(o.paid?"pd":"due")+'">'+(o.paid?"paid":dn?"":"collect")+'</small></span></li>'}
 function oneHTML(o){
  var ix=sizeIndex(),pt=PT(o.point),st=o.status,gone=!live(o),pend=o.pending&&st==="new"&&!gone,tot=oTotal(o,ix);
  var lab=gone?(o.declined?"Declined":"Cancelled"):pend?"Needs a yes":st==="new"?"Not ready yet":st==="packed"?"Ready for pickup":pt.done;
@@ -1611,6 +1680,8 @@ C.alerts=function(t){ALERT.on=!ALERT.on;try{localStorage.setItem("anitas-alerts"
  if(ALERT.on){chime();if("Notification" in window&&Notification.permission==="default")Notification.requestPermission().catch(function(){})}toast(ALERT.on?"You\u2019ll hear a chime for new orders and messages":"Alerts off")};
 C.add=function(t){startForm(null,t.dataset.date,t.dataset.pt)};
 C.edit=function(t){startForm(find(t.dataset.id))};
+C.pu=function(t){var o=find(+t.dataset.id);if(!o)return;var wasPaid=o.paid;if(!wasPaid)op({t:"paid",id:o.id});if(!op({t:"status",id:o.id,s:"done"}))return;flash(o.id);render();toast(o.name.split(" ")[0]+" picked up"+(wasPaid?"":", "+money(oTotal(o,sizeIndex()))+" collected"))};
+C.unpu=function(t){var o=find(+t.dataset.id);if(!o||!op({t:"status",id:o.id,s:"packed"}))return;render();toast(o.name.split(" ")[0]+" is back on the list")};
 C.st=function(t){var o=find(t.dataset.id),s=t.dataset.s,pt=PT(o.point);if(!op({t:"status",id:o.id,s:s}))return;flash(o.id);refreshZoom();render();if(U.one&&s!=="new")setTimeout(closeZoom,650);
  toast(s==="confirm"?"Confirmed. "+o.name.split(" ")[0]+" sees it now":s==="packed"?o.name+" is ready for pickup"+(o.source==="online"?". They've been told":""):s==="done"?pt.done+": "+o.name:s==="new"?o.name+" is back to not ready":"")};
 C.decl=function(t){U.decl=+t.dataset.id;refreshZoom();var i=$("#dwhy");if(i)i.focus({preventScroll:true})};
@@ -1680,6 +1751,7 @@ document.addEventListener("input",function(e){
  var t=e.target,f=t.dataset&&t.dataset.f;
  if(t.id==="reply"){t.style.height="auto";t.style.height=Math.min(140,t.scrollHeight)+"px";return}
  if(t.id==="dwhy"){t.classList.remove("need");return}
+ if(t.id==="who"){U.who=t.value;var q=t.value.trim().toLowerCase();document.querySelectorAll(".pks li[data-name],.pend2 li[data-name]").forEach(function(li){li.style.display=!q||li.dataset.name.indexOf(q)>-1?"":"none"});document.querySelectorAll(".pdone").forEach(function(d){if(q)d.open=true});return}
  if(t.id==="srch"){U.q=t.value;var pos=t.selectionStart;render();var s=$("#srch");s.focus();s.setSelectionRange(pos,pos);return}
  if(t.id==="cq"){var g=U.cdraft&&U.cdraft.guests,v=+t.value.replace(/[^\d.]/g,""),pp=$("#cpp");if(pp&&g)pp.textContent=v?money(v/g)+" per guest":"";return}
  if(!f||!U.menu)return;var p=mfind(t.dataset.id);if(!p)return;
