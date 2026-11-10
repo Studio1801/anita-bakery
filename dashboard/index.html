@@ -1206,6 +1206,13 @@ li.rdy .ck{border-color:var(--blue)}
 .cday{min-height:104px}
 @media(max-width:1100px){.clay{grid-template-columns:1fr}.cside{position:static;order:-1}}
 @media(max-width:800px){.bdrop{font-size:0;width:16px;height:2px;background:#d7bd95;border-radius:2px;margin-top:auto}.cstage{grid-template-columns:1fr}.csr{flex-wrap:wrap}.csr .btn{width:100%}}
+
+/* ===== v29: final polish ===== */
+@media(max-width:800px){main{padding-bottom:110px!important}}
+.thr.on,.th.on,.tl.on{background:rgba(251,248,242,.9)!important}
+.lock-top{background:#2a1c13!important}
+.lock-top .wm,.lock-top h1{font-family:"Albert",sans-serif!important;font-weight:700!important;font-style:normal!important}
+.bars .br i,.bar i,.wkbar i{background:#2a1c13}
 </style>
 </head>
 <body>
@@ -1328,7 +1335,7 @@ function toast(t){var e=$("#toast");e.textContent=t;e.classList.add("on");clearT
 function loginView(){
  root.innerHTML='<main id="login"><div class="lock" id="lock"><div class="lock-top"><span class="wm">Anita\u2019s <i>Little Loaf</i></span><p>Orders and messages</p></div>'+
  '<form id="lf" autocomplete="on"><h1>Orders dashboard</h1>'+
- '<label class="fl"><span>Name</span><input class="uin" id="lu" autocomplete="username" value="Jennifer"></label>'+
+ '<label class="fl"><span>Name</span><input class="uin" id="lu" autocomplete="username" value="Anita"></label>'+
  '<label class="fl"><span>Staff password</span><div class="pwrow"><input class="uin" id="lp" type="password" autocomplete="current-password"><button type="button" class="lnk mute" id="show">Show</button></div></label>'+
  '<button class="btn press" type="submit">Sign in</button><p class="err" id="lerr" role="alert"></p>'+
  '<p class="demo">Demo password: <span class="code">'+PASSWORD+'</span></p></form></div></main>';
@@ -1518,7 +1525,7 @@ function zoomHTML(k){
 
 /* ---------- messages ---------- */
 function threadLabel(t){
- if(t.orderId){var o=S.orders.filter(function(x){return x.id===t.orderId})[0];return o?"Order #"+o.id+", "+fd(o.date,{weekday:"short",month:"short",day:"numeric"})+", "+PT(o.point).name.toLowerCase():"Order"}
+ if(t.orderId){var o=S.orders.filter(function(x){return x.id===t.orderId})[0];return o?"Order #"+o.id+", "+fd(o.date,{weekday:"short",month:"short",day:"numeric"})+", "+PT(o.point).name.replace(" bread drop"," pickup")||PT(o.point).name.toLowerCase():"Order"}
  if(t.cateringId){var c=S.catering.filter(function(x){return x.id===t.cateringId})[0];return c?"Catering: "+c.event+", "+c.guests+" guests":"Catering"}
  return "Website chat"}
 function ago(t){var s=(Date.now()-t)/1000;if(s<60)return "now";if(s<3600)return Math.floor(s/60)+"m";if(s<86400)return Math.floor(s/3600)+"h";return new Date(t).toLocaleDateString("en-US",{month:"short",day:"numeric"})}
@@ -1568,7 +1575,7 @@ function packHTML(k){
  var ix=sizeIndex(),p=k.split("|"),pt=PT(p[1]),list=groupOrders(k).filter(live),rows={},n=0;
  list.forEach(function(o){o.items.forEach(function(i){var l=itemLabel(i,ix);var r=rows[l.n]||(rows[l.n]={n:0,parts:{}});r.n+=i.q;n+=i.q;if(l.z)r.parts[l.z]=(r.parts[l.z]||0)+i.q})});
  var cnt=function(s){return list.filter(function(o){return o.status===s}).length};
- return '<p class="kick">Pickup list</p><h2>'+wkd(p[0])+', '+pt.name.toLowerCase()+'</h2><div class="big">'+n+'</div><p class="mute">items across '+plural(list.length,"order")+'</p>'+
+ return '<p class="kick">Pickup list</p><h2>'+wkd(p[0])+', '+esc(pt.name.replace(" bread drop",""))+'</h2><div class="big">'+n+'</div><p class="mute">items across '+plural(list.length,"order")+'</p>'+
   (list.length?'<p class="mute" style="margin-top:6px;font-size:.9rem">'+cnt("new")+' not ready, '+cnt("packed")+' ready, '+cnt("done")+' '+pt.doneVerb+'</p>':'')+
   '<ul class="bl">'+Object.keys(rows).sort(function(a,b){return rows[b].n-rows[a].n}).map(function(nm){var r=rows[nm];return '<li><div class="r"><span>'+esc(nm)+'</span><span>'+r.n+'</span></div><small>'+Object.keys(r.parts).map(function(z){return r.parts[z]+" "+z.toLowerCase()}).join(", ")+'</small></li>'}).join("")+'</ul>'+
   (list.length?'':'<p class="mute" style="margin-top:16px">Nothing booked yet.</p>')+
@@ -1717,7 +1724,7 @@ function readCForm(c){var g=function(i){return document.getElementById(i).value}
 
 /* ---------- history ---------- */
 var RANGES=["All time","This month","Last 4 weeks","This week"];
-var SHADES=["#12241a","#8d6a2c","#cfaa64","#c9c0ab"];
+var SHADES=["#2a1c13","#2c4a8e","#c9a46e","#d9cfc0"];
 function historyView(){
  var ix=sizeIndex(),now=parse(TODAY),r=U.range;
  var start=r==="This month"?iso(new Date(now.getFullYear(),now.getMonth(),1)):r==="Last 4 weeks"?monday(-3):r==="This week"?monday(0):"0000";
@@ -1734,7 +1741,7 @@ function historyView(){
  var wk={};all.forEach(function(o){var m=mondayOf(o.date);(wk[m]=wk[m]||[]).push(o)});
  var wks=Object.keys(wk).sort(),val=function(l){var s=sum(l);return U.metric==="Orders"?s.n:U.metric==="Items"?s.i:s.b},wmax=Math.max.apply(null,wks.map(function(k){return val(wk[k])}).concat([1]));
  h+='<div class="sect"><h3 class="H">Week by week</h3><div class="pills"><span class="mute" style="margin-right:6px;font-size:.92rem">Chart</span>'+["Orders","Items","Booked"].map(function(m){return '<button class="pill press'+(m===U.metric?" on":"")+'" data-a="metric" data-m="'+m+'">'+m+'</button>'}).join("")+'</div>'+
-  '<div class="vbars">'+wks.map(function(k,i){var v=val(wk[k]);return '<div class="vb"><b>'+(U.metric==="Booked"?money(Math.round(v)):v)+'</b><i class="'+(k===monday(0)?"cur":"")+'" style="height:'+(v/wmax*120)+'px;animation-delay:'+(i*.03)+'s"></i><span>'+short(k)+'</span></div>'}).join("")+'</div><p class="small" style="margin-top:8px">Each bar is a week, labeled with its Monday. This week is gold.</p></div>';
+  '<div class="vbars">'+wks.map(function(k,i){var v=val(wk[k]);return '<div class="vb"><b>'+(U.metric==="Booked"?money(Math.round(v)):v)+'</b><i class="'+(k===monday(0)?"cur":"")+'" style="height:'+(v/wmax*120)+'px;animation-delay:'+(i*.03)+'s"></i><span>'+short(k)+'</span></div>'}).join("")+'</div><p class="small" style="margin-top:8px">Each bar is a week, labelled with its Monday.</p></div>';
  // three columns
  var prod={};all.forEach(function(o){o.items.forEach(function(i){var l=itemLabel(i,ix),m=ix[i.s];var x=prod[l.n]||(prod[l.n]={q:0,b:0});x.q+=i.q;x.b+=(m?m.z.price:0)*i.q})});
  var pr=Object.keys(prod).sort(function(a,b){return prod[b].b-prod[a].b}),pmax=Math.max.apply(null,pr.map(function(k){return prod[k].b}).concat([1]));
@@ -1762,7 +1769,7 @@ function custHTML(k){
  var ix=sizeIndex(),l=S.orders.filter(function(o){return(o.phone||o.name.toLowerCase())===k}).sort(function(a,b){return a.date<b.date?1:-1});
  var lv=l.filter(live),b=lv.reduce(function(a,o){return a+oTotal(o,ix)},0);
  return '<p class="kick">Customer</p><h2>'+esc(l[0].name)+'</h2><p class="mute">'+(l[0].phone?'<a href="tel:'+esc(l[0].phone)+'">'+esc(l[0].phone)+'</a>':'')+'</p><p style="margin-top:8px">'+plural(lv.length,"order")+', '+money(b)+'</p>'+
- '<ul class="bl">'+l.map(function(o){return '<li><div style="font-weight:600">'+fd(o.date,{weekday:"short",month:"short",day:"numeric",year:"numeric"})+', '+PT(o.point).name.toLowerCase()+'<span style="float:right">'+money(oTotal(o,ix))+'</span></div><small>'+o.items.map(function(i){var x=itemLabel(i,ix);return x.n+(x.z?" ("+x.z.toLowerCase()+")":"")+" × "+i.q}).join(", ")+'</small>'+(o.note?'<p class="note">'+esc(o.note)+'</p>':'')+'</li>'}).join("")+'</ul>';
+ '<ul class="bl">'+l.map(function(o){return '<li><div style="font-weight:600">'+fd(o.date,{weekday:"short",month:"short",day:"numeric",year:"numeric"})+', '+esc(PT(o.point).name.replace(" bread drop",""))+'<span style="float:right">'+money(oTotal(o,ix))+'</span></div><small>'+o.items.map(function(i){var x=itemLabel(i,ix);return x.n+(x.z?" ("+x.z.toLowerCase()+")":"")+" × "+i.q}).join(", ")+'</small>'+(o.note?'<p class="note">'+esc(o.note)+'</p>':'')+'</li>'}).join("")+'</ul>';
 }
 
 /* ---------- menu ---------- */
