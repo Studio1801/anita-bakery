@@ -648,6 +648,51 @@ body::after{opacity:.1}
 @media(max-width:999px){.sum{display:none!important}}
 .pw[aria-pressed="true"] small{color:var(--crust)}
 @media(max-width:720px){.sl .or{display:none}.sl{gap:2px 18px}}
+
+/* ===== the menu as a printed sheet ===== */
+.om{position:relative;background:#fbf8f1;padding:clamp(40px,5vw,64px) clamp(24px,5vw,64px) clamp(30px,4vw,48px);box-shadow:0 1px 2px rgba(42,28,19,.1),0 30px 50px -36px rgba(42,28,19,.55);transform:rotate(-.35deg)}
+.om::before{content:"";position:absolute;inset:14px;border:1px solid rgba(42,28,19,.22);outline:1px solid rgba(42,28,19,.22);outline-offset:4px;pointer-events:none}
+.om::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .3 0 0 0 0 .18 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")}
+.omt{position:absolute;top:-13px;left:50%;width:120px;height:28px;margin-left:-60px;background:rgba(215,189,149,.75);transform:rotate(2deg);z-index:2;clip-path:polygon(2% 0,98% 6%,100% 92%,0 100%)}
+.omh{text-align:center;margin-bottom:clamp(26px,3vw,40px)}
+.omh p{font-size:14px;font-style:italic;color:var(--crust)}
+.omh h2{font-size:clamp(44px,5vw,68px);line-height:1;letter-spacing:-.03em;margin:6px 0 8px;font-weight:400}
+.omh h2 i{font-style:italic}
+.omh::after{content:"";display:block;width:56px;height:1px;background:rgba(42,28,19,.4);margin:18px auto 0}
+.om .grp{padding:0 0 clamp(26px,3vw,36px)!important}
+.om .grp+.grp::before{content:"";display:block;width:6px;height:6px;border-radius:50%;background:rgba(42,28,19,.3);margin:0 auto clamp(24px,3vw,34px);box-shadow:-14px 0 0 rgba(42,28,19,.18),14px 0 0 rgba(42,28,19,.18)}
+.om .grp-h{justify-content:center!important;text-align:center;flex-direction:column;align-items:center!important;gap:2px!important}
+.om .grp-h h3{font-size:clamp(26px,2.6vw,34px)!important}
+.om .grp-h .pr{font-size:15px}
+.om .grp-d{justify-content:center;text-align:center;flex-direction:column;align-items:center!important;margin:6px auto 12px!important}
+.om .grp-d img{order:0;margin:0 0 4px!important;width:84px;height:84px;border-radius:50%}
+.om .grp-d p{font-size:15px;font-style:italic;max-width:46ch}
+.om .fl{grid-template-columns:auto 1fr auto auto!important;gap:12px!important;border:0!important;padding:6px 0!important;min-height:48px}
+.om .fl+.fl{border-top:0!important}
+.om .ldr2{align-self:end;margin-bottom:.55em;border-bottom:2px dotted rgba(42,28,19,.3);min-width:20px}
+.om .fl .n{font-size:18px}
+.om .fl .fp{font-size:17px;color:var(--rye)}
+.om [data-acts]{min-width:92px}
+.omf{text-align:center;font-size:14px;font-style:italic;color:var(--crust);margin-top:8px;padding-top:18px;border-top:1px solid rgba(42,28,19,.15)}
+@media(max-width:720px){.om{transform:none;padding:40px 22px 28px}.om::before{inset:8px;outline-offset:3px}.om .fl .n{font-size:16px}.om [data-acts]{min-width:80px}}
+
+/* pickup sentence: clearer to read */
+.pw{color:#6f5640;padding:2px 10px}
+.pw:not([aria-pressed="true"]){text-decoration:underline;text-decoration-style:dotted;text-decoration-thickness:2px;text-decoration-color:rgba(42,28,19,.28);text-underline-offset:.18em}
+.pw small{font-size:.55em;font-style:normal;color:var(--crust);letter-spacing:0}
+.pw .pc{left:-3%!important;top:-14%!important;width:106%!important;height:128%!important}
+.sw{color:var(--rye)}
+.or{color:var(--crust)}
+.cap,.woff{font-family:inherit!important;font-size:16px!important;font-style:italic!important;color:var(--crust)!important}
+.cap{color:var(--stamp)!important;font-style:normal!important}
+
+.sl{font-size:clamp(24px,2.5vw,36px)!important;gap:4px 14px!important}
+.pw{padding:4px 16px!important}
+.pw .pc{left:0!important;top:-12%!important;width:100%!important;height:124%!important}
+.pw small{margin-left:2px}
+.pw .pc{left:-5%!important;width:110%!important;top:-16%!important;height:132%!important}
+.pw .pc path{stroke-dasharray:100!important;animation:pcdraw2 .6s cubic-bezier(.6,0,.3,1) both!important}@keyframes pcdraw2{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+.pw .pc path{stroke-dasharray:none!important;stroke-dashoffset:0!important;animation:none!important}.pw .pc{animation:pcin .4s cubic-bezier(.34,1.45,.64,1) both}@keyframes pcin{from{opacity:0;transform:scale(.85) rotate(-4deg)}to{opacity:1;transform:none}}
 </style>
 <body>
 <header class="hdr" id="hdr"></header>
@@ -794,20 +839,20 @@ pages.home=()=>{const P=POINTS;
 pages.order=()=>{
  const P=POINTS,live=L.PORDER.filter(k=>P[k]);
  const ds=drops(S.method,4);
- const opt=k=>{const p=P[k],on=S.method===k;return `<button class="pw" data-act="method" data-m="${k}" aria-pressed="${on}">${on?'<svg class="pc" viewBox="0 0 120 60" preserveAspectRatio="none" aria-hidden="true"><path d="M98 10C76 2 30 2 13 14 0 25 6 47 35 53c26 5 66 3 77-12 9-12-1-27-24-31"/></svg>':''}${esc(p.name.replace(' bread drop',''))}<small>${esc((p.hours||'').split(' to ')[0])}</small></button>`};
+ const opt=k=>{const p=P[k],on=S.method===k;return `<button class="pw" data-act="method" data-m="${k}" aria-pressed="${on}">${on?'<svg class="pc" viewBox="0 0 120 60" preserveAspectRatio="none" aria-hidden="true"><path d="M5 30C5 13 35 4 61 4c31 0 55 11 55 27 0 16-26 25-56 25C31 56 4 47 5 30c0-6 5-11 12-14"/></svg>':''}${esc(p.name.replace(' bread drop',''))}<small>${esc((p.hours||'').split(' to ')[0])}</small></button>`};
  const offs=live.filter(k=>!P[k].on).map(k=>esc(P[k].name)).join(', ');
  const loading=!SHOP.ready;
  const menu=loading?`<div aria-busy="true">${[1,2,3].map(()=>`<span class="sk" style="height:46px;width:60%;margin-bottom:18px"></span>${'<span class="sk" style="height:20px;margin:16px 0"></span>'.repeat(4)}<div style="height:40px"></div>`).join('')}</div>`
   :CATS.map(c=>{const ps=PRODUCTS.filter(p=>p.cat===c.id);if(!ps.length)return'';return ps.map(p=>{const on=p.sizes.some(z=>z.on);return `<div class="grp" id="p-${p.id}"><div class="grp-h"><h3>${esc(p.name)}</h3><span class="pr">${money(Math.min(...p.sizes.map(z=>z.price)))}</span></div>
   <div class="grp-d${p.photo||PHOTO[p.id]?' has':''}">${p.photo||PHOTO[p.id]?`<img src="${p.photo||PHOTO[p.id]}" alt="${esc(p.name)}" loading="lazy" decoding="async">`:''}<p>${esc((INFO[p.id]||{}).d||'Ask us about this one.')}${on?'':' Sold out this week.'}</p></div>
-  ${p.sizes.map(z=>`<div class="fl${z.on?'':' off'}"${FLAV[p.id+'|'+z.label]?` data-img="${FLAV[p.id+'|'+z.label]}"`:''}><span class="n">${p.sizes.length>1?esc(z.label):'Add to your bag'}</span><span class="fp">${money(z.price)}</span><span data-acts="${z.id}">${acts(z)}</span></div>`).join('')}</div>`}).join('')}).join('');
+  ${p.sizes.map(z=>`<div class="fl${z.on?'':' off'}"${FLAV[p.id+'|'+z.label]?` data-img="${FLAV[p.id+'|'+z.label]}"`:''}><span class="n">${p.sizes.length>1||z.label!=='Regular'?esc(z.label):'Each'}</span><span class="ldr2" aria-hidden="true"></span><span class="fp">${money(z.price)}</span><span data-acts="${z.id}">${acts(z)}</span></div>`).join('')}</div>`}).join('')}).join('');
  const mini=Object.entries(S.cart).map(([k,q])=>{const m=sizeOf(k);return m?`<li><span>${q} × ${esc(itemName(m))}</span><span>${money(m.z.price*q)}</span></li>`:''}).join('');
  return `<section class="ph"><div class="wrap"><h1><span class="mk"><span class="ln">Fill your <i>bag.</i></span></span></h1><p class="lede">Anita bakes Tuesday and Wednesday. Your bag is ready Thursday, with your name on it. You pay when you pick it up.</p></div></section>
  <section id="og"><div class="wrap">${yourOrders()}<div class="og"><div>
  <div class="when2"><p class="sl"><span class="sw">I’ll pick it up in</span>${live.filter(k=>P[k].on||S.method===k).map(opt).join('<span class="or">or</span>')}</p>
- <p class="sl"><span class="sw">on Thursday,</span>${ds.length?ds.map(d=>`<button class="pw" data-act="date" data-d="${d}" aria-pressed="${S.date===d}">${S.date===d?'<svg class="pc" viewBox="0 0 120 60" preserveAspectRatio="none" aria-hidden="true"><path d="M98 10C76 2 30 2 13 14 0 25 6 47 35 53c26 5 66 3 77-12 9-12-1-27-24-31"/></svg>':''}${fmtD(d).replace('Thu, ','')}</button>`).join(''):'<span class="mute">no drops are open here right now. Try the other stop, or message us.</span>'}</p>
+ <p class="sl"><span class="sw">on Thursday,</span>${ds.length?ds.map(d=>`<button class="pw" data-act="date" data-d="${d}" aria-pressed="${S.date===d}">${S.date===d?'<svg class="pc" viewBox="0 0 120 60" preserveAspectRatio="none" aria-hidden="true"><path d="M5 30C5 13 35 4 61 4c31 0 55 11 55 27 0 16-26 25-56 25C31 56 4 47 5 30c0-6 5-11 12-14"/></svg>':''}${fmtD(d).replace('Thu, ','')}</button>`).join(''):'<span class="mute">no drops are open here right now. Try the other stop, or message us.</span>'}</p>
  ${S.date?capNote():''}${offs?`<p class="woff">${offs} is back next season.</p>`:''}</div>
- <div class="om">${menu}</div></div>
+ <div class="om"><span class="omt" aria-hidden="true"></span><header class="omh"><p>Anita’s Little Loaf &amp; Co.</p><h2>The <i>menu</i></h2><p>From Anita’s oven, this week</p></header>${menu}<p class="omf">Everything is baked from scratch. Ask us about allergies before you order.</p></div></div>
  <aside class="sum" aria-label="Your bag" id="sum">${sumHTML(mini)}</aside></div></div></section>${footer()}`};
 function sumHTML(mini){const P=POINTS[S.method]||{};if(mini==null)mini=Object.entries(S.cart).map(([k,q])=>{const m=sizeOf(k);return m?`<li><span><b>${q}</b> ${esc(itemName(m))}</span><span>${money(m.z.price*q)}</span></li>`:''}).join('');
  const nm=(S.me&&S.me.name||'').split(' ')[0];
