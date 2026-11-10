@@ -497,6 +497,32 @@ body::after{opacity:.1}
 .who .sig+p{margin-top:16px}
 @media(prefers-reduced-motion:no-preference){.snap{transition:transform .6s var(--ease)}@media(hover:hover){.snap:hover{transform:rotate(0)}}}
 
+/* ===== hero: the week is the signature ===== */
+.hero h1{font-size:clamp(40px,6.2vw,92px)}
+.circ{position:relative;display:inline-block;white-space:nowrap;margin-left:.14em}
+.circ svg{position:absolute;left:-5%;top:-12%;width:110%;height:128%;overflow:visible;pointer-events:none}
+.circ path{fill:none;stroke:var(--stamp);stroke-width:2.6;stroke-linecap:round;vector-effect:non-scaling-stroke;stroke-dasharray:1100;stroke-dashoffset:0}
+.ld .circ path{animation:pen 1.3s cubic-bezier(.6,0,.3,1) .5s both}
+@keyframes pen{from{stroke-dashoffset:1100}}
+.hero .lede{margin-top:22px}
+.week{display:grid;grid-template-columns:1.1fr 2fr 1.5fr 2.6fr;max-width:1000px;margin:clamp(30px,3.6vw,46px) auto 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.wk{display:flex;flex-direction:column;align-items:center;padding:14px 8px 18px;min-width:0;position:relative}
+.wk+.wk{border-left:1px dotted var(--rule)}
+.days{display:flex;justify-content:space-around;width:100%}
+.days b{font-weight:400;font-size:clamp(22px,2.2vw,30px);letter-spacing:-.01em;color:var(--crust);line-height:1.1}
+.wk .hand{font-size:22px;margin-top:8px;text-align:center}
+.pen{color:var(--rye)!important;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 10' preserveAspectRatio='none'%3E%3Cpath d='M2 6c20-4 44-5 64-2s38 1 52-2' fill='none' stroke='%232c4a8e' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") bottom/100% .26em no-repeat;padding-bottom:.1em}
+.g1 .hand{color:var(--stamp)}
+.brace{width:70%;height:12px;margin-top:4px;overflow:visible}.brace path{fill:none;stroke:var(--crust);stroke-width:1.4;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.g2 .hand{margin-top:2px}
+.thu{color:var(--rye)!important;font-style:italic;font-size:clamp(26px,2.6vw,36px)!important}
+.stamp2{margin-top:10px;color:var(--stamp);border:1.5px solid var(--stamp);outline:1px solid var(--stamp);outline-offset:3px;padding:6px 12px 5px;transform:rotate(-4deg);font-size:21px;line-height:1;text-align:center;opacity:.92;white-space:nowrap}
+.stamp2 small{display:block;font-size:12px;letter-spacing:.02em;margin-top:5px;font-style:italic}
+.ld .stamp2{animation:thunk .5s var(--swing) 1.2s both}
+.g4 .days b{opacity:.55}.g4 .hand{opacity:.8}
+@media(max-width:720px){.week{grid-template-columns:1fr;margin-top:28px}.wk{display:grid;grid-template-columns:122px 1fr;align-items:center;justify-items:start;padding:12px 4px;gap:4px 12px}.wk+.wk{border-left:0;border-top:1px dotted var(--rule)}.days{justify-content:flex-start;gap:8px;grid-row:1/3}.days b{font-size:19px}.wk .hand{margin-top:0;text-align:left;font-size:21px}.brace{display:none}.stamp2{margin:4px 0 4px 4px;font-size:18px;transform:rotate(-3deg);padding:6px 9px 5px}.stamp2 small{font-size:11px}.circ svg{left:-5%;width:110%}}
+@media(prefers-reduced-motion:reduce){.ld .circ path,.ld .stamp2{animation:none}}
+
 </style>
 <body>
 <header class="hdr" id="hdr"></header>
@@ -608,8 +634,14 @@ pages.home=()=>{const P=POINTS;
  const offer=PRODUCTS.map(p=>{const n=p.sizes.length;return `<li><span>${esc(short[p.id]||p.name)}${n>1?` <small>${n} flavours</small>`:''}</span><span>${money(Math.min(...p.sizes.map(z=>z.price)))}</span></li>`}).join('');
  const snap=(img,alt,note,cls)=>`<figure class="snap ${cls||''}"><span class="tape" aria-hidden="true"></span><img src="img/${img}.webp" alt="${alt}" loading="lazy" decoding="async"><figcaption class="hand">${note}</figcaption></figure>`;
  return `<section class="hero"><div class="wrap">
- <h1>Little loaves, <i>big Thursdays.</i></h1>
- <p class="lede">Sourdough, focaccia and cinnamon rolls, baked from scratch by my mom, Anita. Order by Monday and your bag is ready Thursday in St. George or St. Andrews.</p>
+ <h1>Little loaves, <i>big <span class="circ">Thursdays.<svg viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true"><path d="M318 20C250 4 120 2 52 18 8 29-6 62 22 86c34 28 140 32 236 26 82-5 136-26 132-58-3-26-52-40-124-44"/></svg></span></i></h1>
+ <p class="lede">Sourdough, focaccia and cinnamon rolls, baked from scratch by my mom, Anita.</p>
+ <div class="week" aria-label="How a week works: order by Monday midnight, Anita bakes Tuesday and Wednesday, pick up Thursday">
+ <div class="wk g1"><div class="days"><b class="pen">Mon</b></div><p class="hand">order by midnight</p></div>
+ <div class="wk g2"><div class="days"><b>Tue</b><b>Wed</b></div><svg class="brace" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true"><path d="M3 2c2 6 6 7 40 7s52 0 57 4c5-4 23-4 57-4s38-1 40-7"/></svg><p class="hand">Anita bakes</p></div>
+ <div class="wk g3"><div class="days"><b class="thu">Thu</b></div><div class="stamp2">Bread drop<small>St. George ${esc((P.stgeorge.hours||'').split(' to ')[0])}, St. Andrews ${esc((P.standrews.hours||'').split(' to ')[0])}</small></div></div>
+ <div class="wk g4"><div class="days"><b>Fri</b><b>Sat</b><b>Sun</b></div><p class="hand">toast the rest</p></div>
+ </div>
  <div class="frame"><figure class="snap hpic"><span class="tape" aria-hidden="true"></span><img src="img/cinnamon-four.webp" alt="Four cinnamon rolls: apple pie, iced, plain and blueberry citrus" fetchpriority="high" decoding="async"><figcaption class="hand">apple pie, iced, plain &amp; blueberry citrus</figcaption></figure>
  <div class="card2">${tagHTML()}
  <div class="offer"><span class="lab">On the menu</span><ul>${offer}</ul><button class="tl" data-act="go" data-to="order">See the full menu</button></div>
